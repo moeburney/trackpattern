@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCustomers').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<table width=100% >
+	<tr class='header'>
+		<td class='first'>Name</td>
+		<td>EMail</td>
+		<td>Street</td>
+		<td>Zip</td>
+		<td>Phone</td>
+		<td><a href='/core/customer/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
+	</tr>
+
+{% for customer in customers.object_list %}
+	<tr class="{% cycle 'odd' 'even' %}">
+		<td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td>
+		<td>{{customer.email}}</td>
+		<td>{{customer.street}}</td>
+		<td>{{customer.zipcode}}</td>
+		<td>{{customer.phone}}</td>
+		<td><a href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'></a></td>
+	</tr>
+{% endfor %}
+
+	<tr>
+		<td colspan=6 style='text-align:right;'>
+			{% if customers.has_previous %}
+				<a href="?page={{ customers.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ customers.number }} of {{ customers.paginator.num_pages }}.&nbsp;
+			{% if customers.has_next %}
+				<a href="?page={{ customers.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+{% endblock %}

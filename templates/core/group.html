@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabGroups').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<table width=100% >
+	<tr class='header'>
+		<td class='first'>Name</td>
+		<td><a href='/core/group/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
+	</tr>
+
+{% for group in groups.object_list %}
+	<tr class="{% cycle 'odd' 'even' %}">
+		<td class='first'><a href='/core/group/view/{{group.pk}}/'>{{group.name}}</a></td>
+		<td><a href='/core/group/edit/{{group.pk}}/'><img src='/static/img/edit.jpg'></a></td>
+	</tr>
+{% endfor %}
+
+	<tr>
+		<td colspan=6 style='text-align:right;'>
+			{% if groups.has_previous %}
+				<a href="?page={{ groups.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ groups.number }} of {{ groups.paginator.num_pages }}.&nbsp;
+			{% if groups.has_next %}
+				<a href="?page={{ groups.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+{% endblock %}

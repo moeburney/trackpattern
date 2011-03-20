@@ -1,0 +1,55 @@
+body {
+	margin:0 auto;
+	width: 950px;
+	padding:0;
+	font:normal 0.8em/1.2em verdana,aria,sans-serif;
+	}
+
+#header-wrapper{	
+	padding-bottom: 20px;
+	}	
+
+#header {
+	padding-top: 10px;
+	}
+
+#header h1 {
+	font-size:200%;
+	font-weight: bold;
+	}
+
+#content-wrap{
+	padding:5px;
+}
+
+tr.header{
+	background-color:#007FFF; color:#fff;
+	height:30px; font-weight:bold;
+}
+
+tr.even{
+	background-color:#dddddd; color:#000;
+	height:30px;
+}
+
+tr.odd{
+	background-color:#fff; color:#000;
+	height:30px;
+}
+
+td.first{
+	padding-left:5px;
+}
+
+/*----------------------------------------------------------------------------*/
+.dataform{
+	border: 1px solid #b1b1b1; padding: 10px;
+}
+
+.dataform td {
+	height:30px; padding-right:20px;
+}
+/*----------------------------------------------------------------------------*/
+.view-wrap{
+	border:1px solid #b1b1b1; padding:10px;
+}

@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabProducts').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<div class='view-wrap'>
+<b>Product View</b>
+<br><br>
+<table width=100%>
+<tr>
+	<td></td>
+	<td>TOTAL REVENUE MADE: </td>
+<tr>
+<tr>
+	<td>{{product.name}} <a href='/core/product/edit/{{product.pk}}/'>View/Edit Info</a></td>
+	<td># of Purchases: </td>
+<tr>
+<tr>
+	<td>Main Appeal: {{product.main_appeal}}</td>
+	<td>Date Released: {{product.date_released}}</td>
+</tr>
+<tr>
+	<td>Group That Bought It Most: </td>
+	<td>Current Price: {{product.current_price}}</td>
+</tr>
+<tr>
+	<td>Importance: {{product.importance}}</td>
+	<td>Surveys Sent:</td>
+</tr>
+<tr>
+	<td>Rank: {{product.rank}}</td>
+	<td>Most Common Path:</td>
+</tr>
+<tr>
+	<td><a>View What Has Been Written About It</a></td>
+	<td>What Buyers Of This Want Next:</td>
+</tr>
+</table>
+
+<div>
+{% endblock %}

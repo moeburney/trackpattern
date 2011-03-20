@@ -5,6 +5,19 @@ from django.conf.urls.defaults import *
 #admin.autodiscover()
 
 urlpatterns = patterns('tracklist.core.views',
+    (r'^customer/$', 'customer_home'),
+    (r'^customer/view/(?P<id>.*)/$', 'customer_view'),
     (r'^customer/add/$', 'add_customer'),
     (r'^customer/edit/(?P<id>.*)/$', 'edit_customer'),
+
+    (r'^group/$', 'group_home'),
+    (r'^group/view/(?P<id>.*)/$', 'group_view'),
+    (r'^group/add/$', 'add_group'),
+    (r'^group/edit/(?P<id>.*)/$', 'edit_group'),
+
+    (r'^product/$', 'product_home'),
+    (r'^product/view/(?P<id>.*)/$', 'product_view'),
+    (r'^product/add/$', 'add_product'),
+    (r'^product/edit/(?P<id>.*)/$', 'edit_product'),
+
 )

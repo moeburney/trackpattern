@@ -1,16 +1,17 @@
 {% extends "core/base.html" %}
 
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCustomers').addClass('selected');
+</script>
+{% endblock %}
+
+
 {% block content %}
 
-<h1>{% if form.instance.pk %}Customer: {{form.instance.fullname}}{% else %}New Customer{% endif %}</h1>
-
+<div class='dataform'>
 {% if form.errors %}
-<div style="background-color: yellow;">
-	Oops..errors occured!
-	
-	{{form.errors}}
-	
-</div>
+<div style="background-color: yellow;">Oops..errors occured!<br>{{form.errors}}</div>
 {% endif %}
 
 <form action="" method="post" >{% csrf_token %}
@@ -31,11 +32,23 @@
 	<th>{{form.zipcode.label}}</th><td>{{form.zipcode}}</td>
 	</tr>
 
+	<tr>
+	<th>{{form.connection.label}}</th><td>{{form.connection}}</td>
+	<th>{{form.rank.label}}</th><td>{{form.rank}}</td>
+	</tr>
+
+	<tr>
+	<th>{{form.group.label}}</th><td>{{form.group}}</td>
+	<th></td>
+	</tr>
+	
+	
 	<tr><td>
 	<input type="submit" value="Submit" />
-	<input type=button value="Cancel" onclick="JavaScript: window.location.href='/home/'" />
+	<input type=button value="Cancel" onclick="JavaScript: window.location.href='/core/customer/'" />
 	</td></tr>
 </table>
 </form>
 
+</div>
 {% endblock %}

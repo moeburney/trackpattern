@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabProducts').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<table width=100% >
+	<tr class='header'>
+		<td class='first'>Name</td>
+		<td>Date Released</td>
+		<td>Current Price</td>
+		<td><a href='/core/product/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
+	</tr>
+
+{% for product in products.object_list %}
+	<tr class="{% cycle 'odd' 'even' %}">
+		<td class='first'><a href='/core/product/view/{{product.pk}}/'>{{product.name}}</a></td>
+		<td>{{product.date_released}}</td>
+		<td>{{product.current_price}}</td>
+		<td><a href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'></a></td>
+	</tr>
+{% endfor %}
+
+	<tr>
+		<td colspan=4 style='text-align:right;'>
+			{% if products.has_previous %}
+				<a href="?page={{ products.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ products.number }} of {{ products.paginator.num_pages }}.&nbsp;
+			{% if products.has_next %}
+				<a href="?page={{ products.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+{% endblock %}

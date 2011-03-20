@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabGroups').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<div class='view-wrap'>
+<b>Group View</b>
+<br><br>
+<table width=100%>
+<tr>
+	<td>{{group.name}} <a href='/core/group/edit/{{group.pk}}/'>View/Edit Info</a></td>
+	<td>TOTAL PROFIT FROM THEM: </td>
+<tr>
+<tr>
+	<td>Main Characteristics: {{group.characteristics}}</td>
+	<td>Purchases:</td>
+</tr>
+<tr>
+	<td>Core Interests:</td>
+	<td>Gifts Sent:</td>
+</tr>
+<tr>
+	<td>Connection With You: {{group.connection}}</td>
+	<td>Surveys Sent:</td>
+</tr>
+<tr>
+	<td>Rank: {{group.rank}}</td>
+	<td>Most Common Path:</td>
+</tr>
+<tr>
+	<td><a>View Correspondences</a></td>
+	<td>Product or Service They Want:</td>
+</tr>
+</table>
+
+<div>
+{% endblock %}

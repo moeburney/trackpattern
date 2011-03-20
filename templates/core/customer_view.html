@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCustomers').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<div class='view-wrap'>
+<b>Customer View</b>
+<br><br>
+<table width=100%>
+<tr>
+	<td>{{customer.full_name}} <a href='/core/customer/edit/{{customer.pk}}/'>View/Edit Info</a></td>
+	<td>TOTAL PROFIT FROM HIM: </td>
+<tr>
+<tr>
+	<td>Group: {{customer.group.name}} <a href='/core/group/view/{{customer.group.pk}}/'>View</a></td>
+	<td>Purchases: {{customer.purchases.count}} <a href='/purchases/list/'>View</a></td>
+</tr>
+<tr>
+	<td>Core Interests: {{customer.core_interests}}</td>
+	<td>Gifts Sent: {{customer.gifts_sent}}</td>
+</tr>
+<tr>
+	<td>Connection With You: {{customer.connection}}</td>
+	<td>Surveys Sent: {{customer.surveys_sent}}</td>
+</tr>
+<tr>
+	<td>Rank: {{customer.rank}}</td>
+	<td>Path: {{customer.path}}</td>
+</tr>
+<tr>
+	<td><a>View Correspondences</a></td>
+	<td>Product or Service He Wants:</td>
+</tr>
+</table>
+
+<div>
+{% endblock %}

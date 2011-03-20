@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabProducts').addClass('selected');
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class='dataform'>
+{% if form.errors %}
+<div style="background-color: yellow;">Oops..errors occured!<br>{{form.errors}}</div>
+{% endif %}
+
+<form action="" method="post" >{% csrf_token %}
+<table>
+	
+	<tr>
+	<th>{{form.name.label}}</th><td>{{form.name}}</td>
+	<th>{{form.date_released.label}}</th><td>{{form.date_released}}</td>
+	</tr>
+
+	<tr>
+	<th>{{form.current_price.label}}</th><td>{{form.current_price}}</td>
+	<th></th><td></td>
+	</tr>
+	
+	<tr><td>
+	<input type="submit" value="Submit" />
+	<input type=button value="Cancel" onclick="JavaScript: window.location.href='/core/product/'" />
+	</td></tr>
+</table>
+</form>
+
+</div>
+{% endblock %}
