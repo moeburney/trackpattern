@@ -21,6 +21,18 @@
 	<div style='clear:both;'></div>
 </div>
 
+<div style='padding-bottom:30px;'>
+	<div style='float:left;'><a href="/core/group/add/">Add Group</a>&nbsp;</div>
+	<div style='float:left;'><a href="/core/customer/add/">Add Customer</a>&nbsp;</div>
+	<div style='float:left;'><a href="/core/product/add/">Add Product</a>&nbsp;</div>
+	<div style='float:left;'><a href="/core/purchase/add/">Add Purchase</a>&nbsp;</div>
+	<form action='/home/search/' method='POST'>{% csrf_token %}
+		<input type=text name='word'></input>
+		<input type=submit value="Search"></input>
+	</form>
+	<div style='clear:both;'></div>
+</div>
+
 <div class="tabs">
 	<ul class="tabNavigation">
 		<li><a id='tabHome' href="/home/">Home</a></li>

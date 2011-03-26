@@ -10,12 +10,18 @@ $('#tabGroups').addClass('selected');
 <table width=100% >
 	<tr class='header'>
 		<td class='first'>Name</td>
+		<td>Revenue</td>
+		<td>Connection</td>
+		<td>Last Activity</td>
 		<td><a href='/core/group/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
 	</tr>
 
 {% for group in groups.object_list %}
 	<tr class="{% cycle 'odd' 'even' %}">
 		<td class='first'><a href='/core/group/view/{{group.pk}}/'>{{group.name}}</a></td>
+		<td>{{group.total_revenue_generated}}</td>
+		<td>{{group.get_connection_display}}</td>
+		<td>{{group.last_activity|timesince}}</td>
 		<td><a href='/core/group/edit/{{group.pk}}/'><img src='/static/img/edit.jpg'></a></td>
 	</tr>
 {% endfor %}

@@ -13,27 +13,23 @@ $('#tabCustomers').addClass('selected');
 <table width=100%>
 <tr>
 	<td>{{customer.full_name}} <a href='/core/customer/edit/{{customer.pk}}/'>View/Edit Info</a></td>
-	<td>TOTAL PROFIT FROM HIM: </td>
-<tr>
-<tr>
-	<td>Group: {{customer.group.name}} <a href='/core/group/view/{{customer.group.pk}}/'>View</a></td>
-	<td>Purchases: {{customer.purchases.count}} <a href='/purchases/list/'>View</a></td>
+	<td>TOTAL REVENUE GENERATED: {{customer.total_turnover_generated}}</td>
 </tr>
 <tr>
-	<td>Core Interests: {{customer.core_interests}}</td>
+	<td>Group: {{customer.group.name}} <a href='/core/group/view/{{customer.group.pk}}/'>View</a></td>
+	<td>Purchases: {{customer.total_purchases}} <a href='/purchases/list/'>View</a></td>
+</tr>
+<tr>
+	<td>Core Interests: {{customer.interests}}</td>
 	<td>Gifts Sent: {{customer.gifts_sent}}</td>
 </tr>
 <tr>
-	<td>Connection With You: {{customer.connection}}</td>
+	<td>Connection With You: {{customer.get_connection_display}}</td>
 	<td>Surveys Sent: {{customer.surveys_sent}}</td>
 </tr>
 <tr>
-	<td>Rank: {{customer.rank}}</td>
+	<td></td>
 	<td>Path: {{customer.path}}</td>
-</tr>
-<tr>
-	<td><a>View Correspondences</a></td>
-	<td>Product or Service He Wants:</td>
 </tr>
 </table>
 

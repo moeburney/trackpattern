@@ -19,14 +19,19 @@ $('#tabProducts').addClass('selected');
 	
 	<tr>
 	<th>{{form.name.label}}</th><td>{{form.name}}</td>
+	<th>{{form.current_price.label}}</th><td>{{form.current_price}}</td>
+	</tr>
+
+	<tr>
+	<th>{{form.main_appeal.label}}</th><td>{{form.main_appeal}}</td>
 	<th>{{form.date_released.label}}</th><td>{{form.date_released}}</td>
 	</tr>
 
 	<tr>
-	<th>{{form.current_price.label}}</th><td>{{form.current_price}}</td>
-	<th></th><td></td>
+	<th>{{form.importance.label}}</th><td>{{form.importance}}</td>	
+	<th>{{form.surveys_sent.label}}</th><td>{{form.surveys_sent}}</td>
 	</tr>
-	
+
 	<tr><td>
 	<input type="submit" value="Submit" />
 	<input type=button value="Cancel" onclick="JavaScript: window.location.href='/core/product/'" />

@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabPurchases').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<table width=100% >
+	<tr class='header'>
+		<td class='first'>Purchase</td>
+		<td>Customer</td>
+		<td>Date</td>
+		<td><a href='/core/purchase/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
+	</tr>
+
+{% for purchase in purchases.object_list %}
+	<tr class="{% cycle 'odd' 'even' %}">
+		<td class='first'><a href='/core/purchase/view/{{purchase.pk}}/'>{{purchase.pk}}</a></td>
+		<td>{{purchase.customer.full_name}}</td>
+		<td>{{purchase.transaction_date}}</td>
+		<td><a href='/core/purchase/edit/{{purchase.pk}}/'><img src='/static/img/edit.jpg'></a></td>
+	</tr>
+{% endfor %}
+
+	<tr>
+		<td colspan=4 style='text-align:right;'>
+			{% if purchases.has_previous %}
+				<a href="?page={{ purchases.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ purchases.number }} of {{ purchases.paginator.num_pages }}.&nbsp;
+			{% if purchases.has_next %}
+				<a href="?page={{ purchases.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+{% endblock %}

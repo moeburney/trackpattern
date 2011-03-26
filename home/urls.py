@@ -7,4 +7,5 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('tracklist.home.views',
     (r'^$', 'home'),
+    (r'^search/$', 'search'),                       
 )

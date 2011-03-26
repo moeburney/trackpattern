@@ -10,20 +10,16 @@ $('#tabCustomers').addClass('selected');
 <table width=100% >
 	<tr class='header'>
 		<td class='first'>Name</td>
-		<td>EMail</td>
-		<td>Street</td>
-		<td>Zip</td>
-		<td>Phone</td>
+		<td>Group</td>
+		<td>Revenue</td>
 		<td><a href='/core/customer/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
 	</tr>
 
 {% for customer in customers.object_list %}
 	<tr class="{% cycle 'odd' 'even' %}">
 		<td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td>
-		<td>{{customer.email}}</td>
-		<td>{{customer.street}}</td>
-		<td>{{customer.zipcode}}</td>
-		<td>{{customer.phone}}</td>
+		<td>{{customer.group.name}}</td>
+		<td>{{customer.total_turnover_generated}}</td>
 		<td><a href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'></a></td>
 	</tr>
 {% endfor %}

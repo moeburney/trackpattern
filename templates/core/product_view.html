@@ -13,33 +13,47 @@ $('#tabProducts').addClass('selected');
 <table width=100%>
 <tr>
 	<td></td>
-	<td>TOTAL REVENUE MADE: </td>
+	<td>TOTAL TURNOVER GENERATED: {{product.total_turnover_generated}}</td>
 <tr>
 <tr>
 	<td>{{product.name}} <a href='/core/product/edit/{{product.pk}}/'>View/Edit Info</a></td>
-	<td># of Purchases: </td>
+	<td># of Purchases: {{product.total_purchases}}</td>
 <tr>
 <tr>
 	<td>Main Appeal: {{product.main_appeal}}</td>
 	<td>Date Released: {{product.date_released}}</td>
 </tr>
 <tr>
-	<td>Group That Bought It Most: </td>
+	<td>Group That Bought It Most: {{product.most_bought_group}}</td>
 	<td>Current Price: {{product.current_price}}</td>
 </tr>
 <tr>
 	<td>Importance: {{product.importance}}</td>
-	<td>Surveys Sent:</td>
+	<td>Surveys Sent: {{product.surveys_sent}}</td>
 </tr>
 <tr>
-	<td>Rank: {{product.rank}}</td>
-	<td>Most Common Path:</td>
-</tr>
-<tr>
-	<td><a>View What Has Been Written About It</a></td>
-	<td>What Buyers Of This Want Next:</td>
+	<td>Rank: {{product.get_rank}}</td>
+	<td>Most Common Path: {{product.most_common_path}}</td>
 </tr>
 </table>
+</div>
 
+<br>
 <div>
+<table style="width:100%">
+<tr class='header'>
+	<td class='first'>Purchase</td>
+	<td>Customer</td>
+	<td>Date</td>
+</tr>
+{% for purchase in product.purchase_set.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+	<td class='first'><a href="/core/purchase/view/{{purchase.pk}}/">{{purchase.pk}}</a></td>
+	<td><a href='/core/customer/view/{{purchase.customer.pk}}/'>{{purchase.customer.full_name}}</a></td>
+	<td>{{purchase.transaction_date}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
 {% endblock %}

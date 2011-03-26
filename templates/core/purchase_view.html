@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabPurchases').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<div class='view-wrap'>
+<b>Purchase View</b>
+<br><br>
+<table width=100%>
+<tr>
+	<td>Purchase #{{purchase.pk}} - {{purchase.product.name}} <a href='/core/purchase/edit/{{purchase.pk}}/'>View/Edit</a></td>
+	<td>TOTAL PRICE: {{purchase.price}}</td>
+<tr>
+<tr>
+	<td>Customer: {{purchase.customer.name}} <a href='/core/customer/view/{{purchase.customer.pk}}/'>View</a></td>
+	<td>Date: {{purchase.transaction_date}}</td>
+<tr>
+<tr>
+	<td>Group: {{purchase.customer.group}} <a href='/core/group/view/{{purchase.customer.group.pk}}/'>View</a></td>
+	<td>Shopping Cart Source: {{purchase.shopping_cart_source}}</td>
+</tr>
+<tr>
+	<td></td>
+	<td>Marketing Source: {{purchase.marketing_source}}</td>
+</tr>
+</table>
+
+<div>
+{% endblock %}

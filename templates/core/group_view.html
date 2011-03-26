@@ -13,29 +13,41 @@ $('#tabGroups').addClass('selected');
 <table width=100%>
 <tr>
 	<td>{{group.name}} <a href='/core/group/edit/{{group.pk}}/'>View/Edit Info</a></td>
-	<td>TOTAL PROFIT FROM THEM: </td>
-<tr>
+	<td>TOTAL PROFIT FROM THEM: {{group.total_revenue_generated}}</td>
+</tr>
 <tr>
 	<td>Main Characteristics: {{group.characteristics}}</td>
-	<td>Purchases:</td>
+	<td>Purchases: {{group.total_purchases}}</td>
 </tr>
 <tr>
-	<td>Core Interests:</td>
-	<td>Gifts Sent:</td>
+	<td>Core Interests: {{group.interests}}</td>
+	<td>Gifts Sent: {{group.gifts_sent}}</td>
 </tr>
 <tr>
-	<td>Connection With You: {{group.connection}}</td>
-	<td>Surveys Sent:</td>
+	<td>Connection With You: {{group.get_connection_display}}</td>
+	<td>Surveys Sent: {{group.surveys_sent}}</td>
 </tr>
 <tr>
-	<td>Rank: {{group.rank}}</td>
-	<td>Most Common Path:</td>
-</tr>
-<tr>
-	<td><a>View Correspondences</a></td>
-	<td>Product or Service They Want:</td>
+	<td>Rank: {{group.get_rank}}</td>
+	<td>Most Common Path: {{group.most_common_path}}</td>
 </tr>
 </table>
+</div>
 
+<br>
 <div>
+<table style="width:100%">
+<tr class='header'>
+	<td class='first'>Customer</td>
+	<td>Revenue</td>
+</tr>
+{% for customer in group.customer_set.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+	<td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td>
+	<td>{{customer.total_turnover_generated}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
 {% endblock %}

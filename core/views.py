@@ -8,9 +8,10 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from django.conf import settings
 
-from core.models import Customer, Group, Product
-from core.forms import CustomerForm, GroupForm, ProductForm
+from core.models import Customer, Group, Product, Purchase
+from core.forms import CustomerForm, GroupForm, ProductForm, PurchaseForm
 
+    
 @login_required
 def customer_home(request):
     """
@@ -213,5 +214,73 @@ def edit_product(request, id):
     else:
         form = ProductForm(instance=product)
     return render_to_response('core/manage_product.html',
+                              {'form': form},
+                              context_instance=RequestContext(request))
+
+@login_required
+def purchase_home(request):
+    """
+    renders list of purchases
+    """
+    purchase_list = Purchase.objects.filter(user=request.user)
+    paginator = Paginator(purchase_list, settings.DEFAULT_PAGESIZE)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        purchases = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+        purchases = paginator.page(paginator.num_pages)
+        
+    return render_to_response('core/purchase.html',
+                              {'purchases': purchases,},
+                              context_instance=RequestContext(request))
+
+@login_required
+def purchase_view(request, id):
+    """
+    renders a specific purchase view.
+    """
+    purchase = Purchase.objects.get(pk=id)
+    return render_to_response('core/purchase_view.html',
+                              {'purchase': purchase,},
+                              context_instance=RequestContext(request))
+
+@login_required
+def add_purchase(request):
+    """
+    Creates a Purchase transaction
+    """
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            purchase = form.save(commit=False)
+            purchase.user = request.user
+            purchase.save()
+            return HttpResponseRedirect('/core/purchase/')
+    else:
+        form = PurchaseForm()
+    return render_to_response('core/manage_purchase.html',
+                              {'form': form},
+                              context_instance=RequestContext(request))
+
+def edit_purchase(request, id):
+    """
+    Updates a Purchase transaction
+    """
+    purchase = Purchase.objects.get(pk=id)
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST, instance=purchase)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/core/purchase/')
+    else:
+        form = PurchaseForm(instance=purchase)
+    return render_to_response('core/manage_purchase.html',
                               {'form': form},
                               context_instance=RequestContext(request))

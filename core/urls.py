@@ -20,4 +20,9 @@ urlpatterns = patterns('tracklist.core.views',
     (r'^product/add/$', 'add_product'),
     (r'^product/edit/(?P<id>.*)/$', 'edit_product'),
 
+    (r'^purchase/$', 'purchase_home'),
+    (r'^purchase/view/(?P<id>.*)/$', 'purchase_view'),
+    (r'^purchase/add/$', 'add_purchase'),
+    (r'^purchase/edit/(?P<id>.*)/$', 'edit_purchase'),
+
 )
