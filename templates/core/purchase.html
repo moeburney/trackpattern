@@ -11,6 +11,7 @@ $('#tabPurchases').addClass('selected');
 	<tr class='header'>
 		<td class='first'>Purchase</td>
 		<td>Customer</td>
+		<td>Product</td>
 		<td>Date</td>
 		<td><a href='/core/purchase/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
 	</tr>
@@ -19,6 +20,7 @@ $('#tabPurchases').addClass('selected');
 	<tr class="{% cycle 'odd' 'even' %}">
 		<td class='first'><a href='/core/purchase/view/{{purchase.pk}}/'>{{purchase.pk}}</a></td>
 		<td>{{purchase.customer.full_name}}</td>
+		<td>{{purchase.product.name}}</td>
 		<td>{{purchase.transaction_date}}</td>
 		<td><a href='/core/purchase/edit/{{purchase.pk}}/'><img src='/static/img/edit.jpg'></a></td>
 	</tr>

@@ -1,4 +1,25 @@
 {% extends "home/base.html" %}
 
 {% block content %}
+<div>
+
+<ul>
+<li style="list-style-type:square;">Your top 3 popular products:
+<ol style="padding-left:25px;">
+{% for product in stats.popular_products|slice:":3" %}
+<li style="list-style-type:decimal;">{{product.name}} ({{product.bought}} purchases)</li>
+{% endfor %}
+</ol>
+</li>
+<br>
+<li style="list-style-type:square;">{{stats.repeat_customer_percent}}% of your customers are repeat buyers</li>
+<br>
+<li style="list-style-type:square;">Top 3 purchase patterns of your repeat buyers :
+<ol style="padding-left:25px;">
+{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
+<li style="list-style-type:decimal;">{{pattern}} ({{freq}} customers)</li>
+{% endfor %}
+<ol>
+</li>
+</div>
 {% endblock %}
