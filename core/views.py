@@ -8,8 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from django.conf import settings
 
-from core.models import Customer, Group, Product, Purchase
-from core.forms import CustomerForm, GroupForm, ProductForm, PurchaseForm
+from core.models import Customer, Category, Product, Purchase, Group
+from core.forms import CustomerForm, CategoryForm, ProductForm, PurchaseForm
 
     
 @login_required
@@ -81,26 +81,11 @@ def edit_customer(request, id):
                               {'form': form},
                               context_instance=RequestContext(request))
 
-@login_required
 def group_home(request):
     """
-    renders list of available groups
+    renders list of groups available
     """
-    group_list = Group.objects.filter(user=request.user)
-    paginator = Paginator(group_list, settings.DEFAULT_PAGESIZE)
-
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        groups = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        # if the supplied page number is beyond the scope
-        # show last page
-        groups = paginator.page(paginator.num_pages)
-        
+    groups = Group(request.user).GROUP_DEFINITIONS
     return render_to_response('core/group.html',
                               {'groups': groups,},
                               context_instance=RequestContext(request))
@@ -110,42 +95,75 @@ def group_view(request, id):
     """
     renders a specific group's view.
     """
-    group = Group.objects.get(pk=id)
+    group = Group(request.user).get_group(id)
     return render_to_response('core/group_view.html',
                               {'group': group,},
                               context_instance=RequestContext(request))
+@login_required
+def category_home(request):
+    """
+    renders list of available categories
+    """
+    category_list = Category.objects.filter(user=request.user)
+    paginator = Paginator(group_list, settings.DEFAULT_PAGESIZE)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        categories = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+        categories = paginator.page(paginator.num_pages)
+        
+    return render_to_response('core/category.html',
+                              {'categories': categories,},
+                              context_instance=RequestContext(request))
 
 @login_required
-def add_group(request):
+def category_view(request, id):
     """
-    Creates a Group instance
+    renders a specific category's view.
+    """
+    category = Category.objects.get(pk=id)
+    return render_to_response('core/category_view.html',
+                              {'category': category,},
+                              context_instance=RequestContext(request))
+
+@login_required
+def add_category(request):
+    """
+    Creates a Category instance
     """
     if request.method == 'POST':
-        form = GroupForm(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
-            group = form.save(commit=False)
-            group.user = request.user
-            group.save()
-            return HttpResponseRedirect('/core/group/')
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
+            return HttpResponseRedirect('/core/category/')
     else:
-        form = GroupForm()
-    return render_to_response('core/manage_group.html',
+        form = CategoryForm()
+    return render_to_response('core/manage_category.html',
                               {'form': form},
                               context_instance=RequestContext(request))
 
-def edit_group(request, id):
+def edit_category(request, id):
     """
-    Updates a Group details
+    Updates a category details
     """
-    group = Group.objects.get(pk=id)
+    category = Category.objects.get(pk=id)
     if request.method == 'POST':
-        form = GroupForm(request.POST, instance=group)
+        form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/core/group/')
+            return HttpResponseRedirect('/core/category/')
     else:
-        form = GroupForm(instance=group)
-    return render_to_response('core/manage_group.html',
+        form = CategoryForm(instance=category)
+    return render_to_response('core/manage_category.html',
                               {'form': form},
                               context_instance=RequestContext(request))
 

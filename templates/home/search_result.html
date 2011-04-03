@@ -3,10 +3,10 @@
 {% block content %}
 <h1>Search results for <i>{{word}}</i></h1><br>
 
-<h2>Groups</h2>
+<h2>Categories</h2>
 <table><tr class='header'><td class='first'>Name</td></tr>
-{% for group in groups %}
-<tr class="{% cycle 'odd' 'even' %}"><td class='first'><a href='/core/customer/view/{{group.pk}}/'>{{group.name}}</a></td></tr>
+{% for category in categories %}
+<tr class="{% cycle 'odd' 'even' %}"><td class='first'><a href='/core/category/view/{{category.pk}}/'>{{category.name}}</a></td></tr>
 {% endfor %}
 </table>
 <br>

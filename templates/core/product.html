@@ -10,7 +10,6 @@ $('#tabProducts').addClass('selected');
 <table width=100% >
 	<tr class='header'>
 		<td class='first'>Name</td>
-		<td>Main Group</td>
 		<td>Total Turnover</td>
 		<td>Date Released</td>
 		<td><a href='/core/product/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
@@ -19,7 +18,6 @@ $('#tabProducts').addClass('selected');
 {% for product in products.object_list %}
 	<tr class="{% cycle 'odd' 'even' %}">
 		<td class='first'><a href='/core/product/view/{{product.pk}}/'>{{product.name}}</a></td>
-		<td>{{product.most_bought_group}}</td>
 		<td>{{product.total_turnover_generated}}</td>
 		<td>{{product.date_released}}</td>
 		<td><a href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'></a></td>

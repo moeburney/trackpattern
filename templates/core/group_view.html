@@ -2,7 +2,7 @@
 
 {% block scripts %}
 <script type="text/javascript" charset="utf-8">
-$('#tabGroups').addClass('selected');
+$('#tabVategories').addClass('selected');
 </script>
 {% endblock %}
 
@@ -12,24 +12,8 @@ $('#tabGroups').addClass('selected');
 <br><br>
 <table width=100%>
 <tr>
-	<td>{{group.name}} <a href='/core/group/edit/{{group.pk}}/'>View/Edit Info</a></td>
-	<td>TOTAL PROFIT FROM THEM: {{group.total_revenue_generated}}</td>
-</tr>
-<tr>
-	<td>Main Characteristics: {{group.characteristics}}</td>
-	<td>Purchases: {{group.total_purchases}}</td>
-</tr>
-<tr>
-	<td>Core Interests: {{group.interests}}</td>
-	<td>Gifts Sent: {{group.gifts_sent}}</td>
-</tr>
-<tr>
-	<td>Connection With You: {{group.get_connection_display}}</td>
-	<td>Surveys Sent: {{group.surveys_sent}}</td>
-</tr>
-<tr>
-	<td>Rank: {{group.get_rank}}</td>
-	<td>Most Common Path: {{group.most_common_path}}</td>
+	<td>{{group.name}}</td>
+	<td></td>
 </tr>
 </table>
 </div>
@@ -41,7 +25,7 @@ $('#tabGroups').addClass('selected');
 	<td class='first'>Customer</td>
 	<td>Revenue</td>
 </tr>
-{% for customer in group.customer_set.all %}
+{% for customer in group.customers %}
 <tr class="{% cycle 'odd' 'even' %}">
 	<td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td>
 	<td>{{customer.total_turnover_generated}}</td>

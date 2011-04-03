@@ -1,14 +1,14 @@
 from django import forms
-from core.models import Customer, Group, Product, Purchase
+from core.models import Customer, Category, Product, Purchase
 
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         exclude = ['user']
 
-class GroupForm(forms.ModelForm):
+class CategoryForm(forms.ModelForm):
     class Meta:
-        model = Group
+        model = Category
         exclude = ['user']
 
 class ProductForm(forms.ModelForm):
