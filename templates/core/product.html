@@ -7,24 +7,12 @@ $('#tabProducts').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<table width=100% >
-	<tr class='header'>
-		<td class='first'>Name</td>
-		<td>Total Turnover</td>
-		<td>Date Released</td>
-		<td><a href='/core/product/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
-	</tr>
+<input class='content-searchbar' type=text />
+<h2 class='pad20'>Product List</h2>
 
-{% for product in products.object_list %}
-	<tr class="{% cycle 'odd' 'even' %}">
-		<td class='first'><a href='/core/product/view/{{product.pk}}/'>{{product.name}}</a></td>
-		<td>{{product.total_turnover_generated}}</td>
-		<td>{{product.date_released}}</td>
-		<td><a href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'></a></td>
-	</tr>
-{% endfor %}
+<table width=100% class='datatable'>
 
-	<tr>
+	<tr class='datarow pager'>
 		<td colspan=4 style='text-align:right;'>
 			{% if products.has_previous %}
 				<a href="?page={{ products.previous_page_number }}">previous</a>&nbsp;
@@ -35,6 +23,26 @@ $('#tabProducts').addClass('selected');
 			{% endif %}
 		</td>
 	</tr>
+	
+{% for product in products.object_list %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/product.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/product/view/{{product.pk}}/'>{{product.name}}</a>
+			<br>
+			<a class='datarow-action-link' href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'> Edit</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Total Turnover</span><br>
+			<span class='datarow-item-lable'>Date Released</span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'>{{product.total_turnover_generated}}</span><br>
+			<span class='datarow-item-value'>{{product.date_released}}</span>
+		</td>
+	</tr>
+{% endfor %}
+
 </table>
 
 {% endblock %}

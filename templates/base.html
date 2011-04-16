@@ -1,54 +1,68 @@
-<!doctype html>
+
 <html>
 <head>
 <script type='text/javascript' src='/static/js/jquery.1.3.min.js'></script>
 <link href='/static/css/reset.css' rel='stylesheet' type='text/css' />
 <link href='/static/css/default.css' rel='stylesheet' type='text/css' />
-<link href='/static/css/tabbedContent.css' rel='stylesheet' type='text/css' />
 
 <style>
 </style>
 </head>
 
 <body>
-<div id='header-wrapper'>
-	<div id="header" style='float:left;'><!-- begin header -->
-		<h1>Tracklist</h1>
-	</div><!-- end header -->
-	<div style='float:right; padding:10px;'>
-		Hello {{user.username}}! <a href="/logout/">Logout</a>	
-	</div>
-	<div style='clear:both;'></div>
-</div>
 
-<div style='padding-bottom:30px;'>
-	<div style='float:left;'><a href="/core/customer/add/">Add Customer</a>&nbsp;</div>
-	<div style='float:left;'><a href="/core/product/add/">Add Product</a>&nbsp;</div>
-	<div style='float:left;'><a href="/core/purchase/add/">Add Purchase</a>&nbsp;</div>
-	<form action='/home/search/' method='POST'>{% csrf_token %}
-		<input type=text name='word'></input>
-		<input type=submit value="Search"></input>
-	</form>
-	<div style='clear:both;'></div>
-</div>
+<table class='layout' width=100% height=100%>
+	<tr class='header-row'>
+		<td colspan=2 class='header-col1'>
+			<span class='logo'>Tracklist.</span>
+			<div class='superbar'>Hello <b>{{user.username}}</b> &nbsp;|&nbsp; <a id='login-logout' href="/logout/">Logout</a></div>
+		</td>
+		</tr>
+	<tr class='nav-row'>
+		<td colspan=2 class='header-col1'>
+			<span class='nav' >
+				<ul>
+					<li style='margin-left:0px;' ><a id='tabHome' href="/home/">Home</a></li>
+					<li><a id='tabGroups' href="/core/group/">Groups</a></li>
+					<li><a id='tabCustomers' href="/core/customer/">Customers</a></li>
+					<li><a id='tabProducts' href="/core/product/">Products</a></li>
+					<li><a id='tabPurchases' href="/core/purchase">Purchases</a></li>
+				</ul>
+			</span>
+			<span style='float: right;'>
+			<form action='/home/search/' method='POST'>{% csrf_token %}
+						<input style='vertical-align: middle;' type=text name='word'></input>
+						<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+						</form>
+			</span>
+		</td>
+		</tr>
+	<tr class='content-row'>
+		<td class='content-col1'>
+			<div class="content">
+			{% block content %}{% endblock %}
+			</div>
+		</td>
+		<td class='content-col2'>
+			<div class="quicklinks">
+				<ul>
+				<span class='quicklinks-header'>Quick Links</span>
+				<li><a href="/core/customer/add/">Add Customer</a></li>
+				<li><a href="/core/product/add/">Add Product</a></li>
+				<li><a href="/core/purchase/add/">Add Purchase</a></li>
+				</ul>
+			</div>		
+		</td></tr>
+	<tr class='footer-row'>
+		<td colspan=2 class='footer-col1'>
+			<div class="footer">Copyright &copy; 2011 Tracklist</div>
+		</td>
+		</tr>
+</table> <!-- table layout -->
 
-<div class="tabs">
-	<ul class="tabNavigation">
-		<li><a id='tabHome' href="/home/">Home</a></li>
-		<li><a id='tabGroups' href="/core/group/">Groups</a></li>
-		<li><a id='tabCustomers' href="/core/customer/">Customers</a></li>
-		<li><a id='tabProducts' href="/core/product/">Products</a></li>
-		<li><a id='tabPurchases' href="/core/purchase">Purchases</a></li>
-	</ul>
-	<div></div>
-</div>
 
-<div id='content-wrap'>
-	{% block content %}
-	{% endblock %}
-</div>
+{% block scripts %}
+{% endblock %}
 
-	{% block scripts %}
-	{% endblock %}
 </body>
 </html>

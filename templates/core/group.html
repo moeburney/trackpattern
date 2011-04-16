@@ -7,14 +7,15 @@ $('#tabGroups').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<table width=100% >
-	<tr class='header'>
-		<td class='first'>Name</td>
-	</tr>
+<input class='content-searchbar' type=text />
+<h2 class='pad20'>Groups</h2>
+
+<table width=100% class='datatable'>
 
 {% for group in groups %}
-	<tr class="{% cycle 'odd' 'even' %}">
-		<td class='first'><a href='/core/group/view/{{group.id}}/'>{{group.name}}</a></td>
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/group.png'></td>
+		<td class='datarow-prime'><a class='datarow-title' href='/core/group/view/{{group.id}}/'>{{group.name}}</a></td>
 	</tr>
 {% endfor %}
 

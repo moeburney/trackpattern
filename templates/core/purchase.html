@@ -7,26 +7,12 @@ $('#tabPurchases').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<table width=100% >
-	<tr class='header'>
-		<td class='first'>Purchase</td>
-		<td>Customer</td>
-		<td>Product</td>
-		<td>Date</td>
-		<td><a href='/core/purchase/add/' style='border:0px;'><img src='/static/img/add.jpg'></a></td>
-	</tr>
+<input class='content-searchbar' type=text />
+<h2 class='pad20'>Purchase List</h2>
 
-{% for purchase in purchases.object_list %}
-	<tr class="{% cycle 'odd' 'even' %}">
-		<td class='first'><a href='/core/purchase/view/{{purchase.pk}}/'>{{purchase.pk}}</a></td>
-		<td>{{purchase.customer.full_name}}</td>
-		<td>{{purchase.product.name}}</td>
-		<td>{{purchase.transaction_date}}</td>
-		<td><a href='/core/purchase/edit/{{purchase.pk}}/'><img src='/static/img/edit.jpg'></a></td>
-	</tr>
-{% endfor %}
+<table width=100% class='datatable'>
 
-	<tr>
+	<tr class='datarow pager'>
 		<td colspan=4 style='text-align:right;'>
 			{% if purchases.has_previous %}
 				<a href="?page={{ purchases.previous_page_number }}">previous</a>&nbsp;
@@ -37,6 +23,29 @@ $('#tabPurchases').addClass('selected');
 			{% endif %}
 		</td>
 	</tr>
+	
+	
+{% for purchase in purchases.object_list %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/purchase.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/purchase/view/{{purchase.pk}}/'>Purchase#{{purchase.pk}}</a>
+			<br>
+			<a class='datarow-action-link' href='/core/purchase/edit/{{purchase.pk}}/'><img src='/static/img/edit.jpg'> Edit</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Customer</span><br>
+			<span class='datarow-item-lable'>Product</span><br>
+			<span class='datarow-item-lable'>Date</span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'>{{purchase.customer.full_name}}</span><br>
+			<span class='datarow-item-value'>{{purchase.product.name}}</span><br>
+			<span class='datarow-item-value'>{{purchase.transaction_date}}</span>
+		</td>
+	</tr>
+{% endfor %}
+
 </table>
 
 {% endblock %}

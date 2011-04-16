@@ -1,25 +1,52 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<div>
+<form action='/home/search/' method='POST'>{% csrf_token %}
+<input class='content-searchbar' type=text name='word'/>
+<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+</form>
 
-<ul>
-<li style="list-style-type:square;">Your top 3 popular products:
-<ol style="padding-left:25px;">
-{% for product in stats.popular_products|slice:":3" %}
-<li style="list-style-type:decimal;">{{product.name}} ({{product.bought}} purchases)</li>
-{% endfor %}
-</ol>
-</li>
-<br>
-<li style="list-style-type:square;">{{stats.repeat_customer_percent}}% of your customers are repeat buyers</li>
-<br>
-<li style="list-style-type:square;">Top 3 purchase patterns of your repeat buyers :
-<ol style="padding-left:25px;">
-{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
-<li style="list-style-type:decimal;">{{pattern}} ({{freq}} customers)</li>
-{% endfor %}
-<ol>
-</li>
-</div>
+<h2 class='pad20'>Info</h2>
+
+<table width=100% class='datatable'>
+
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/info.png'></td>
+		<td class='datarow-prime'>top 3 popular products</td>
+
+		<td class='datarow-lables'>
+			{% for product in stats.popular_products|slice:":3" %}
+			<span class='datarow-item-lable'>{{product.name}}</span><br>
+			{% endfor %}
+		</td>
+		<td class='datarow-items'>
+			{% for product in stats.popular_products|slice:":3" %}
+			<span class='datarow-item-value'>{{product.bought}} purchases</span><br>
+			{% endfor %}
+		</td>
+	</tr>
+
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/info.png'></td>
+		<td class='datarow-prime'>{{stats.repeat_customer_percent}}% of your customers are repeat buyers</td>
+	</tr>
+
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/info.png'></td>
+		<td class='datarow-prime'>Top 3 purchase patterns of your repeat buyers</td>
+
+		<td class='datarow-lables'>
+			{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
+			<span class='datarow-item-lable'>{{pattern}}</span><br>
+			{% endfor %}
+		</td>
+		<td class='datarow-items'>
+			{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
+			<span class='datarow-item-value'>{{freq}} customers</span><br>
+			{% endfor %}
+		</td>
+	</tr>
+	
+</table>
+
 {% endblock %}
