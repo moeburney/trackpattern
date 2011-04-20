@@ -7,30 +7,51 @@ $('#tabCustomers').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<div class='view-wrap'>
-<b>Customer View</b>
-<br><br>
-<table width=100%>
+<h2>Customer View</h2>
+
+<table class='viewtable' width=100%>
 <tr>
-	<td>{{customer.full_name}} <a href='/core/customer/edit/{{customer.pk}}/'>View/Edit Info</a></td>
-	<td>TOTAL REVENUE GENERATED: {{customer.total_turnover_generated}}</td>
+	<td class='icon-cell'><img src='/static/img/person.png'></td>
+	<td colspan=4 class='viewrow-title'>{{customer.full_name}} 
+	<a class='viewrow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a></td>
 </tr>
 <tr>
-	<td>Group: {{customer.group.name}} <a href='/core/group/view/{{customer.group.id}}/'>View</a></td>
-	<td>Purchases: {{customer.total_purchases}} <a href='/purchases/list/'>View</a></td>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Total Turnover Generated</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.total_turnover_generated}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'># of Purchases</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.total_purchases}}</span></td>
+ 
 </tr>
 <tr>
-	<td>Core Interests: {{customer.interests}}</td>
-	<td>Gifts Sent: {{customer.gifts_sent}}</td>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Group</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'><a href='/core/group/view/{{customer.group.id}}/'>{{customer.group.name}}</a></span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Gifts Sent</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.gifts_sent}}</span></td>
+ 
 </tr>
 <tr>
-	<td>Connection With You: {{customer.get_connection_display}}</td>
-	<td>Surveys Sent: {{customer.surveys_sent}}</td>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Core Interests</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.interests}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Surveys Sent</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.surveys_sent}}</span></td>
+ 
 </tr>
 <tr>
-	<td></td>
-	<td>Path: {{customer.path}}</td>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Connection With You</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.get_connection_display}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Path</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{customer.path}}</span></td>
+ 
 </tr>
+
 </table>
 
 <div>

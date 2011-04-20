@@ -217,3 +217,94 @@ h2 {
 .selected {
 	color: #fff !important;
 }
+
+/* for related */
+.dataform {
+	background-color: #fff;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.dataform td {
+	padding: 5px;
+	padding-left: 15px; padding-right: 15px;
+}
+
+.dataform-lable {
+	font-size: small;
+	color: #666;
+}
+.dataform input[type=text], input[type=password], select{
+	border: solid 1px #b1b1b1;
+	background-color: #E2EAED;
+	font-size: small;
+	height: 2em;
+	width: 100%;
+}
+.form-button-primary {
+	background-color: #025A84;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: small; 
+	height: 2.5em; width: 5em;
+	border-bottom: solid 2px #b1b1b1;
+	border-right: solid 2px #b1b1b1;
+}
+.form-button-secondary {
+	background-color: #333;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: small; 
+	height: 2.5em; width: 5em;
+	border-bottom: solid 2px #b1b1b1;
+	border-right: solid 2px #b1b1b1;
+}
+
+/* view page styles */
+.viewtable {
+	background-color: #fff;
+	padding: 15px;
+	border: solid 1px #ddd;
+}
+
+.viewtable td {
+	padding: 5px;
+	padding-left: 15px; padding-right: 15px;
+}
+.viewtable tr {
+	border-top: solid 1px #ddd;
+}
+.viewrow-title {
+	color: #025A84;
+	text-decoration: none;
+	font-weight: bold;
+}
+.viewrow-action-link {
+	color: #025A84;
+	text-decoration: none;
+	font-size: small;
+	color: #666;
+}
+.viewrow-action-link img {
+	height: 12px;
+	width: 12px;
+}
+.viewrow-item-lable {
+	color: #666;
+	font-size: small;
+	white-space:nowrap;
+}
+.viewrow-item-value {
+	font-size: small;
+	white-space:nowrap;
+}
+.viewrow-items {
+
+	text-align: left;
+}
+.viewrow-lables {
+	width: 1px;
+	text-align: right;
+}

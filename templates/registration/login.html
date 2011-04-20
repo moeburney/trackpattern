@@ -1,35 +1,48 @@
 <html>
 <head>
+<link href='/static/css/reset.css' rel='stylesheet' type='text/css' />
+<link href='/static/css/default.css' rel='stylesheet' type='text/css' />
+<title>Tracklist - Login</title>
 </head>
 <body>
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+
+
 
 <form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
-<div style="margin: 0 auto; padding-top:100px; width:350px; ">
-<table >
+<table class='dataform'  style='margin: 0 auto; width:400px;' height=100%>
+
+<tr>
+<td></td><td height=33%; style='vertical-align:botton; color:orange;'>{% if form.errors %}
+<p style='vertical-align:botton;'>Your username and password didn't match. Please try again.</p>
+{% endif %}
+&nbsp;</td>
+</tr>
 
 <tr>
 	<td colspan=2>
-	<img style="vertical-align:top;"src="{{MEDIA_URL}}img/logo.gif/"  />
+	<span class='logo' style='color:#025A84;'>Tracklist.</span>
 	</td>
 </tr>
 <tr>
-    <td>{{ form.username.label_tag }}</td>
+    <td class='dataform-lable'>{{ form.username.label_tag }}</td>
     <td>{{ form.username }}</td>
 </tr>
 <tr>
-    <td>{{ form.password.label_tag }}</td>
+    <td class='dataform-lable'>{{ form.password.label_tag }}</td>
     <td>{{ form.password }}</td>
 </tr>
+
 <tr>
 <td></td>
 <td style="text-align:right;">
-<input class="button" type="submit" id="login" value=" Login " style="margin-right:13px;"/>
+<input class='form-button-primary' type="submit" id="login" value=" Login " />
 <input type="hidden" name="next" value="{{ next }}" />
 </td>
+</tr>
+
+<tr>
+<td></td><td height=33%>&nbsp;</td>
 </tr>
 
 </table>

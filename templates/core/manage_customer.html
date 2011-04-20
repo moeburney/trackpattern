@@ -8,51 +8,46 @@ $('#tabCustomers').addClass('selected');
 
 
 {% block content %}
+<h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Customer</h2>
 
-<div class='dataform'>
+
 {% if form.errors %}
 <div style="background-color: yellow;">Oops..errors occured!<br>{{form.errors}}</div>
 {% endif %}
 
 <form action="" method="post" >{% csrf_token %}
-<table>
-	
+<table class='dataform' width=100%>
+
 	<tr>
-	<th>{{form.first_name.label}}</th><td>{{form.first_name}}</td>
-	<th>{{form.last_name.label}}</th><td>{{form.last_name}}</td>
+	<td><span class='dataform-lable'>{{form.first_name.label}}</span><br>{{form.first_name}}</td>
+	<td><span class='dataform-lable'>{{form.last_name.label}}</span><br>{{form.last_name}}</td>
 	</tr>
 
 	<tr>
-	<th>{{form.email.label}}</th><td>{{form.email}}</td>
-	<th>{{form.phone.label}}</th><td>{{form.phone}}</td>
+	<td><span class='dataform-lable'>{{form.email.label}}</span><br>{{form.email}}</td>
+	<td><span class='dataform-lable'>{{form.phone.label}}</span><br>{{form.phone}}</td>
 	</tr>
 
 	<tr>
-	<th>{{form.street.label}}</th><td>{{form.street}}</td>
-	<th>{{form.zipcode.label}}</th><td>{{form.zipcode}}</td>
+	<td><span class='dataform-lable'>{{form.street.label}}</span><br>{{form.street}}</td>
+	<td><span class='dataform-lable'>{{form.zipcode.label}}</span><br>{{form.zipcode}}</td>
 	</tr>
 
 	<tr>
-	<th>{{form.connection.label}}</th><td>{{form.connection}}</td>
-	<th>{{form.the_path.label}}</th><td>{{form.the_path}}</td>
+	<td><span class='dataform-lable'>{{form.connection.label}}</span><br>{{form.connection}}</td>
+	<td><span class='dataform-lable'>{{form.interests.label}}</span><br>{{form.interests}}</td>
 	</tr>
 
 	<tr>
-	<th>{{form.group.label}}</th><td>{{form.group}}</td>
-	<th>{{form.interests.label}}</th><td>{{form.interests}}</td>
-	</tr>
-	
-	<tr>
-	<th>{{form.gifts_sent.label}}</th><td>{{form.gifts_sent}}</td>
-	<th>{{form.surveys_sent.label}}</th><td>{{form.surveys_sent}}</td>
+	<td><span class='dataform-lable'>{{form.gifts_sent.label}}</span><br>{{form.gifts_sent}}</td>
+	<td><span class='dataform-lable'>{{form.surveys_sent.label}}</span><br>{{form.surveys_sent}}</td>
 	</tr>
 	
-	<tr><td>
-	<input type="submit" value="Submit" />
-	<input type=button value="Cancel" onclick="JavaScript: window.location.href='/core/customer/'" />
+	<tr><td colspan=2 style='text-align: right;'>
+	<input class='form-button-primary' type="submit" value="Save" />
+	<input class='form-button-secondary' type=button value="Cancel" onclick="JavaScript: window.location.href='/core/customer/'" />
 	</td></tr>
 </table>
 </form>
 
-</div>
 {% endblock %}

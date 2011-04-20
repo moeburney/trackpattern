@@ -62,7 +62,7 @@ def add_customer(request):
     else:
         form = CustomerForm()
     return render_to_response('core/manage_customer.html',
-                              {'form': form},
+                              {'form': form, 'is_new': True},
                               context_instance=RequestContext(request))
 
 def edit_customer(request, id):
@@ -78,7 +78,7 @@ def edit_customer(request, id):
     else:
         form = CustomerForm(instance=customer)
     return render_to_response('core/manage_customer.html',
-                              {'form': form},
+                              {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
 
 def group_home(request):
@@ -216,7 +216,7 @@ def add_product(request):
     else:
         form = ProductForm()
     return render_to_response('core/manage_product.html',
-                              {'form': form},
+                              {'form': form, 'is_new': True},
                               context_instance=RequestContext(request))
 
 def edit_product(request, id):
@@ -232,7 +232,7 @@ def edit_product(request, id):
     else:
         form = ProductForm(instance=product)
     return render_to_response('core/manage_product.html',
-                              {'form': form},
+                              {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -284,7 +284,7 @@ def add_purchase(request):
     else:
         form = PurchaseForm()
     return render_to_response('core/manage_purchase.html',
-                              {'form': form},
+                              {'form': form, 'is_new': True},
                               context_instance=RequestContext(request))
 
 def edit_purchase(request, id):
@@ -300,5 +300,5 @@ def edit_purchase(request, id):
     else:
         form = PurchaseForm(instance=purchase)
     return render_to_response('core/manage_purchase.html',
-                              {'form': form},
+                              {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))

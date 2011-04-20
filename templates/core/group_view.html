@@ -7,31 +7,34 @@ $('#tabVategories').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<div class='view-wrap'>
-<b>Group View</b>
-<br><br>
-<table width=100%>
+<h2>Group View</h2>
+
+<table class='viewtable' width=100%>
 <tr>
-	<td>{{group.name}}</td>
-	<td></td>
+	<td class='icon-cell'><img src='/static/img/group.png'></td>
+	<td colspan=4 class='viewrow-title'>{{group.name}}</td>
 </tr>
 </table>
-</div>
 
-<br>
-<div>
-<table style="width:100%">
-<tr class='header'>
-	<td class='first'>Customer</td>
-	<td>Revenue</td>
-</tr>
+<h2 class='pad20'>Customers in {{group.name}}</h2>
+<table class='datatable' width=100%>
 {% for customer in group.customers %}
-<tr class="{% cycle 'odd' 'even' %}">
-	<td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td>
-	<td>{{customer.total_turnover_generated}}</td>
-</tr>
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/person.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Total revenue generated</span><br>
+			<span class='datarow-item-lable'></span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'>{{customer.total_turnover_generated}}<br>
+			<span class='datarow-item-value'></span>
+		</td>
+	</tr>
 {% endfor %}
 </table>
-</div>
+
 
 {% endblock %}
