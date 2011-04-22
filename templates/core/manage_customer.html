@@ -12,7 +12,14 @@ $('#tabCustomers').addClass('selected');
 
 
 {% if form.errors %}
-<div style="background-color: yellow;">Oops..errors occured!<br>{{form.errors}}</div>
+<div class='error-panel'>
+<span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
+{% for field in form %}
+{% if field.errors %}
+<span>{{field.label}}: {{field.errors.0}}</span><br>
+{% endif %}
+{% endfor %}
+</div>
 {% endif %}
 
 <form action="" method="post" >{% csrf_token %}

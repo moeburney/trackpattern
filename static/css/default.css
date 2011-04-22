@@ -234,6 +234,16 @@ h2 {
 	font-size: small;
 	color: #666;
 }
+.error-panel {
+	background-color: #FFFFAA; 
+	padding: 10px; 
+	border: solid 1px red; 
+	margin-bottom: 10px;
+	font-size: small;
+	-moz-border-radius: 4px;
+	border-radius: 4px;	
+}
+
 .dataform input[type=text], input[type=password], select{
 	border: solid 1px #b1b1b1;
 	background-color: #E2EAED;
