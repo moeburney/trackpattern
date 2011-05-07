@@ -64,7 +64,6 @@ def calculate_stats(user):
     stats = {}
     stats['popular_products'] = popular_products
     stats['top_purchase_patterns'] = sorted_patterns_by_freq
-    print sorted_patterns_by_freq
     if total_customers.count(): # avoid divide by 0 error
         stats['repeat_customer_percent'] = (repeat_customers.count() * 100)/total_customers.count()
     else:

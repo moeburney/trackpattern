@@ -7,7 +7,10 @@ $('#tabCustomers').addClass('selected');
 {% endblock %}
 
 {% block content %}
-<input class='content-searchbar' type=text />
+<form action='/home/search/' method='POST'>{% csrf_token %}
+<input class='content-searchbar' type=text name='word'/>
+<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+</form>
 
 <h2 class='pad20'>Customer List</h2>
 <table width=100% class='datatable'>
