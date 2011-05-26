@@ -15,7 +15,7 @@
 	<tr class='header-row'>
 		<td colspan=2 class='header-col1'>
 			<span class='logo'>Tracklist.</span>
-			<div class='superbar'>Hello <b>{{user.username}}</b> &nbsp;|&nbsp; <a id='login-logout' href="/logout/">Logout</a></div>
+			<div class='superbar'><a href='/home/settings/'>My Settings</a> &nbsp;|&nbsp; Hello <b>{{user.username}}</b> &nbsp;|&nbsp; <a id='login-logout' href="/logout/">Logout</a></div>
 		</td>
 		</tr>
 	<tr class='nav-row'>
@@ -26,7 +26,7 @@
 					<li><a id='tabGroups' href="/core/group/">Groups</a></li>
 					<li><a id='tabCustomers' href="/core/customer/">Customers</a></li>
 					<li><a id='tabProducts' href="/core/product/">Products</a></li>
-					<li><a id='tabPurchases' href="/core/purchase">Purchases</a></li>
+					<li><a id='tabSales' href="/core/sale/">Sales</a></li>
 				</ul>
 			</span>
 			<span style='float: right;'>
@@ -49,7 +49,7 @@
 				<span class='quicklinks-header'>Quick Links</span>
 				<li><a href="/core/customer/add/">Add Customer</a></li>
 				<li><a href="/core/product/add/">Add Product</a></li>
-				<li><a href="/core/purchase/add/">Add Purchase</a></li>
+				<li><a href="/core/sale/add/">Add Sale</a></li>
 				</ul>
 			</div>		
 		</td></tr>
@@ -60,7 +60,17 @@
 		</tr>
 </table> <!-- table layout -->
 
+<script>
+function getConfirmed(title){
+	result = confirm("Are sure want to delete " + title);
+	if(result){
+	}else{
+		
+		return false;
+	}
+} // getConfirmed
 
+</script>
 {% block scripts %}
 {% endblock %}
 

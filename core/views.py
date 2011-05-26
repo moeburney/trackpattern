@@ -8,8 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from django.conf import settings
 
-from core.models import Customer, Category, Product, Purchase, Group
-from core.forms import CustomerForm, CategoryForm, ProductForm, PurchaseForm
+from core.models import Customer, Category, Product, Sale, Group
+from core.forms import CustomerForm, CategoryForm, ProductForm, SaleForm
 
     
 @login_required
@@ -80,6 +80,17 @@ def edit_customer(request, id):
     return render_to_response('core/manage_customer.html',
                               {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
+
+def delete_customer(request, id):
+    """
+    Deletes a customer.
+    NOTE: Also deletes dependent objects (Purchase)
+    """
+    customer = Customer.objects.get(pk=id)
+    customer.sale_set.all().delete()
+    customer.delete()
+    return HttpResponseRedirect('/core/customer/')
+
 
 def group_home(request):
     """
@@ -235,13 +246,23 @@ def edit_product(request, id):
                               {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
 
+def delete_product(request, id):
+    """
+    Deletes a product.
+    Note: Also delete other dependent entries. (Purchase)
+    """
+    product = Product.objects.get(pk=id)
+    product.sale_set.all().delete()
+    product.delete()
+    return HttpResponseRedirect('/core/product/')
+
 @login_required
-def purchase_home(request):
+def sale_home(request):
     """
-    renders list of purchases
+    renders list of sales
     """
-    purchase_list = Purchase.objects.filter(user=request.user)
-    paginator = Paginator(purchase_list, settings.DEFAULT_PAGESIZE)
+    sale_list = Sale.objects.filter(user=request.user)
+    paginator = Paginator(sale_list, settings.DEFAULT_PAGESIZE)
 
     try:
         page = int(request.GET.get('page', '1'))
@@ -249,56 +270,64 @@ def purchase_home(request):
         page = 1
 
     try:
-        purchases = paginator.page(page)
+        sales = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope
         # show last page
-        purchases = paginator.page(paginator.num_pages)
+        sales = paginator.page(paginator.num_pages)
         
-    return render_to_response('core/purchase.html',
-                              {'purchases': purchases,},
+    return render_to_response('core/sale.html',
+                              {'sales': sales,},
                               context_instance=RequestContext(request))
 
 @login_required
-def purchase_view(request, id):
+def sale_view(request, id):
     """
-    renders a specific purchase view.
+    renders a specific sale view.
     """
-    purchase = Purchase.objects.get(pk=id)
-    return render_to_response('core/purchase_view.html',
-                              {'purchase': purchase,},
+    sale = Sale.objects.get(pk=id)
+    return render_to_response('core/sale_view.html',
+                              {'sale': sale,},
                               context_instance=RequestContext(request))
 
 @login_required
-def add_purchase(request):
+def add_sale(request):
     """
-    Creates a Purchase transaction
+    Creates a sale transaction
     """
     if request.method == 'POST':
-        form = PurchaseForm(request.POST)
+        form = SaleForm(request.POST)
         if form.is_valid():
-            purchase = form.save(commit=False)
-            purchase.user = request.user
-            purchase.save()
-            return HttpResponseRedirect('/core/purchase/')
+            sale = form.save(commit=False)
+            sale.user = request.user
+            sale.save()
+            return HttpResponseRedirect('/core/sale/')
     else:
-        form = PurchaseForm()
-    return render_to_response('core/manage_purchase.html',
+        form = SaleForm()
+    return render_to_response('core/manage_sale.html',
                               {'form': form, 'is_new': True},
                               context_instance=RequestContext(request))
 
-def edit_purchase(request, id):
+def edit_sale(request, id):
     """
-    Updates a Purchase transaction
+    Updates a sale transaction
     """
-    purchase = Purchase.objects.get(pk=id)
+    sale = Sale.objects.get(pk=id)
     if request.method == 'POST':
-        form = PurchaseForm(request.POST, instance=purchase)
+        form = SaleForm(request.POST, instance=sale)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/core/purchase/')
+            return HttpResponseRedirect('/core/sale/')
     else:
-        form = PurchaseForm(instance=purchase)
-    return render_to_response('core/manage_purchase.html',
+        form = SaleForm(instance=purchase)
+    return render_to_response('core/manage_sale.html',
                               {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
+
+def delete_sale(request, id):
+    """
+    Deletes a sale.
+    """
+    sale = Sale.objects.get(pk=id)
+    sale.delete()
+    return HttpResponseRedirect('/core/sale/')

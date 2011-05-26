@@ -33,7 +33,8 @@ $('#tabCustomers').addClass('selected');
 		<td class='datarow-prime'>
 			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a>
 			<br>
-			<a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a>
+			<a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+			<a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/' onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'> Delete</a>
 		</td>
 		<td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span class='datarow-item-lable'>Turnover</span></td>
 		<td class='datarow-items'><span class='datarow-item-value'>{{customer.group.name}}</span><br><span class='datarow-item-value'>{{customer.total_turnover_generated}}</span></td>

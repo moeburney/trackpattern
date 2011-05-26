@@ -13,7 +13,9 @@ $('#tabProducts').addClass('selected');
 <tr>
 	<td class='icon-cell'><img src='/static/img/product.png'></td>
 	<td colspan=4 class='viewrow-title'>{{product.name}}
-	<a class='viewrow-action-link' href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'> Edit</a></td>
+	<a class='viewrow-action-link' href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+	<a class='datarow-action-link' href='/core/product/delete/{{product.pk}}/' onclick='return getConfirmed("{{product.name}}");'><img src='/static/img/delete.png'> Delete</a>
+	</td>
 </tr>
 
 <tr>

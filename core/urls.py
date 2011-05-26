@@ -9,7 +9,8 @@ urlpatterns = patterns('tracklist.core.views',
     (r'^customer/view/(?P<id>.*)/$', 'customer_view'),
     (r'^customer/add/$', 'add_customer'),
     (r'^customer/edit/(?P<id>.*)/$', 'edit_customer'),
-
+    (r'^customer/delete/(?P<id>.*)/$', 'delete_customer'),
+                       
     (r'^category/$', 'category_home'),
     (r'^category/view/(?P<id>.*)/$', 'category_view'),
     (r'^category/add/$', 'add_category'),
@@ -19,12 +20,14 @@ urlpatterns = patterns('tracklist.core.views',
     (r'^product/view/(?P<id>.*)/$', 'product_view'),
     (r'^product/add/$', 'add_product'),
     (r'^product/edit/(?P<id>.*)/$', 'edit_product'),
-
-    (r'^purchase/$', 'purchase_home'),
-    (r'^purchase/view/(?P<id>.*)/$', 'purchase_view'),
-    (r'^purchase/add/$', 'add_purchase'),
-    (r'^purchase/edit/(?P<id>.*)/$', 'edit_purchase'),
-
+    (r'^product/delete/(?P<id>.*)/$', 'delete_product'),
+                       
+    (r'^sale/$', 'sale_home'),
+    (r'^sale/view/(?P<id>.*)/$', 'sale_view'),
+    (r'^sale/add/$', 'add_sale'),
+    (r'^sale/edit/(?P<id>.*)/$', 'edit_sale'),
+    (r'^sale/delete/(?P<id>.*)/$', 'delete_sale'),
+                       
     (r'^group/$', 'group_home'),
     (r'^group/view/(?P<id>.*)/$', 'group_view'),
 

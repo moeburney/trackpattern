@@ -13,7 +13,9 @@ $('#tabCustomers').addClass('selected');
 <tr>
 	<td class='icon-cell'><img src='/static/img/person.png'></td>
 	<td colspan=4 class='viewrow-title'>{{customer.full_name}} 
-	<a class='viewrow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a></td>
+	<a class='viewrow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+	<a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/' onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'> Delete</a>
+	</td>
 </tr>
 <tr>
 

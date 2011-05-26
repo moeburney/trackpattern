@@ -21,7 +21,7 @@
 		</td>
 		<td class='datarow-items'>
 			{% for product in stats.popular_products|slice:":3" %}
-			<span class='datarow-item-value'>{{product.bought}} purchases</span><br>
+			<span class='datarow-item-value'>{{product.bought}} sales</span><br>
 			{% endfor %}
 		</td>
 	</tr>
@@ -33,15 +33,15 @@
 
 	<tr class='datarow'>
 		<td class='icon-cell'><img src='/static/img/info.png'></td>
-		<td class='datarow-prime'>Top 3 purchase patterns of your repeat buyers</td>
+		<td class='datarow-prime'>Top 3 sale patterns of your repeat buyers</td>
 
 		<td class='datarow-lables'>
-			{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
+			{% for pattern, freq in stats.top_sale_patterns|slice:":3"  %}
 			<span class='datarow-item-lable'>{{pattern}}</span><br>
 			{% endfor %}
 		</td>
 		<td class='datarow-items'>
-			{% for pattern, freq in stats.top_purchase_patterns|slice:":3"  %}
+			{% for pattern, freq in stats.top_sale_patterns|slice:":3"  %}
 			<span class='datarow-item-value'>{{freq}} customers</span><br>
 			{% endfor %}
 		</td>
