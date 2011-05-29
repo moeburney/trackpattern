@@ -139,7 +139,6 @@ def signup(request):
             user.save()
 
             login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
-            print login_user
             login(request, login_user)
             return redirect('/home/')
     else:
