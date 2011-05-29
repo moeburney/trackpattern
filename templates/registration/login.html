@@ -97,6 +97,10 @@ input[type=text], input[type=password], select{
 		<form method="post" id="login-form" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
 		<table border=0 width=100% >
 		<tr>
+			<td class='form-label'>Don't have an Account?</td>
+			<td><a href='/signup/' class='form-label'>Sign Up (Beta)</a></td>
+		</tr>
+		<tr>
 			<td colspan=2>
 				<h1 id="site-name" class='logo'>Tracklist.</h1>
 			</td>

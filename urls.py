@@ -15,5 +15,6 @@ urlpatterns = patterns('',
                        
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'django.contrib.auth.views.logout'),
-    (r'^forgot_password/$', 'tracklist.home.views.forgot_password'),	
+    (r'^forgot_password/$', 'tracklist.home.views.forgot_password'),
+    (r'^signup/$', 'tracklist.home.views.signup'),
 )

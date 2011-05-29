@@ -3,7 +3,8 @@ import operator
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.conf import settings
 from django.db.models import Count, Avg, Max
@@ -121,6 +122,31 @@ def forgot_password(request):
     return render_to_response('registration/forgot_password.html',
                               {'reset': reset,},
                               context_instance=RequestContext(request))
+
+def signup(request):
+    from forms import SignupForm
+    if request.method == 'POST':
+        # process signup form and create account
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = User()
+            user.username = form.cleaned_data['username']
+            user.set_password(form.cleaned_data['password1'])
+            user.email = form.cleaned_data['email']
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.is_active=True
+            user.save()
+
+            login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+            print login_user
+            login(request, login_user)
+            return redirect('/home/')
+    else:
+        form = SignupForm()
+    return render_to_response('registration/signup.html',
+                       {'form': form,},
+                       context_instance=RequestContext(request))
 
 @login_required
 def settings(request):
