@@ -17,7 +17,7 @@ class Group():
 
     def __init__(self, user):
         self.user = user
-        self.GROUP_DEFINITIONS = ({'id':0, 'name':'Silver'}, {'id':1, 'name':'Gold'},{'id':2, 'name':'Platinum'})
+        self.GROUP_DEFINITIONS = ({'id':0, 'name':'Silver (Prospective Buyers)'}, {'id':1, 'name':'Gold (First Time Buyers)'},{'id':2, 'name':'Platinum (Repeat Buyers)'})
         
     def get_group(self, id):
         id = int(id)
