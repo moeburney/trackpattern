@@ -108,7 +108,7 @@ def forgot_password(request):
             # send a mail with new password
             from django.template.loader import render_to_string
             from django.core.mail import EmailMessage
-            email = EmailMessage('Tracklist: Password reset instructions',
+            email = EmailMessage('Trackpattern: Password reset instructions',
                                  render_to_string('registration/password_reset_mail.txt',
                                                   {'password': new_password, 
                                                    'username': user.username,
