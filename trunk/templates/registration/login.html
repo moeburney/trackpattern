@@ -1,0 +1,138 @@
+<html>
+<head>
+<link href='/static/css/reset.css' rel='stylesheet' type='text/css' />
+
+<title>Trackpattern - Login</title>
+<style>
+/* LOGIN FORM */
+
+body.login {
+    background: #fff;
+	font-family: "Segoe UI", Helvetica, sans-serif;
+}
+
+.logo{
+	color: #1091D0;
+	font-size: 170%;
+	font-weight: bold;
+	padding: 10px;
+}
+
+.login #container {
+    background: white;
+    border: 1px solid #ccc;
+    width: 25em;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 120px;
+	padding-bottom:10px;
+	background-color: #E2EAED;
+}
+
+.login .form-row {
+    padding: 4px 0;
+    float: left;
+    width: 100%;
+}
+
+.login .form-row label {
+    float: left;
+    width: 9em;
+    padding-right: 0.5em;
+    line-height: 2em;
+    text-align: right;
+    font-size: 1em;
+    color: #333;
+}
+
+.login .form-row #id_username, .login .form-row #id_password {
+    width: 14em;
+}
+
+.login span.help {
+    font-size: 10px;
+    display: block;
+}
+
+.login .submit-row {
+    clear: both;
+    padding: 1em 0em 1em 16em;
+}
+
+.errornote {
+	color: red;
+}
+
+input[type=text], input[type=password], select{
+	border: solid 1px #b1b1b1;
+	background-color: #fff;
+	font-size: small;
+	height: 2em;	
+	width: 100%;
+}
+
+.form-button-primary {
+	background-color: #025A84;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: small; 
+	height: 2.5em; width: 5em;
+	border-bottom: solid 2px #b1b1b1;
+	border-right: solid 2px #b1b1b1;
+}
+
+.form-label{
+	padding-left:10px;
+	white-space: nowrap;
+}
+</style>
+</head>
+
+<body class="login">
+<!-- Container -->
+<div id="container">
+
+		<form method="post" id="login-form" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+		<table border=0 width=100% >
+		<tr>
+			<td class='form-label'>Don't have an Account?</td>
+			<td><a href='/signup/' class='form-label'>Sign Up (Beta)</a></td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<h1 id="site-name" class='logo'>Trackpattern.</h1>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2 class='form-label'>
+				{% if form.errors %}
+				<span class="errornote">Please enter a correct username and password.<br>Note that both fields are case-sensitive.</span>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style='width:150px;'><label for="id_username" class='form-label'>Username:</label></td>
+			<td style='padding-right:10px;'><input type="text" name="username" id="id_username"></td>
+		</tr>
+		<tr>
+			<td style='padding-top:5px; padding-bottom:5px;'><label for="id_password" class='form-label'>Password:</label></td>
+			<td style='padding-top:5px; padding-bottom:5px; padding-right:10px;'>
+				<input type="password" name="password" id="id_password" />
+				<input type="hidden" name="this_is_the_login_form" value="1" />
+			</td>
+		</tr>
+		<tr>
+			<td><a href='/forgot_password/' class='form-label'>forgot password?</a></td>
+			<td style='text-align: right; padding-right:10px;'>
+				<input class='form-button-primary' type="submit" value="Log in" />
+				<input type="hidden" name="next" value="{{ next }}" />
+			</td>
+		</tr>
+		</table>
+		
+</div>
+
+</body>
+</html>

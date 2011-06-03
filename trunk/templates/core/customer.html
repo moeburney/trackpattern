@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCustomers').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<form action='/home/search/' method='POST'>{% csrf_token %}
+<input class='content-searchbar' type=text name='word'/>
+<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+</form>
+
+<h2 class='pad20'>Customer List</h2>
+<table width=100% class='datatable'>
+
+	<tr class='datarow pager'>
+		<td colspan=4 style='text-align:right;'>
+			{% if customers.has_previous %}
+				<a href="?page={{ customers.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ customers.number }} of {{ customers.paginator.num_pages }}.&nbsp;
+			{% if customers.has_next %}
+				<a href="?page={{ customers.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+
+{% for customer in customers.object_list %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/person.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a>
+			<br>
+			<a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+			<a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/' onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'> Delete</a>
+		</td>
+		<td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span class='datarow-item-lable'>Turnover</span></td>
+		<td class='datarow-items'><span class='datarow-item-value'>{{customer.group.name}}</span><br><span class='datarow-item-value'>{{customer.total_turnover_generated}}</span></td>
+	</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}
