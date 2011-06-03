@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
                        
     (r'^home/', include('tracklist.home.urls')),
-    (r'^$', 'redirect_to', {'url': '/home/'}),
+    (r'^$', redirect_to, {'url': '/home/'}),
     (r'^core/', include('tracklist.core.urls')),
                        
     (r'^login/$', 'django.contrib.auth.views.login'),
