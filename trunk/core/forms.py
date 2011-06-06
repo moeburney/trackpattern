@@ -1,5 +1,6 @@
 from django import forms
 from core.models import Customer, Category, Product, Sale
+import models
 
 
 def make_custom_datefield(f):
