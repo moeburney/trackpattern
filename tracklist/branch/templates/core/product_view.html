@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabProducts').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<h2>Product View</h2>
+
+<table class='viewtable' width=100%>
+<tr>
+	<td class='icon-cell'><img src='/static/img/product.png'></td>
+	<td colspan=4 class='viewrow-title'>{{product.name}}
+	<a class='viewrow-action-link' href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+	<a class='datarow-action-link' href='/core/product/delete/{{product.pk}}/' onclick='return getConfirmed("{{product.name}}");'><img src='/static/img/delete.png'> Delete</a>
+	</td>
+</tr>
+
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Total Turnover Generated</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.total_turnover_generated}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'># of Purchases</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.total_purchases}}</span></td>
+ 
+</tr>
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Rank</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.get_rank}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Current Price</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.current_price}}</span></td>
+ 
+</tr>
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Importance</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.importance}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Date Released</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.date_released}}</span></td>
+ 
+</tr>
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Main Appeal</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.main_appeal}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Group That Bought It Most</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.most_bought_group}}</span></td>
+ 
+</tr>
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Surveys Sent</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.surveys_sent}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Most Common Path</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.most_common_path}}</span></td>
+ 
+</tr>
+</table>
+
+<h2 class='pad20'>Purchases of {{product.name}}</h2>
+<table class='datatable' width=100%>
+{% for purchase in product.purchase_set.all %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/purchase.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/purchase/view/{{purchase.pk}}/'>Purchase#{{purchase.pk}}</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Customer</span><br>
+			<span class='datarow-item-lable'>Date</span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'><a href='/core/customer/view/{{purchase.customer.pk}}/'>{{purchase.customer.full_name}}</a></span><br>
+			<span class='datarow-item-value'>{{purchase.transaction_date}}</span>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabSales').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<form action='/home/search/' method='POST'>{% csrf_token %}
+<input class='content-searchbar' type=text name='word'/>
+<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+</form>
+<h2 class='pad20'>Sale List</h2>
+
+<table width=100% class='datatable'>
+
+	<tr class='datarow pager'>
+		<td colspan=4 style='text-align:right;'>
+			{% if sales.has_previous %}
+				<a href="?page={{ sales.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ sales.number }} of {{ sales.paginator.num_pages }}.&nbsp;
+			{% if sales.has_next %}
+				<a href="?page={{ sales.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+	
+	
+{% for sale in sales.object_list %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/sale.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/sale/view/{{sale.pk}}/'>Sale#{{sale.pk}}</a>
+			<br>
+			<a class='datarow-action-link' href='/core/sale/edit/{{sale.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+			<a class='datarow-action-link' href='/core/sale/delete/{{sale.pk}}/' onclick='return getConfirmed("Sale#{{sale.pk}}");'><img src='/static/img/delete.png'> Delete</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Customer</span><br>
+			<span class='datarow-item-lable'>Product</span><br>
+			<span class='datarow-item-lable'>Date</span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'>{{sale.customer.full_name}}</span><br>
+			<span class='datarow-item-value'>{{sale.product.name}}</span><br>
+			<span class='datarow-item-value'>{{sale.transaction_date}}</span>
+		</td>
+	</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabProducts').addClass('selected');
+</script>
+{% endblock %}
+
+
+{% block content %}
+<h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Product</h2>
+
+{% if form.errors %}
+<div class='error-panel'>
+<span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
+{% for field in form %}
+{% if field.errors %}
+<span>{{field.label}}: {{field.errors.0}}</span><br>
+{% endif %}
+{% endfor %}
+</div>
+{% endif %}
+
+
+<form action="" method="post" >{% csrf_token %}
+<table class='dataform' width=100%>
+	<tr>
+	<td><span class='dataform-lable'>{{form.name.label}}</span><br>{{form.name}}</td>
+	<td><span class='dataform-lable'>{{form.current_price.label}}</span><br>{{form.current_price}}</td>
+	</tr>
+
+	<tr>
+	<td><span class='dataform-lable'>{{form.main_appeal.label}}</span><br>{{form.main_appeal}}</td>
+	<td><span class='dataform-lable'>{{form.date_released.label}}</span><br>{{form.date_released}}</td>
+	</tr>
+
+	<tr>
+	<td><span class='dataform-lable'>{{form.importance.label}}</span><br>{{form.importance}}</td>	
+	<td><span class='dataform-lable'>{{form.surveys_sent.label}}</span><br>{{form.surveys_sent}}</td>
+	</tr>
+
+	<tr><td colspan=2 style='text-align: right;'>
+	<input class='form-button-primary' type="submit" value="Save" />
+	<input class='form-button-secondary' type=button value="Cancel" onclick="JavaScript: window.location.href='/core/product/'" />
+	</td></tr>
+</table>
+</form>
+{% endblock %}
