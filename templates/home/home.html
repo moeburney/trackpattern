@@ -13,17 +13,27 @@
 	<tr class='datarow'>
 		<td class='icon-cell'><img src='/static/img/info.png'></td>
 		<td class='datarow-prime'>top 3 popular products</td>
-
-		<td class='datarow-lables'>
-			{% for product in stats.popular_products|slice:":3" %}
-			<span class='datarow-item-lable'>{{product.name}}</span><br>
-			{% endfor %}
-		</td>
-		<td class='datarow-items'>
-			{% for product in stats.popular_products|slice:":3" %}
-			<span class='datarow-item-value'>{{product.bought}} sales</span><br>
-			{% endfor %}
-		</td>
+		
+		{% if not stats.popular_products %}
+		
+			<td colpspan=2 class='datarow-lables'>
+				<span class='datarow-item-lable'>No products defined yet</span>
+			</td>
+		
+		{% else %}
+		
+			<td class='datarow-lables'>
+				{% for product in stats.popular_products|slice:":3" %}
+				<span class='datarow-item-lable'>{{product.name}}</span><br>
+				{% endfor %}
+			</td>
+			<td class='datarow-items'>
+				{% for product in stats.popular_products|slice:":3" %}
+				<span class='datarow-item-value'>{{product.bought}} sales</span><br>
+				{% endfor %}
+			</td>
+		
+		{% endif %}
 	</tr>
 
 	<tr class='datarow'>
@@ -35,6 +45,14 @@
 		<td class='icon-cell'><img src='/static/img/info.png'></td>
 		<td class='datarow-prime'>Top 3 sale patterns of your repeat buyers</td>
 
+		{% if not stats.popular_products %}
+		
+			<td colpspan=2 class='datarow-lables'>
+				<span class='datarow-item-lable'>Sales data not available</span>
+			</td>
+		
+		{% else %}
+		
 		<td class='datarow-lables'>
 			{% for pattern, freq in stats.top_sale_patterns|slice:":3"  %}
 			<span class='datarow-item-lable'>{{pattern}}</span><br>
@@ -45,6 +63,8 @@
 			<span class='datarow-item-value'>{{freq}} customers</span><br>
 			{% endfor %}
 		</td>
+		
+		{% endif %}
 	</tr>
 	
 </table>
