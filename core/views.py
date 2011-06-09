@@ -305,7 +305,7 @@ def add_sale(request):
     else:
         form = SaleForm()
     return render_to_response('core/manage_sale.html',
-                              {'form': form, 'is_new': True},
+                              {'form': form, 'is_new': True, 'products': Product.objects.filter(user=request.user)},
                               context_instance=RequestContext(request))
 
 def edit_sale(request, id):

@@ -46,9 +46,22 @@ $('#tabSales').addClass('selected');
 </table>
 </form>
 
-	<script>
-	$(function() {
+<script>
+	
+	ProductPriceMap = Object();
+	{% for product in products %}
+	ProductPriceMap['{{product.pk}}'] = {{product.current_price}};
+	{% endfor %}
+
+	$(document).ready(function() {
 		$( "#id_transaction_date" ).datepicker();
+		// register a listener with JQ to intimate when Product selection change
+		$( "#id_product" ).change(function(a){
+			// findout selected product and get price from ProductPriceMap
+			// set the same to price textbox
+			$("#id_price").val(ProductPriceMap[$(this).val()]);
+		});
 	});
-	</script>
+	
+</script>
 {% endblock %}
