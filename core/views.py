@@ -199,8 +199,6 @@ def product_home(request):
             product_list = product_list.order_by('date_released')
         elif sort == 'turnover':
             product_list = product_list.annotate(turnover=Sum('sale__price')).order_by('-turnover')
-        for x in product_list:
-            print x.date_released, type(x.date_released)
     try:
         paginator = Paginator(product_list, settings.DEFAULT_PAGESIZE)
         products = paginator.page(page)
