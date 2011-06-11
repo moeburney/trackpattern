@@ -16,9 +16,10 @@
 		
 		{% if not stats.popular_products %}
 		
-			<td colpspan=2 class='datarow-lables'>
+			<td colpspan=1 class='datarow-lables'>
 				<span class='datarow-item-lable'>No products defined yet</span>
 			</td>
+			<td></td>
 		
 		{% else %}
 		
@@ -45,11 +46,12 @@
 		<td class='icon-cell'><img src='/static/img/info.png'></td>
 		<td class='datarow-prime'>Top 3 sale patterns of your repeat buyers</td>
 
-		{% if not stats.popular_products %}
+		{% if not stats.top_sale_patterns %}
 		
-			<td colpspan=2 class='datarow-lables'>
+			<td class='datarow-lables'>
 				<span class='datarow-item-lable'>Sales data not available</span>
 			</td>
+			<td></td>
 		
 		{% else %}
 		

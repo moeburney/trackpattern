@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
-
+from django.db.models import Sum, Avg, Count
 from django.conf import settings
 
 from core.models import Customer, Category, Product, Sale, Group
@@ -18,22 +18,27 @@ def customer_home(request):
     renders list of customers associated.
     """
     customer_list = Customer.objects.filter(user=request.user)
-    paginator = Paginator(customer_list, settings.DEFAULT_PAGESIZE)
-
+    
+    page = int(request.GET.get('page', '1'))
+    sort = request.GET.get('sort','fname')
+    if sort:
+        if sort == 'fname':
+            customer_list = customer_list.order_by('first_name')
+        elif sort == 'lname':
+            customer_list = customer_list.order_by('last_name')
+        elif sort == 'turnover':
+            customer_list = customer_list.annotate(turnover=Sum('sale__price')).order_by('-turnover')
+            
     try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
+        paginator = Paginator(customer_list, settings.DEFAULT_PAGESIZE)
         customers = paginator.page(page)
     except (EmptyPage, InvalidPage):
-        # if the supplied page number is beyond the scope
-        # show last page
+        # if the supplied page number is beyond the scope, show last page
         customers = paginator.page(paginator.num_pages)
         
     return render_to_response('core/customer.html',
-                              {'customers': customers,},
+                              {'customers': customers,
+                               'sort': sort,},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -184,14 +189,20 @@ def product_home(request):
     renders list of available products
     """
     product_list = Product.objects.filter(user=request.user)
-    paginator = Paginator(product_list, settings.DEFAULT_PAGESIZE)
-
+    
+    page = int(request.GET.get('page', '1'))
+    sort = request.GET.get('sort','name')
+    if sort:
+        if sort == 'name':
+            product_list = product_list.order_by('name')
+        elif sort == 'date':
+            product_list = product_list.order_by('date_released')
+        elif sort == 'turnover':
+            product_list = product_list.annotate(turnover=Sum('sale__price')).order_by('-turnover')
+        for x in product_list:
+            print x.date_released, type(x.date_released)
     try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
+        paginator = Paginator(product_list, settings.DEFAULT_PAGESIZE)
         products = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope
@@ -199,7 +210,8 @@ def product_home(request):
         products = paginator.page(paginator.num_pages)
         
     return render_to_response('core/product.html',
-                              {'products': products,},
+                              {'products': products,
+                               'sort': sort,},
                               context_instance=RequestContext(request))
 
 @login_required
