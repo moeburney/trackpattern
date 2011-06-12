@@ -1,10 +1,10 @@
-{% extends "admin/base_site.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
 <div id="content-main">
     <h2>Upload CSV</h2>
-    <form action="/csv/new" method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+    <form action="." method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
         <table>
             {{form.as_table}}
         </table>
