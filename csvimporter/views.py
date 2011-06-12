@@ -12,9 +12,11 @@ from django.views.generic.list_detail import object_list, object_detail
 from csvimporter.models import CSV
 from csvimporter.forms import CSVForm, CSVAssociateForm
 
+from django.views.decorators.csrf import csrf_exempt
 def csv_list(request):
     return object_list(request, queryset=CSV.objects.all(), template_name='csv_list.html', template_object_name='csv')
 
+@csrf_exempt
 def associate(request, object_id):
     instance = get_object_or_404(CSV, pk=object_id)
     if request.method == 'POST':
@@ -34,6 +36,7 @@ def associate(request, object_id):
             'form':form,
         })
     
+@csrf_exempt
 def new(request):
     if request.method == 'POST':
         form = CSVForm(request.POST, request.FILES)
