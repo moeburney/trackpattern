@@ -49,6 +49,8 @@ class CSVAssociateForm(forms.Form):
             transform_key = '%s.%s' % (self.instance.content_type.app_label, self.instance.content_type.model)
             data = transforms.get(transform_key, lambda r, d: d)(request, data)
             new_obj = self.klass()
+            #hack to make user field the currently logged in user
+            data['user'] = request.user
             for key in data.keys():
                 setattr(new_obj, key, data[key])
             new_obj.save()
