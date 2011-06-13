@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.files.base import ContentFile
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -12,6 +13,7 @@ from django.views.generic.list_detail import object_list, object_detail
 from csvimporter.models import CSV
 from csvimporter.forms import CSVForm, CSVAssociateForm
 
+@login_required
 def csv_list(request):
     return object_list(request, queryset=CSV.objects.all(), template_name='csv_list.html', template_object_name='csv')
 
@@ -33,7 +35,8 @@ def associate(request, object_id):
         extra_context={
             'form':form,
         })
-    
+
+@login_required
 def new(request):
     if request.method == 'POST':
         form = CSVForm(request.POST, request.FILES)
