@@ -4,11 +4,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
 class CSV(models.Model):
-    
     upload_to = getattr(settings, 'CSVIMPORTER_UPLOAD_TO', 'csvimporter')
-    
+
     #content_type = models.ForeignKey(ContentType)
-    content_type = models.ForeignKey(Customer)
+    klass        = Customer
     csv_file     = models.FileField(upload_to=upload_to)
     created      = models.DateTimeField(auto_now_add=True)
 
