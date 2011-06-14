@@ -10,6 +10,7 @@ from tracklist.csvimporter.models import CSV
 class CSVForm(forms.ModelForm):
     class Meta:
         model = CSV
+    """
     exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', [])
     # TODO: this could be so much nicer.
     content_types = ContentType.objects.all()
@@ -19,6 +20,7 @@ class CSVForm(forms.ModelForm):
         else:
             content_types = content_types.exclude(app_label__iexact=t)
     content_type = forms.ModelChoiceField(queryset=content_types)
+    """
     
 key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ','_').lower())
 class CSVAssociateForm(forms.Form):
