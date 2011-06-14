@@ -31,7 +31,8 @@ class CSVAssociateForm(forms.Form):
         lines[0] = re.sub('\s+,', ',', lines[0])
         self.reader = csv.DictReader(lines)
         self.reader.next()
-        self.klass = self.instance.content_type.model_class()
+        #self.klass = self.instance.content_type.model_class()
+        self.klass = self.instance.klass
         choices = [(None,'---- (None)')] + [(f.name, f.name) for f in self.klass._meta.fields]
         # self.base_fields gets copied over to create self.fields in __init__
         self.base_fields = {}
