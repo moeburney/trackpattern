@@ -10,8 +10,8 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic.list_detail import object_list, object_detail
 
-from csvimporter.models import CSV
-from csvimporter.forms import CSVForm, CSVAssociateForm
+from tracklist.csvimporter.models import CSV
+from tracklist.csvimporter.forms import CSVForm, CSVAssociateForm
 
 @login_required
 def csv_list(request):
