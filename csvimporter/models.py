@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Customer, Product, Sale
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
