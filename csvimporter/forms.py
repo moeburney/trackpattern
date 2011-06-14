@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.conf import settings
 
-from csvimporter.models import CSV
+from tracklist.csvimporter.models import CSV
 
 class CSVForm(forms.ModelForm):
     class Meta:
@@ -51,7 +51,6 @@ class CSVAssociateForm(forms.Form):
             new_obj = self.klass()
             #hack to make user field the currently logged in user
             data['user'] = request.user
-            data['user_id'] = request.GET.get("user_id")
             for key in data.keys():
                 setattr(new_obj, key, data[key])
             new_obj.save()
