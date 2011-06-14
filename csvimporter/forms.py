@@ -51,6 +51,7 @@ class CSVAssociateForm(forms.Form):
             new_obj = self.klass()
             #hack to make user field the currently logged in user
             data['user'] = request.user
+            data['user_id'] = request.GET.get("user_id")
             for key in data.keys():
                 setattr(new_obj, key, data[key])
             new_obj.save()
