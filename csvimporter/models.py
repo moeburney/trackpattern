@@ -6,7 +6,8 @@ class CSV(models.Model):
     
     upload_to = getattr(settings, 'CSVIMPORTER_UPLOAD_TO', 'csvimporter')
     
-    content_type = models.ForeignKey(ContentType)
+    #content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(Customer)
     csv_file     = models.FileField(upload_to=upload_to)
     created      = models.DateTimeField(auto_now_add=True)
 
