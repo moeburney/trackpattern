@@ -30,6 +30,5 @@ urlpatterns = patterns('tracklist.core.views',
                        
     (r'^group/$', 'group_home'),
     (r'^group/view/(?P<id>.*)/$', 'group_view'),
-    (r'^csv/', include('csvimporter.urls')),
 
 )
