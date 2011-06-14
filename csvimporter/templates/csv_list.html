@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id="content-main">
-    <h2>CSV Uploads</h2>
+     <h2>CSV Uploads</h2>
     <ul>
         {% for csv in csv_list %}
             <li><a href='{{ csv.id }}'>{{ csv.filename }}, {{ csv.created|time }}({{ csv.created|timesince }} ago)</a></li>
