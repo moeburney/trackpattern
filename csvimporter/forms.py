@@ -11,7 +11,7 @@ from tracklist.csvimporter.models import CSV
 class CSVForm(forms.ModelForm):
     class Meta:
         model = CSV
-    exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', ['products','sales'])
+    exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', ['product','sale'])
     # TODO: this could be so much nicer.
     content_types = ContentType.objects.all()
     for t in exclude_types:
