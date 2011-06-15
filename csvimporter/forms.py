@@ -21,11 +21,13 @@ class CSVForm(forms.ModelForm):
         content_types = ContentType.objects.all()
         self.fields['content_type'] = forms.ModelChoiceField(queryset=content_types)
 
+        """
         if self.model:
             self.fields['content_type'].initial = (
                 content_types.get(model=self.model._meta.module_name))
             self.fields['content_type'].widget = forms.widgets.HiddenInput()
         csv_file = forms.FileField()
+        """
 
     class Meta:
         model = CSV
