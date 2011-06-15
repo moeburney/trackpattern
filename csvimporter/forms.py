@@ -14,6 +14,7 @@ class CSVForm(forms.ModelForm):
         super(CSVForm, self).__init__(*args, **kwargs)
     class Meta:
         model = CSV
+        klass = forms.CharField(max_length=100, editable=False)
         try:
             klass = my_arg
         except:
