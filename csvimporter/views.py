@@ -87,7 +87,7 @@ def new(request, **kwargs):
             return HttpResponseRedirect(
                         reverse('associate-csv', args=[instance.id]))
     else:
-        form = kwargs["form_class"](kwargs["model"])
+        form = kwargs["form_class"]()
     kwargs["extra_context"].update({"form": form})
     return render_to_response(kwargs["template_name"],
         kwargs["extra_context"],
