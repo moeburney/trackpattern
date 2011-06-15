@@ -15,11 +15,12 @@ from csvimporter.utils import create_csv_reader
 
 
 class CSVForm(forms.ModelForm):
-    class Meta:
-        model = CSV
-
     def __init__(self, model=None, *args, **kwargs):
         self.model = model
+
+        class Meta:
+            model = CSV
+
         super(CSVForm, self).__init__(*args, **kwargs)
         content_types = ContentType.objects.all()
         self.fields['content_type'] = forms.ModelChoiceField(queryset=content_types)
