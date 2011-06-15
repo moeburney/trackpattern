@@ -46,7 +46,6 @@ def new(request):
             request.user.message_set.create(message='Uploaded CSV. Please associate fields below.')
             return HttpResponseRedirect(reverse('associate-csv',args=[instance.id]))
     else:
-        form = CSVForm(:w
-        )
+        form = CSVForm()
     return render_to_response('new.html',
         {'form':form}, context_instance=RequestContext(request))
