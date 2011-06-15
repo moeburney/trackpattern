@@ -12,7 +12,7 @@ class CSVForm(forms.ModelForm):
         if kwargs:
             my_arg = kwargs.pop('my_arg')
         super(CSVForm, self).__init__(*args, **kwargs)
-        if my_arg:
+        if my_arg in locals():
             self.fields['klass'] = my_arg
     class Meta:
         model = CSV
