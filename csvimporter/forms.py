@@ -12,9 +12,13 @@ class CSVForm(forms.ModelForm):
         if kwargs:
             my_arg = kwargs.pop('my_arg')
         super(CSVForm, self).__init__(*args, **kwargs)
-        #self.fields['klass'] = my_arg
     class Meta:
         model = CSV
+        try:
+            klass = my_arg
+        except:
+            pass
+
     """
     exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', [])
     # TODO: this could be so much nicer.
