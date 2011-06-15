@@ -10,27 +10,23 @@ from django.db import IntegrityError
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 
-from tracklist.csvimporter.models import CSV
-from tracklist.csvimporter.utils import create_csv_reader
+from csvimporter.models import CSV
+from csvimporter.utils import create_csv_reader
 
 
 class CSVForm(forms.ModelForm):
 
     def __init__(self, model=None, *args, **kwargs):
-        """
         self.model = model
 
-        """ 
         super(CSVForm, self).__init__(*args, **kwargs)
-        """
         content_types = ContentType.objects.all()
-        content_type = forms.ModelChoiceField(queryset=content_types)
+        self.fields['content_type'] = forms.ModelChoiceField(queryset=content_types)
 
         if self.model:
             self.fields['content_type'].initial = (
                 content_types.get(model=self.model._meta.module_name))
             self.fields['content_type'].widget = forms.widgets.HiddenInput()
-        """
 
     class Meta:
         model = CSV
