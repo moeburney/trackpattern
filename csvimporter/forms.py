@@ -9,18 +9,9 @@ from django.conf import settings
 from tracklist.csvimporter.models import CSV
 
 class CSVForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        if kwargs:
-            my_arg = kwargs.pop('my_arg')
-        super(CSVForm, self).__init__(*args, **kwargs)
     class Meta:
         model = CSV
-        try:
-            klass = my_arg
-        except:
-            klass = Customer
-    """
-    exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', [])
+    exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', ['products','sales'])
     # TODO: this could be so much nicer.
     content_types = ContentType.objects.all()
     for t in exclude_types:
@@ -29,7 +20,6 @@ class CSVForm(forms.ModelForm):
         else:
             content_types = content_types.exclude(app_label__iexact=t)
     content_type = forms.ModelChoiceField(queryset=content_types)
-    """
     
 key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ','_').lower())
 class CSVAssociateForm(forms.Form):
@@ -40,8 +30,7 @@ class CSVAssociateForm(forms.Form):
         lines[0] = re.sub('\s+,', ',', lines[0])
         self.reader = csv.DictReader(lines)
         self.reader.next()
-        #self.klass = self.instance.content_type.model_class()
-        self.klass = self.instance.klass
+        self.klass = self.instance.content_type.model_class()
         choices = [(None,'---- (None)')] + [(f.name, f.name) for f in self.klass._meta.fields]
         # self.base_fields gets copied over to create self.fields in __init__
         self.base_fields = {}
@@ -58,8 +47,7 @@ class CSVAssociateForm(forms.Form):
             data = {}
             for field_name in self.reader.fieldnames:
                 data[self.cleaned_data[field_name]] = row[field_name]
-            # transform_key = '%s.%s' % (self.instance.content_type.app_label, self.instance.content_type.model)
-            transform_key = '%s.%s' % (self.klass._meta.app_label, self.klass.__name__)
+            transform_key = '%s.%s' % (self.instance.content_type.app_label, self.instance.content_type.model)
             data = transforms.get(transform_key, lambda r, d: d)(request, data)
             new_obj = self.klass()
             #hack to make user field the currently logged in user
