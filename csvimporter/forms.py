@@ -1,5 +1,6 @@
 import csv, re
 
+from core.models import Customer
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
@@ -14,11 +15,10 @@ class CSVForm(forms.ModelForm):
         super(CSVForm, self).__init__(*args, **kwargs)
     class Meta:
         model = CSV
-        klass = forms.CharField(max_length=100, editable=False)
         try:
             klass = my_arg
         except:
-            klass = "Customer"
+            klass = Customer
     """
     exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', [])
     # TODO: this could be so much nicer.
