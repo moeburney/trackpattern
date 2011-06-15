@@ -17,14 +17,17 @@ def prepare_view(request, kwargs):
     else:
         kwargs["app_label"] = kwargs["model"]._meta.app_label
         kwargs["model_name"] = kwargs["model"]._meta.module_name
+        """
         kwargs["redirect_url"] = reverse(
                 "admin:%s_%s_changelist" % (kwargs["app_label"],
                                             kwargs["model_name"])
                 )
+        """
+
         kwargs["extra_context"] = {
             "app_label": kwargs["app_label"],
             "model_name": kwargs["model_name"],
-            "redirect_url": kwargs["redirect_url"],
+            #"redirect_url": kwargs["redirect_url"],
         }
     return kwargs
 
