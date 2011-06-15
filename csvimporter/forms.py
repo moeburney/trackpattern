@@ -8,7 +8,7 @@ from django.conf import settings
 from tracklist.csvimporter.models import CSV
 
 class CSVForm(forms.ModelForm):
-    def init(self, user, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         my_arg = kwargs.pop('my_arg')
         super(CSVForm, self).__init__(*args, **kwargs)
         self.fields['klass'] = my_arg
