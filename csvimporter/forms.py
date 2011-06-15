@@ -20,7 +20,9 @@ class CSVForm(forms.ModelForm):
         """
         self.model = model
 
+        """ 
         super(CSVForm, self).__init__(*args, **kwargs)
+        """
         content_types = ContentType.objects.all()
         content_type = forms.ModelChoiceField(queryset=content_types)
 
