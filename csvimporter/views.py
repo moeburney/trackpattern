@@ -36,7 +36,7 @@ def prepare_view(request, kwargs):
 def csv_list(request, **kwargs):
     kwargs = prepare_view(request, kwargs)
     if not kwargs.get("template_name"):
-        kwargs["template_name"] = 'csvimporter/csv_list.html'
+        kwargs["template_name"] = 'csv_list.html'
     return object_list(request,
         queryset=CSV.objects.all(),
         template_name=kwargs["template_name"],
@@ -48,7 +48,7 @@ def csv_list(request, **kwargs):
 @staff_member_required
 def associate(request, object_id, **kwargs):
     if not kwargs.get("template_name"):
-        kwargs["template_name"] = 'csvimporter/csv_detail.html'
+        kwargs["template_name"] = 'csv_detail.html'
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVAssociateForm
     kwargs = prepare_view(request, kwargs)
@@ -75,7 +75,7 @@ def associate(request, object_id, **kwargs):
 @staff_member_required
 def new(request, **kwargs):
     if not kwargs.get("template_name"):
-        kwargs["template_name"] = 'csvimporter/new.html'
+        kwargs["template_name"] = 'new.html'
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVForm
     kwargs = prepare_view(request, kwargs)
