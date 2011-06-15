@@ -17,8 +17,7 @@ class CSVForm(forms.ModelForm):
         try:
             klass = my_arg
         except:
-            pass
-
+            klass = "Customer"
     """
     exclude_types = getattr(settings, 'CSVIMPORTER_EXCLUDE', [])
     # TODO: this could be so much nicer.
