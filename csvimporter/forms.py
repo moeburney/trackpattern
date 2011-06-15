@@ -15,10 +15,7 @@ from csvimporter.utils import create_csv_reader
 
 
 class CSVForm(forms.ModelForm):
-    class Meta:
-        model = CSV
 
-"""
     def __init__(self, model=None, *args, **kwargs):
         self.model = model
 
@@ -30,8 +27,10 @@ class CSVForm(forms.ModelForm):
             self.fields['content_type'].initial = (
                 content_types.get(model=self.model._meta.module_name))
             self.fields['content_type'].widget = forms.widgets.HiddenInput()
-        csv_file = forms.FileField()
-"""
+
+    class Meta:
+        model = CSV
+        fields = ("content_type", "csv_file", "created")
 
 
 class CSVAssociateForm(forms.Form):
