@@ -21,16 +21,15 @@ class CSVForm(forms.ModelForm):
 
         super(CSVForm, self).__init__(*args, **kwargs)
         content_types = ContentType.objects.all()
-        self.fields['content_type'] = forms.ModelChoiceField(queryset=content_types)
+        self.base_fields['content_type'] = forms.ModelChoiceField(queryset=content_types)
 
         if self.model:
-            self.fields['content_type'].initial = (
+            self.base_fields['content_type'].initial = (
                 content_types.get(model=self.model._meta.module_name))
-            self.fields['content_type'].widget = forms.widgets.HiddenInput()
+            self.base_fields['content_type'].widget = forms.widgets.HiddenInput()
 
     class Meta:
         model = CSV
-        fields = ("content_type", "csv_file", "created")
 
 
 class CSVAssociateForm(forms.Form):
