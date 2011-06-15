@@ -9,9 +9,11 @@ from tracklist.csvimporter.models import CSV
 
 class CSVForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        my_arg = kwargs.pop('my_arg')
+        if kwargs:
+            my_arg = kwargs.pop('my_arg')
         super(CSVForm, self).__init__(*args, **kwargs)
-        self.fields['klass'] = my_arg
+        if my_arg:
+            self.fields['klass'] = my_arg
     class Meta:
         model = CSV
     """
