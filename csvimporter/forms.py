@@ -49,7 +49,7 @@ class CSVAssociateForm(forms.Form):
             data = {}
             for field_name in self.reader.fieldnames:
                 data[self.cleaned_data[field_name]] = row[field_name]
-            transform_key = '%s.%s' % (self.instance.content_type.app_label, self.instance.content_type.model)
+            #transform_key = '%s.%s' % (self.instance.content_type.app_label, self.instance.content_type.model)
             data = transforms.get(transform_key, lambda r, d: d)(request, data)
             new_obj = self.klass()
             #hack to make user field the currently logged in user
