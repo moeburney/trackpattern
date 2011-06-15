@@ -40,7 +40,7 @@ def associate(request, object_id):
 @login_required
 def new(request):
     if request.method == 'POST':
-        form = CSVForm(request.POST, request.FILES)
+        form = CSVForm(request.POST, request.FILES,my_arg=Customer)
         if form.is_valid():
             instance = form.save()
             request.user.message_set.create(message='Uploaded CSV. Please associate fields below.')
