@@ -72,7 +72,8 @@ class CSVAssociateForm(forms.Form):
                 data[self.cleaned_data[field_name]] = row[field_name]
             transform_key = '%s.%s' % (self.instance.content_type.app_label,
                                        self.instance.content_type.model)
-            data = transforms(request, data)
+            #this line is giving an error, dict not callable
+            #data = transforms(request, data)
             new_obj = self.klass()
             for key in data.keys():
                 try:
