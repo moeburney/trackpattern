@@ -49,10 +49,10 @@ class CSVAssociateForm(forms.Form):
             #if mapped_field_name in [f.name for f in self.klass._meta.fields]:
 
             if key_to_field_map(field_name) in [f.name for f in self.klass._meta.fields]:
-                self.fields[field_name].initial = key_to_field_map(field_map)
+                self.fields[field_name].initial = key_to_field_map(field_name)
             else:
                 _choices = copy(choices)
-                _choices.append((key_to_field_map(field_name), key_to_field_map(mapped_field_name)))
+                _choices.append((key_to_field_map(field_name), key_to_field_map(field_name)))
                 self.fields[field_name] = forms.ChoiceField(choices=_choices, required=False)
                 self.fields[field_name].initial = key_to_field_map(field_name)
 
