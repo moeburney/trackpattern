@@ -55,6 +55,7 @@ def associate(request, object_id, **kwargs):
     if not kwargs.get("model"):
         kwargs["model"] = Customer
     kwargs = prepare_view(request, kwargs)
+    object_id = args.get("instance_id")
     instance = get_object_or_404(CSV, pk=object_id)
     if request.method == 'POST':
         form = kwargs["form_class"](instance, request.POST)
