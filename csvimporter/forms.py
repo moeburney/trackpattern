@@ -32,6 +32,8 @@ class CSVForm(forms.ModelForm):
         model = CSV
 
 
+key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ','_').lower())
+
 class CSVAssociateForm(forms.Form):
     def __init__(self, instance, *args, **kwargs):
         self.instance = instance
@@ -43,8 +45,10 @@ class CSVAssociateForm(forms.Form):
         super(CSVAssociateForm, self).__init__(*args, **kwargs)
         for field_name in self.reader.fieldnames:
             self.fields[field_name] = forms.ChoiceField(choices=choices, required=False)
-            mapped_field_name = self.klass.csvimporter['csv_associate'](field_name)
-            if mapped_field_name in [f.name for f in self.klass._meta.fields]:
+            #mapped_field_name = self.klass.csvimporter['csv_associate'](field_name) 
+            #if mapped_field_name in [f.name for f in self.klass._meta.fields]:
+
+            if key_to_field_map(field_name) in [f.name for f in self.klass._meta.fields]:
                 self.fields[field_name].initial = mapped_field_name
             else:
                 _choices = copy(choices)
