@@ -10,6 +10,7 @@ from core.models import Customer
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.forms import CSVForm, CSVAssociateForm
 
+from django.http import HttpResponse
 
 # TODO: Make this view class based
 def prepare_view(request, kwargs):
@@ -54,8 +55,9 @@ def associate(request, object_id, **kwargs):
         kwargs["form_class"] = CSVAssociateForm
     if not kwargs.get("model"):
         kwargs["model"] = Customer
+
+    return HttpResponse(str(object_id))
     kwargs = prepare_view(request, kwargs)
-    object_id = args.get("instance_id")
     instance = get_object_or_404(CSV, pk=object_id)
     if request.method == 'POST':
         form = kwargs["form_class"](instance, request.POST)
