@@ -90,6 +90,8 @@ def new(request, **kwargs):
                                     request.POST, request.FILES)
         if form.is_valid():
             instance = form.save()
+            return HttpResponse(str(instance.id))
+
             return HttpResponseRedirect(
                         reverse('associate-csv', kwargs={'object_id':instance.id} ))
     else:
