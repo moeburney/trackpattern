@@ -59,8 +59,11 @@ class CSVAssociateForm(forms.Form):
     def save(self, request):
         # these are out here because we only need
         # to retreive them from settings the once.
-        transforms = self.klass.csvimporter.get(
-            'csv_transform', lambda r, d: d)
+
+        #transforms = self.klass.csvimporter.get(
+        #    'csv_transform', lambda r, d: d)
+
+        transforms = getattr(settings, 'CSVIMPORTER_DATA_TRANSFORMS', {})
         dups = 0
         ok = 0
         for row in self.reader:
