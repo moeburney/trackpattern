@@ -56,7 +56,7 @@ def associate(request, object_id, **kwargs):
     if not kwargs.get("model"):
         kwargs["model"] = Customer
 
-    return HttpResponse(str(object_id))
+    #return HttpResponse(str(object_id))
     kwargs = prepare_view(request, kwargs)
     instance = get_object_or_404(CSV, pk=object_id)
     if request.method == 'POST':
@@ -91,7 +91,7 @@ def new(request, **kwargs):
         if form.is_valid():
             instance = form.save()
             return HttpResponseRedirect(
-                        reverse('associate-csv', args=[instance.id]))
+                        reverse('associate-csv', kwargs={'object_id':instance.id}, args=[instance.id]))
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})
