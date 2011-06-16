@@ -45,16 +45,16 @@ class CSVAssociateForm(forms.Form):
         super(CSVAssociateForm, self).__init__(*args, **kwargs)
         for field_name in self.reader.fieldnames:
             self.fields[field_name] = forms.ChoiceField(choices=choices, required=False)
-            #mapped_field_name = self.klass.csvimporter['csv_associate'](field_name) 
+            #mapped_field_name = self.klass.csvimporter['csv_associate'](field_name)
             #if mapped_field_name in [f.name for f in self.klass._meta.fields]:
 
             if key_to_field_map(field_name) in [f.name for f in self.klass._meta.fields]:
-                self.fields[field_name].initial = mapped_field_name
+                self.fields[field_name].initial = key_to_field_map(field_map)
             else:
                 _choices = copy(choices)
-                _choices.append((mapped_field_name, mapped_field_name))
+                _choices.append((key_to_field_map(field_name), key_to_field_map(mapped_field_name)))
                 self.fields[field_name] = forms.ChoiceField(choices=_choices, required=False)
-                self.fields[field_name].initial = mapped_field_name
+                self.fields[field_name].initial = key_to_field_map(field_name)
 
     def save(self, request):
         # these are out here because we only need
