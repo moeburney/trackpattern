@@ -91,7 +91,7 @@ def new(request, **kwargs):
             modelname = kwargs["model"].__name__
             instance = form.save()
             return HttpResponseRedirect(
-                        reverse('associate-csv', args=[300]))
+                        reverse('associate-csv', args=[instance.id, modelname]))
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})
