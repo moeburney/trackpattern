@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from django.views.generic.list_detail import object_list, object_detail
 from django.contrib import messages
-from core.models import Customer
+from core.models import Customer, Product, Sale
 
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.forms import CSVForm, CSVAssociateForm
