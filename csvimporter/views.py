@@ -48,7 +48,7 @@ def csv_list(request, **kwargs):
 
 
 @staff_member_required
-def associate(request, object_id, modelname="", **kwargs):
+def associate(request, object_id, modelname="Customer", **kwargs):
     if not kwargs.get("template_name"):
         kwargs["template_name"] = 'csv_detail.html'
     if not kwargs.get("form_class"):
@@ -91,7 +91,7 @@ def new(request, **kwargs):
             modelname = kwargs["model"].__name__
             instance = form.save()
             return HttpResponseRedirect(
-                        reverse('associate-csv', args=[instance.id]))
+                        reverse('associate-csv'))
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})
