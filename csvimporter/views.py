@@ -53,10 +53,10 @@ def associate(request, object_id, modelname="", **kwargs):
         kwargs["template_name"] = 'csv_detail.html'
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVAssociateForm
-    try modelname:
-        kwargs["model"] = eval(modelname)
-    except:
+    if not modelname:
         raise ValueError("A model wasn't specified. This is our fault. Please let us know this happened so we can fix it, thanks.")
+    else:
+        kwargs["model"] = eval(modelname)
 
     kwargs = prepare_view(request, kwargs)
     instance = get_object_or_404(CSV, pk=object_id)
