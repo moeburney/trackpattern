@@ -48,13 +48,15 @@ def csv_list(request, **kwargs):
 
 
 @staff_member_required
-def associate(request, object_id, modelname="Customer", **kwargs):
+def associate(request, object_id, modelname="", **kwargs):
     if not kwargs.get("template_name"):
         kwargs["template_name"] = 'csv_detail.html'
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVAssociateForm
-    if modelname:
+    try modelname:
         kwargs["model"] = eval(modelname)
+    except:
+        raise ValueError("A model wasn't specified. This is our fault. Please let us know this happened so we can fix it, thanks.")
 
     kwargs = prepare_view(request, kwargs)
     instance = get_object_or_404(CSV, pk=object_id)
@@ -63,7 +65,7 @@ def associate(request, object_id, modelname="Customer", **kwargs):
         if form.is_valid():
             form.save(request)
             request.user.message_set.create(message='CSV imported.')
-            return HttpResponseRedirect("/core/%s" % (s.lower()))
+            return HttpResponseRedirect("/core/%s" % (modelname.lower()))
     else:
         messages.info(request, 'Uploaded CSV. Please associate fields below.')
         form = CSVAssociateForm(instance)
