@@ -75,6 +75,9 @@ class CSVAssociateForm(forms.Form):
             #this line is giving an error, dict not callable
             #data = transforms(request, data)
             new_obj = self.klass()
+
+            #hack to add the currently logged in user's id to the fields
+            data['user_id'] = request.user.id
             for key in data.keys():
                 try:
                     field = new_obj._meta.get_field(key)
