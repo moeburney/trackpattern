@@ -48,13 +48,13 @@ def csv_list(request, **kwargs):
 
 
 @staff_member_required
-def associate(request, object_id, **kwargs):
+def associate(request, object_id, modelname="", **kwargs):
     if not kwargs.get("template_name"):
         kwargs["template_name"] = 'csv_detail.html'
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVAssociateForm
-    if not kwargs.get("model"):
-        kwargs["model"] = Customer
+    if modelname:
+        kwargs["model"] = eval(modelname)
 
     kwargs = prepare_view(request, kwargs)
     instance = get_object_or_404(CSV, pk=object_id)
@@ -88,9 +88,10 @@ def new(request, **kwargs):
         form = kwargs["form_class"](kwargs["model"],
                                     request.POST, request.FILES)
         if form.is_valid():
+            modelname - kwargs["model"].__name__
             instance = form.save()
             return HttpResponseRedirect(
-                        reverse('associate-csv', args=[instance.id]))
+                        reverse('associate-csv', args="modelname, [instance.id]"))
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})
