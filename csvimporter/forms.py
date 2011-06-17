@@ -77,7 +77,8 @@ class CSVAssociateForm(forms.Form):
             new_obj = self.klass()
 
             #hack to add the currently logged in user's id to the fields
-            data['user_id'] = request.user.id
+            #data['user_id'] = request.user.id
+            data['user'] = request.user
             for key in data.keys():
                 try:
                     field = new_obj._meta.get_field(key)
