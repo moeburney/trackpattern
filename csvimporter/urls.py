@@ -6,5 +6,4 @@ urlpatterns = patterns('tracklist.csvimporter.views',
     url(r'^product/$', 'new', kwargs={'model':Product}, name='new-csv'),
     url(r'^sale/$', 'new', kwargs={'model':Sale}, name='new-csv'),
     url(r'^(?P<modelname>\d+)/(?P<object_id>\d+)/$', 'associate', name='associate-csv'),
-
 )
