@@ -88,7 +88,7 @@ def new(request, **kwargs):
         form = kwargs["form_class"](kwargs["model"],
                                     request.POST, request.FILES)
         if form.is_valid():
-            modelname - kwargs["model"].__name__
+            modelname = kwargs["model"].__name__
             instance = form.save()
             return HttpResponseRedirect(
                         reverse('associate-csv', args=[modelname, instance.id]))
