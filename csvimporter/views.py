@@ -63,7 +63,7 @@ def associate(request, object_id, modelname="Customer", **kwargs):
         if form.is_valid():
             form.save(request)
             request.user.message_set.create(message='CSV imported.')
-            return HttpResponseRedirect("/core/customer")
+            return HttpResponseRedirect("/core/%s" % (s.lower()))
     else:
         messages.info(request, 'Uploaded CSV. Please associate fields below.')
         form = CSVAssociateForm(instance)
