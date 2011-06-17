@@ -56,7 +56,6 @@ def associate(request, object_id, **kwargs):
     if not kwargs.get("model"):
         kwargs["model"] = Customer
 
-    #return HttpResponse(str(object_id))
     kwargs = prepare_view(request, kwargs)
     instance = get_object_or_404(CSV, pk=object_id)
     if request.method == 'POST':
@@ -64,7 +63,7 @@ def associate(request, object_id, **kwargs):
         if form.is_valid():
             form.save(request)
             request.user.message_set.create(message='CSV imported.')
-            return HttpResponseRedirect(kwargs["redirect_url"])
+            return HttpResponseRedirect("/core/customer")
     else:
         messages.info(request, 'Uploaded CSV. Please associate fields below.')
         form = CSVAssociateForm(instance)
