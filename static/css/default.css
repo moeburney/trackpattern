@@ -318,3 +318,12 @@ h2 {
 	width: 1px;
 	text-align: right;
 }
+
+.faqq{
+	font-weight: bold;
+	padding-top:10px;
+	padding-bottom: 5px;
+}
+.faqa{
+	padding-left: 20px;
+}

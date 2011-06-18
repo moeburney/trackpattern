@@ -272,14 +272,20 @@ def sale_home(request):
     renders list of sales
     """
     sale_list = Sale.objects.filter(user=request.user)
-    paginator = Paginator(sale_list, settings.DEFAULT_PAGESIZE)
+    page = int(request.GET.get('page', '1'))
+    sort = request.GET.get('sort', 'date')
+    if sort:
+        if sort == 'fname':
+            sale_list = sale_list.order_by('customer__first_name')
+        elif sort == 'lname':
+            sale_list = sale_list.order_by('customer__last_name')
+        elif sort == 'date':
+            sale_list = sale_list.order_by('-transaction_date')
+        elif sort == 'product':
+            sale_list = sale_list.order_by('product__name')
 
     try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
+        paginator = Paginator(sale_list, settings.DEFAULT_PAGESIZE)
         sales = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope
@@ -287,7 +293,8 @@ def sale_home(request):
         sales = paginator.page(paginator.num_pages)
         
     return render_to_response('core/sale.html',
-                              {'sales': sales,},
+                              {'sales': sales,
+                               'sort': sort,},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -329,7 +336,7 @@ def edit_sale(request, id):
             form.save()
             return HttpResponseRedirect('/core/sale/')
     else:
-        form = SaleForm(instance=purchase)
+        form = SaleForm(instance=sale)
     return render_to_response('core/manage_sale.html',
                               {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))

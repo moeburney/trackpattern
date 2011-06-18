@@ -165,3 +165,12 @@ def settings(request):
     return render_to_response('home/settings.html',
                               {'form': PersonalForm(instance=request.user),},
                               context_instance=RequestContext(request))
+
+@login_required
+def faq(request):
+    """
+    faq page
+    """
+    return render_to_response('faq/faq.html',
+                              {},
+                              context_instance=RequestContext(request))
