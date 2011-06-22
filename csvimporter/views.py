@@ -97,6 +97,7 @@ def new(request, **kwargs):
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})
+    kwargs["extra_context"].update({"csv_import_type": request.get_full_path().split('/')[3]})
     return render_to_response(kwargs["template_name"],
         kwargs["extra_context"],
         context_instance=RequestContext(request)
