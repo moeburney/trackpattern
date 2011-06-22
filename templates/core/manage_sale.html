@@ -10,6 +10,15 @@ $('#tabSales').addClass('selected');
 {% block content %}
 <h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Sale</h2>
 
+{% if is_new %}
+<div class='csv-import-add'>
+<p>
+Or <a href="/core/csv/sale/">import</a> your data from a csv file
+</p>
+</div>
+{% endif %}
+
+
 {% if form.errors %}
 <div class='error-panel'>
 <span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>

@@ -10,6 +10,13 @@ $('#tabCustomers').addClass('selected');
 {% block content %}
 <h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Customer</h2>
 
+{% if is_new %}
+<div class='csv-import-add'>
+<p>
+Or <a href="/core/csv/customer/">import</a> your data from a csv file
+</p>
+</div>
+{% endif %}
 
 {% if form.errors %}
 <div class='error-panel'>
@@ -31,12 +38,12 @@ $('#tabCustomers').addClass('selected');
 	</tr>
 
 	<tr>
+	<td><span class='dataform-lable'>{{form.company_name.label}}</span><br>{{form.company_name}}</td>
 	<td><span class='dataform-lable'>{{form.email.label}}</span><br>{{form.email}}</td>
-	<td><span class='dataform-lable'>{{form.phone.label}}</span><br>{{form.phone}}</td>
 	</tr>
 
 	<tr>
-	<td><span class='dataform-lable'>{{form.country.label}}</span><br>{{form.country}}</td>
+	<td><span class='dataform-lable'>{{form.phone.label}}</span><br>{{form.country}}</td>
 	<td><span class='dataform-lable'>{{form.state.label}}</span><br>{{form.state}}</td>
 	</tr>
 	
@@ -46,7 +53,7 @@ $('#tabCustomers').addClass('selected');
 	</tr>
 	
 	<tr>
-	<td></td>
+	<td><span class='dataform-lable'>{{form.country.label}}</span><br>{{form.country}}</td>
 	<td><span class='dataform-lable'>{{form.zipcode.label}}</span><br>{{form.zipcode}}</td>
 	</tr>
 
