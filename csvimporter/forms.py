@@ -13,6 +13,8 @@ from django.utils.translation import ugettext as _
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.utils import create_csv_reader
 
+from core.models import Customer, Product, Sale
+
 
 class CSVForm(forms.ModelForm):
 
@@ -33,6 +35,26 @@ class CSVForm(forms.ModelForm):
 
 
 key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ','_').lower())
+
+def str_to_product(element, user):
+    obj, created = Product.objects.get_or_create(name=element, user=user, defaults={})
+    return obj
+
+def str_to_customer(element, user):
+    #cut out salutations
+    #element = element.remove("Mr") etc.
+
+    first_name = element.split(' ')[0]
+    last_name = element.split(' ')[1]
+    obj, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, user=user, defaults={})
+    return obj
+
+
+def str_to_company(element):
+    #To be used after we add company name to customer model
+    pass
+
+
 
 class CSVAssociateForm(forms.Form):
     def __init__(self, instance, *args, **kwargs):
@@ -55,6 +77,19 @@ class CSVAssociateForm(forms.Form):
                 _choices.append((key_to_field_map(field_name), key_to_field_map(field_name)))
                 self.fields[field_name] = forms.ChoiceField(choices=_choices, required=False)
                 self.fields[field_name].initial = key_to_field_map(field_name)
+
+    def _validate(self, key, element, user):
+        #This is still in pseudo code
+        if key == "product":
+            element = str_to_product(element, user)
+        #elif key == "date_created":
+        #    element = str_to_date(element)
+        #elif key == "date_released":
+        #    element = str_to_date(element)
+        elif key == "customer":
+            element = str_to_customer(element, user)
+
+        return element
 
     def save(self, request):
         # these are out here because we only need
@@ -92,6 +127,7 @@ class CSVAssociateForm(forms.Form):
                     data[key] = data[key].replace(",", "")
                     if not data[key]:
                         data[key] = None
+                data[key] = self._validate(key, data[key], request.user)
                 setattr(new_obj, key, data[key])
             try:
                 new_obj.save()
