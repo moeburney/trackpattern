@@ -26,6 +26,8 @@ def customer_home(request):
             customer_list = customer_list.order_by('first_name')
         elif sort == 'lname':
             customer_list = customer_list.order_by('last_name')
+        elif sort == 'cname':
+            customer_list = customer_list.order_by('company_name')
         elif sort == 'turnover':
             customer_list = customer_list.annotate(turnover=Sum('sale__price')).order_by('-turnover')
             
