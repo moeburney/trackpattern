@@ -105,8 +105,8 @@ class Product(models.Model):
         (2, 'Low'),
         )
     name = models.CharField(_('name'), max_length=50, blank=False, null=False)
-    date_released = models.DateField(_('date released'), blank=False, null=False)
-    current_price = models.DecimalField(_('current price'), max_digits=10, decimal_places=2)
+    date_released = models.DateField(_('date released'), blank=True, null=True)
+    current_price = models.DecimalField(_('current price'), max_digits=10, decimal_places=2, blank=True, null=False, default=0)
     importance = models.SmallIntegerField(_('importance'), choices=IMPORTANCE_CHOICES, default=2)
     main_appeal = models.CharField(_('main appeal'), max_length=200, blank=True, null=False)
     surveys_sent = models.PositiveIntegerField(_('surveys sent'), default=0)
@@ -172,6 +172,7 @@ class Customer(models.Model):
     
     first_name = models.CharField(_('first name'), max_length=50, blank=False, null=False)
     last_name =  models.CharField(_('last name'), max_length=50, blank=False, null=False)
+    company_name = models.CharField(_('company name'), max_length=100, blank=True, null=False, default="")
     email = models.EmailField(_('email'), max_length=75, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=15, blank=True, null=True)
     street = models.CharField(_('street'), max_length=100, blank=True, null=True)
@@ -238,8 +239,8 @@ class Sale(models.Model):
     """
     customer = models.ForeignKey(Customer, blank=False, null=False)
     product = models.ForeignKey(Product, blank=False, null=False)
-    transaction_date = models.DateField(_('date'), blank=False, null=False)
-    price = models.DecimalField(_('price'), max_digits=10, decimal_places=2)
+    transaction_date = models.DateField(_('date'), blank=True, null=True)
+    price = models.DecimalField(_('price'), max_digits=10, decimal_places=2, blank=False, null=False)
     
     shopping_cart_source = models.CharField('shopping cart source', max_length=100, blank=True, null=False)
     marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
