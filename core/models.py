@@ -240,7 +240,7 @@ class Sale(models.Model):
     customer = models.ForeignKey(Customer, blank=False, null=False)
     product = models.ForeignKey(Product, blank=False, null=False)
     transaction_date = models.DateField(_('date'), blank=True, null=True)
-    price = models.DecimalField(_('price'), max_digits=10, decimal_places=2, blank=False, null=False)
+    price = models.DecimalField(_('price'), max_digits=10, decimal_places=2, blank=False, null=False, default=0)
     
     shopping_cart_source = models.CharField('shopping cart source', max_length=100, blank=True, null=False)
     marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
