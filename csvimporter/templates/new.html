@@ -3,13 +3,36 @@
 {% block content %}
 
 <div id="content-main">
-    <h2>Upload CSV</h2>
+    <h2>Upload Your {{csv_import_type}}s to Trackpattern</h2>
+	
+<div class="csvcaveats">
+{% if csv_import_type == 'customer' %}
+
+{% endif %}
+
+{% if csv_import_type == 'product' %}
+<ul>
+	<li> - If you are importing dates, make sure they are in YYYY-MM-DD format </li> 
+</ul>
+
+{% endif %}
+
+{% if csv_import_type == 'sale' %}
+<ul>
+	<li> - If you are importing dates, make sure they are in YYYY-MM-DD format </li> 
+	<li> - The Trackpattern csv importer will try to match the product names and customer names in your csv file with customer names and product names that you have already added in Trackpattern. If no match is found for any particular customer or product, trackpattern will create a new customer or product. </li>
+	<li> - Customer names should be first name followed by last name, no salutation. Don't use the customer's company name (you can add edit the individual records later to add company name). </li> </ul>
+{% endif %}
+
+</div>
+<br /><br />
+
+
     <form action='.' method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
 	<table>
 	    {{form.as_table}}
 	</table>
-        <input type="submit" class="submit" />
+        <input class="form-button-primary" type="submit" class="submit" value="Upload" />
     </form>
 </div>
-
 {% endblock %}
