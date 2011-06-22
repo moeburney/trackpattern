@@ -74,9 +74,10 @@ class CSVAssociateForm(forms.Form):
                 self.fields[field_name].initial = key_to_field_map(field_name)
             else:
                 _choices = copy(choices)
-                _choices.append((key_to_field_map(field_name), key_to_field_map(field_name)))
+                #_choices.append((key_to_field_map(field_name), key_to_field_map(field_name)))
                 self.fields[field_name] = forms.ChoiceField(choices=_choices, required=False)
-                self.fields[field_name].initial = key_to_field_map(field_name)
+                #self.fields[field_name].initial = key_to_field_map(field_name)
+
 
     def _validate(self, key, element, user):
         #This is still in pseudo code
