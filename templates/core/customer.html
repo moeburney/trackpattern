@@ -21,6 +21,7 @@ $('#tabCustomers').addClass('selected');
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
 				<option value="fname" {% ifequal sort 'fname' %}selected="selected"{% endifequal %}">First Name</option>
 				<option value="lname" {% ifequal sort 'lname' %}selected="selected"{% endifequal %}">Last Name</option>
+				<option value="cname" {% ifequal sort 'cname' %}selected="selected"{% endifequal %}">Company Name</option>
 				<option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}">Turnover</option>
 			</select>&nbsp;&nbsp;
 
@@ -38,7 +39,11 @@ $('#tabCustomers').addClass('selected');
 	<tr class='datarow'>
 		<td class='icon-cell'><img src='/static/img/person.png'></td>
 		<td class='datarow-prime'>
-			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a>
+			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a> 
+			{% if customer.company_name != "" %}
+			<br> 
+			<span style="font-style: italic; font-size: 12px;">{{customer.company_name}}</span>
+			{% endif %}
 			<br>
 			<a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
 			<a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/' onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'> Delete</a>
