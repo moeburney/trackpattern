@@ -34,7 +34,7 @@ def prepare_view(request, kwargs):
     return kwargs
 
 
-@staff_member_required
+@login_required
 def csv_list(request, **kwargs):
     kwargs = prepare_view(request, kwargs)
     if not kwargs.get("template_name"):
@@ -47,7 +47,7 @@ def csv_list(request, **kwargs):
     )
 
 
-@staff_member_required
+@login_required
 def associate(request, object_id, modelname="", **kwargs):
     if not kwargs.get("template_name"):
         kwargs["template_name"] = 'csv_detail.html'
@@ -79,7 +79,7 @@ def associate(request, object_id, modelname="", **kwargs):
     )
 
 
-@staff_member_required
+@login_required
 def new(request, **kwargs):
     if not kwargs.get("template_name"):
         kwargs["template_name"] = 'new.html'
