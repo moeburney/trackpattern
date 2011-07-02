@@ -13,7 +13,7 @@ from django.utils.translation import ugettext as _
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.utils import create_csv_reader
 
-from core.models import Customer, Product, Sale
+from core.models import Customer, Product, Sale, Campaign
 
 
 class CSVForm(forms.ModelForm):
@@ -47,6 +47,10 @@ def str_to_customer(element, user):
     first_name = element.split(' ')[0]
     last_name = element.split(' ')[1]
     obj, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, user=user, defaults={})
+    return obj
+
+def str_to_campaign(element, user):
+    obj, created = Campaign.objects.get_or_create(campaign_name=element, user=user, defaults={})
     return obj
 
 
@@ -89,6 +93,8 @@ class CSVAssociateForm(forms.Form):
         #    element = str_to_date(element)
         elif key == "customer":
             element = str_to_customer(element, user)
+        elif key == "marketing_source":
+            element = str_to_campaign(element, user)
 
         return element
 
