@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Customer, Category, Product, Sale
+from core.models import Customer, Category, Product, Sale, Campaign
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -19,4 +19,9 @@ class ProductForm(forms.ModelForm):
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
+        exclude = ['user']
+
+class CampaignForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
         exclude = ['user']

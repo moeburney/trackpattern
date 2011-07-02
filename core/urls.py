@@ -27,6 +27,12 @@ urlpatterns = patterns('tracklist.core.views',
     (r'^sale/add/$', 'add_sale'),
     (r'^sale/edit/(?P<id>.*)/$', 'edit_sale'),
     (r'^sale/delete/(?P<id>.*)/$', 'delete_sale'),
+
+    (r'^campaign/$', 'campaign_home'),
+    (r'^campaign/view/(?P<id>.*)/$', 'campaign_view'),
+    (r'^campaign/add/$', 'add_campaign'),
+    (r'^campaign/edit/(?P<id>.*)/$', 'edit_campaign'),
+    (r'^campaign/delete/(?P<id>.*)/$', 'delete_campaign'),
                        
     (r'^group/$', 'group_home'),
     (r'^group/view/(?P<id>.*)/$', 'group_view'),

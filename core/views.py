@@ -8,8 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models import Sum, Avg, Count
 from django.conf import settings
 
-from core.models import Customer, Category, Product, Sale, Group
-from core.forms import CustomerForm, CategoryForm, ProductForm, SaleForm
+from core.models import Customer, Category, Product, Sale, Group, Campaign
+from core.forms import CustomerForm, CategoryForm, ProductForm, SaleForm, CampaignForm
 
     
 @login_required
@@ -350,3 +350,84 @@ def delete_sale(request, id):
     sale = Sale.objects.get(pk=id)
     sale.delete()
     return HttpResponseRedirect('/core/sale/')
+
+
+
+@login_required
+def campaign_home(request):
+    """
+    renders list of sales
+    """
+    campaign_list = Campaign.objects.filter(user=request.user)
+    page = int(request.GET.get('page', '1'))
+    sort = request.GET.get('sort', 'date')
+    if sort:
+        if sort == 'name':
+            campaign_list = campaign_list.order_by('campaign_name')
+        elif sort == 'date':
+            campaign_list = campaign_list.order_by('start_date')
+
+    try:
+        paginator = Paginator(campaign_list, settings.DEFAULT_PAGESIZE)
+        campaigns = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+        campaigns = paginator.page(paginator.num_pages)
+        
+    return render_to_response('core/campaign.html',
+                              {'campaigns': campaigns,
+                               'sort': sort,},
+                              context_instance=RequestContext(request))
+
+@login_required
+def campaign_view(request, id):
+    """
+    renders a specific sale view.
+    """
+    campaign = Campaign.objects.get(pk=id)
+    return render_to_response('core/campaign_view.html',
+                              {'campaign': campaign,},
+                              context_instance=RequestContext(request))
+
+@login_required
+def add_campaign(request):
+    """
+    Creates a sale transaction
+    """
+    if request.method == 'POST':
+        form = CampaignForm(request.POST)
+        if form.is_valid():
+            campaign = form.save(commit=False)
+            campaign.user = request.user
+            campaign.save()
+            return HttpResponseRedirect('/core/campaign/')
+    else:
+        form = CampaignForm()
+    return render_to_response('core/manage_campaign.html',
+                              {'form': form, 'is_new': True,},
+                              context_instance=RequestContext(request))
+
+def edit_campaign(request, id):
+    """
+    Updates a sale transaction
+    """
+    campaign = Campaign.objects.get(pk=id)
+    if request.method == 'POST':
+        form = CampaignForm(request.POST, instance=campaign)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/core/campaign/')
+    else:
+        form = CampaignForm(instance=campaign)
+    return render_to_response('core/manage_campaign.html',
+                              {'form': form, 'is_new': False},
+                              context_instance=RequestContext(request))
+
+def delete_campaign(request, id):
+    """
+    Deletes a sale.
+    """
+    campaign = Campaign.objects.get(pk=id)
+    campaign.delete()
+    return HttpResponseRedirect('/core/campaign/')

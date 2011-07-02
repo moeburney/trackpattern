@@ -233,6 +233,20 @@ class Customer(models.Model):
 
 
     
+class Campaign(models.Model):
+    """
+    represents a campaign, i.e. a marketing source
+    """
+    campaign_name = models.CharField(_('campaign name'), max_length=50, blank=False, null=False)
+    start_date = models.DateField(_('date'), blank=True, null=True)
+    user = models.ForeignKey(User, blank=False, null=False)
+
+    class Meta:
+        ordering = ['campaign_name', 'start_date']
+
+    def __unicode__(self):
+        return '%s %s'%(self.campaign_name, self.start_date)
+
 class Sale(models.Model):
     """
     represents a sale transaction
@@ -243,7 +257,8 @@ class Sale(models.Model):
     price = models.DecimalField(_('price'), max_digits=10, decimal_places=2, blank=False, null=False, default=0)
     
     shopping_cart_source = models.CharField('shopping cart source', max_length=100, blank=True, null=False)
-    marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
+    #marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
+    marketing_source = models.ForeignKey(Campaign, blank=True, null=True)
     user = models.ForeignKey(User, blank=False, null=False)
     
     class Meta:
