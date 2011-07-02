@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCampaigns').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<form action='/home/search/' method='POST'>{% csrf_token %}
+<input class='content-searchbar' type=text name='word'/>
+<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
+</form>
+<h2 class='pad20'>Campaign List</h2>
+
+<table width=100% class='datatable'>
+
+	<tr class='datarow pager'>
+		<td colspan=4 style='text-align:right;'>
+			Sort by &nbsp;
+			<select name="sort" id="sort" style='width:150px; height:30px;'>
+				<option value="name" {% ifequal sort 'cname' %}selected="selected"{% endifequal %}">Campaign Name</option>
+				<option value="date" {% ifequal sort 'date' %}selected="selected"{% endifequal %}">Start Date</option>
+			</select>&nbsp;&nbsp;
+		
+			{% if campaigns.has_previous %}
+				<a href="?page={{ campaigns.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ campaigns.number }} of {{ campaigns.paginator.num_pages }}.&nbsp;
+			{% if campaigns.has_next %}
+				<a href="?page={{ campaigns.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+	
+	
+{% for campaign in campaigns.object_list %}
+	<tr class='datarow'>
+		<td class='icon-cell'><img src='/static/img/campaign.png'></td>
+		<td class='datarow-prime'>
+			<a class='datarow-title' href='/core/campaign/view/{{campaign.pk}}/'>{{campaign.campaign_name}}</a>
+			<br>
+			<a class='datarow-action-link' href='/core/campaign/edit/{{campaign.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+			<a class='datarow-action-link' href='/core/campaign/delete/{{campaign.pk}}/' onclick='return getConfirmed("Campaign#{{campaign.pk}}");'><img src='/static/img/delete.png'> Delete</a>
+		</td>
+		<td class='datarow-lables'>
+			<span class='datarow-item-lable'>Start Date</span>
+		</td>
+		<td class='datarow-items'>
+			<span class='datarow-item-value'>{{campaign.start_date}}</span>
+		</td>
+	</tr>
+{% endfor %}
+
+</table>
+
+<script>
+	
+	$(document).ready(function() {
+		// register a listener with JQ to intimate when sort order changed
+		$( "#sort" ).change(function(a){
+			// findout selected sort order
+			// and navigate to ... with details
+			window.location.href = '/core/campaign/?sort=' + $(this).val();
+		});
+	});
+	
+</script>
+
+{% endblock %}

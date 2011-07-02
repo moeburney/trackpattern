@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+
+{% block scripts %}
+<script type="text/javascript" charset="utf-8">
+$('#tabCampaigns').addClass('selected');
+</script>
+{% endblock %}
+
+{% block content %}
+<h2>Campaign View</h2>
+
+<table class='viewtable' width=100%>
+<tr>
+	<td class='icon-cell'><img src='/static/img/campaign.png'></td>
+	<td colspan=4 class='viewrow-title'>{{campaign.campaign_name}}
+	<a class='viewrow-action-link' href='/core/campaign/edit/{{campaign.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+	<a class='datarow-action-link' href='/core/campaign/delete/{{campaign.pk}}/' onclick='return getConfirmed("Campaign#{{campaign.pk}}");'><img src='/static/img/delete.png'> Delete</a>
+	</td>
+</tr>
+
+<tr>
+
+ <td></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Campaign</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'><a href='/core/campaign/view/{{campaign.pk}}/'>{{campaign.campaign_name}}</a></span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'>Start Date</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{campaign.start_date}}</span></td>
+ 
+</tr>
+
+ 
+
+</table>
+
+{% endblock %}
