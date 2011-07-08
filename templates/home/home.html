@@ -6,45 +6,63 @@
 <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
 </form>
 
-<h2 class='pad20'>Info</h2>
+<!-- <h2 class='pad20'>Dashboard</h2> -->
+<p class='pad20'></p>
 
-<table width=100% class='datatable'>
+<table width=100%>
+<tr>
+<td width=30% style="vertical-align: top;" class='sidetable'>
+
+<table width=100% class='datatable'> 
+<thead>
+<th colspan=2 style='text-align: left; background-color:white;'>
+<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
+<span style="line-height:2em; font-size:16px;">Business Statistics</span>
+</th>
+
+</thead>
 
 	<tr class='datarow'>
-		<td class='icon-cell'><img src='/static/img/info.png'></td>
-		<td class='datarow-prime'>top 3 popular products</td>
-		
+		<tr class='datarow'>
+		<td width=100% colspan=1 class='datarow-prime'>
+		top 3 popular products
+		</td>
+		<td></td>
+		</tr>
+		<tr>
 		{% if not stats.popular_products %}
 		
-			<td colpspan=1 class='datarow-lables'>
+			<td colspan=1 class='datarow-lables'>
 				<span class='datarow-item-lable'>No products defined yet</span>
 			</td>
-			<td></td>
+			<td colspan=1></td>
 		
 		{% else %}
 		
-			<td class='datarow-lables'>
+			<td colspan=1 class='datarow-lables'>
 				{% for product in stats.popular_products|slice:":3" %}
-				<span class='datarow-item-lable'>{{product.name}}</span><br>
+				<span class='datarow-item-lable' style='white-space:normal;'>{{product.name}}</span><br>
 				{% endfor %}
 			</td>
-			<td class='datarow-items'>
+			<td colspan=1 class='datarow-items'>
 				{% for product in stats.popular_products|slice:":3" %}
 				<span class='datarow-item-value'>{{product.bought}} sales</span><br>
 				{% endfor %}
 			</td>
 		
 		{% endif %}
+		</tr>
 	</tr>
 
 	<tr class='datarow'>
-		<td class='icon-cell'><img src='/static/img/info.png'></td>
 		<td class='datarow-prime' colspan=3>{{stats.repeat_customer_percent}}% of your customers are repeat buyers</td>
 	</tr>
 
 	<tr class='datarow'>
-		<td class='icon-cell'><img src='/static/img/info.png'></td>
-		<td class='datarow-prime'>Top 3 sale patterns of your repeat buyers</td>
+		<tr class='datarow'>
+		<td width=100% colspan=2 class='datarow-prime'>Top 3 sale patterns of your repeat buyers</td>
+		</tr>
+		<tr>
 
 		{% if not stats.top_sale_patterns %}
 		
@@ -57,18 +75,199 @@
 		
 		<td class='datarow-lables'>
 			{% for pattern, freq in stats.top_sale_patterns|slice:":3"  %}
-			<span class='datarow-item-lable'>{{pattern}}</span><br>
+			<span class='datarow-item-lable' style='white-space:normal;'>{{pattern}}</span><br><br>
 			{% endfor %}
 		</td>
-		<td class='datarow-items'>
+		<td class='datarow-items' style="vertical-align: bottom;">
 			{% for pattern, freq in stats.top_sale_patterns|slice:":3"  %}
-			<span class='datarow-item-value'>{{freq}} customers</span><br>
+			<span class='datarow-item-value'>{{freq}} customers</span><br><br>
 			{% endfor %}
 		</td>
 		
 		{% endif %}
+		</tr>
 	</tr>
 	
 </table>
+
+</td>
+
+<td width=5%>
+</td>
+
+<td width=60% style="vertical-align: top;" class="sidetable">
+
+
+<table width=100% class="datatable" style="border solid 1px;"> 
+<thead>
+<th style="background-color: #fff">
+<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
+<span style="line-height:2em; font-size:16px;"><div id="chart_title">Sales By Campaign</div></span> 
+    <div id="jsddm">
+    	<a href="#" class="showchartmenu">(see more charts)</a>
+        <ul id="menulist" class= "showchartmenu">
+            <li><a id="sales_by_campaign_chart" class="profit_chart" href="#">Sales By Campaign</a></li>
+            <li><a id="profit_over_time_chart" class="profit_chart" href="#">Revenue Over Time</a></li>
+            <li><a id="profit_by_group_chart" class="profit_chart" href="#">Revenue by Group</a></li>
+            <li><a id="revenue_by_product_over_time" class="profit_chart" href="#">Revenue by Product Over Time</a></li>
+        </ul>
+        </li>
+     </ul>
+</th>
+</thead>
+
+<tr class="datarow"><td class="datarow-prime" id="chartrow"><div id="chartdiv"></div>
+</td></tr>
+</table>
+
+
+</td>
+
+<td width=5%>
+</td>
+
+<!--
+<td width=30% style="vertical-align: top;" class="sidetable">
+
+
+<table width=100% class="datatable">
+<thead>
+<th style="background-color: #fff">
+<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
+<span style="line-height:2em; font-size:16px;">Recent Activity</span>
+</th>
+</thead>
+
+	{% for activity in activities %}
+	<tr class="datarow"> <td><span class='datarow-item-value' style="white-space: wrap;"> {{activity.activity_desc}}  </span></td></tr>
+	{% endfor %}
+
+</table>
+
+
+</td>
+-->
+
+</tr>
+</table>
+
+<script>
+function getid(id) {
+  return document.getElementById(id);
+}
+
+function rr(min, max) {
+  var a = [], i;
+  for (i = min; i < max; i++) {
+    a.push(i);
+  }
+  return a;
+}
+
+function mmap(min, max, method) {
+  var a = [], i;
+  for (i = min; i < max; i++) {
+    a.push(method.apply(this, [i]));
+  }
+  return a;
+}
+
+function rrandom(min, max) {
+  return mmap(min, max, function() { return Math.random(); });
+}
+</script>
+<script>
+    var sales_by_campaign_chart = function() {  
+	$("#chart_title").html("Percentage of Sales By Campaign");
+       var r = Raphael("chartdiv", "100%", "100%");  
+       r.g.piechart(250, 155, 140, {{charts.campaign_values}}, {legend:  {{charts.campaign_names}}, legendpos: "east"});
+    } 
+
+    var profit_by_group_chart = function() {  
+	$("#chart_title").html("Revenue by Group");
+       var r = Raphael("chartdiv", "100%", "100%");  
+       r.g.piechart(250, 155, 140, {{charts.group_values}}, {legend:  {{charts.group_names}}, legendpos: "east"});
+    }  
+
+ 
+
+    var profit_over_time_chart = function() {  
+	$("#chart_title").html("Total Revenue Over The Last 12 Months");
+
+	new Ico.BarGraph(getid('chartdiv'), {{charts.total_monthly_profit_values}}, { colour: '#00bf74', labels: {{charts.total_monthly_profit_names}} });            
+    }
+
+
+
+      
+	
+     var revenue_by_product_over_time = function() {  
+	$("#chart_title").html("Revenue Over The Last 12 Months For Top 3 Products");
+
+	$("#chartrow").html("<div id='chartlegend' style='font-size:11px; font-weight:bold;background-color:#fff'><span style='color: #990000;'>{{charts.name_product_one}}</span><br><span style='color: #009900;'>{{charts.name_product_two}}</span><br><span style='color: #000099;'>{{charts.name_product_three}}</span></div><div id='chartdiv'></div>");
+
+new Ico.LineGraph(getid('chartdiv'), { one: {{charts.monthly_sales_product_one}}, two: {{charts.monthly_sales_product_two}}, three:{{charts.monthly_sales_product_three}}}, {  markers: 'circle', colours: { one: '#990000', two: '#009900', three: '#000099'}, labels: {{charts.total_monthly_profit_names}}, meanline: false, grid: true});
+}  
+
+
+var timeout    = 500;
+var closetimer = 0;
+var ddmenuitem = 0;
+
+function jsddm_open()
+{  
+   jsddm_canceltimer();
+   jsddm_close();
+   ddmenuitem = $('#menulist').css('visibility', 'visible');}
+
+function jsddm_close()
+{  if(ddmenuitem) ddmenuitem.css('visibility', 'hidden');}
+
+function jsddm_timer()
+{  closetimer = window.setTimeout(jsddm_close, timeout);}
+
+function jsddm_canceltimer()
+{  if(closetimer)
+   {  window.clearTimeout(closetimer);
+      closetimer = null;}}
+
+function refresh_chart()
+{
+$('#chartdiv').empty();
+$('#chartlegend').empty();
+var the_id = $(this).attr("id");
+
+	if (the_id == "profit_over_time_chart")
+	{
+		profit_over_time_chart();
+	}
+	else if (the_id == "profit_by_group_chart")
+	{
+		profit_by_group_chart();
+	}
+	else if (the_id == "sales_by_campaign_chart")
+	{
+		sales_by_campaign_chart();
+	}
+	else if (the_id == "revenue_by_product_over_time")
+	{
+		revenue_by_product_over_time();
+	}
+
+
+} 
+$(document).ready(function()
+{  
+   profit_over_time_chart();
+   $('.showchartmenu').bind('mouseover', jsddm_open)
+   $('.showchartmenu').bind('mouseout',  jsddm_timer)
+   $('.profit_chart').bind('click', refresh_chart)
+});
+
+document.onclick = jsddm_close;
+
+              
+
+</script>
 
 {% endblock %}
