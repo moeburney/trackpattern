@@ -123,7 +123,10 @@ def calculate_charts(user):
     total_profit_monthly_names.reverse()
     total_profit_monthly_values.reverse()
 
-    charts['total_monthly_profit_values'] = SafeString(total_profit_monthly_values)
+    if sum(total_profit_monthly_values) == 0:
+        charts['total_monthly_profit_values'] = 0 
+    else:
+        charts['total_monthly_profit_values'] = SafeString(total_profit_monthly_values)
     charts['total_monthly_profit_names'] = SafeString(total_profit_monthly_names)
 
     charts['group_values'] = group_values
