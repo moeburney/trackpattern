@@ -19,8 +19,11 @@ $('#tabCustomers').addClass('selected');
 		<td colspan=4 style='text-align:right;'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
+				<option value="lname" {% ifequal sort 'fullname' %}selected="selected"{% endifequal %}">Name</option>
+				<!--
 				<option value="fname" {% ifequal sort 'fname' %}selected="selected"{% endifequal %}">First Name</option>
 				<option value="lname" {% ifequal sort 'lname' %}selected="selected"{% endifequal %}">Last Name</option>
+				-->
 				<option value="cname" {% ifequal sort 'cname' %}selected="selected"{% endifequal %}">Company Name</option>
 				<option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}">Turnover</option>
 			</select>&nbsp;&nbsp;
