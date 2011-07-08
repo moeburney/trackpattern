@@ -32,6 +32,8 @@ def home(request):
                               'stats': calculate_stats(request.user)},
                               context_instance=RequestContext(request))
 
+
+#for chart calculations
 def calculate_charts(user):
     # sales per campaign
 
