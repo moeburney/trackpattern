@@ -118,7 +118,10 @@ def calculate_charts(user):
 
 
     charts = {}
-    charts['campaign_values'] = campaign_values
+    if sum(campaign_values) == 0:
+        charts['campaign_values'] = 0
+    else:
+        charts['campaign_values'] = campaign_values
     charts['campaign_names'] = SafeString(campaign_names)
     total_profit_monthly_names.reverse()
     total_profit_monthly_values.reverse()
@@ -129,7 +132,10 @@ def calculate_charts(user):
         charts['total_monthly_profit_values'] = SafeString(total_profit_monthly_values)
     charts['total_monthly_profit_names'] = SafeString(total_profit_monthly_names)
 
-    charts['group_values'] = group_values
+    if sum(group_values) == 0:
+        charts['group_values'] = 0 
+    else:
+        charts['group_values'] = group_values
     charts['group_names'] = SafeString(group_names)
 
 
@@ -137,6 +143,9 @@ def calculate_charts(user):
     monthly_sales_of_product[0].reverse()
     monthly_sales_of_product[1].reverse()
     monthly_sales_of_product[2].reverse()
+    
+    if sum(monthly_sales_of_product[0]) + sum(monthly_sales_of_product[1]) + sum(monthly_sales_of_product[2]) == 0:
+        charts['monthly_sales_all_products'] = 0
 
     if name_product[0]:
         charts['name_product_one'] = SafeString(name_product[0])
