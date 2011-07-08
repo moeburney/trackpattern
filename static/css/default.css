@@ -172,9 +172,16 @@ h2 {
 }
 
 .datatable {
-	background-color: #fff;
+	background-color: #fbfaff;
 	padding: 15px;
 	border: solid 1px #ddd;
+
+}
+.sidetable {
+	background-color: #fbfaff;
+	padding: 5px;
+	border: solid 1px #ddd;
+
 }
 .datatable td {
 	padding: 5px;
@@ -221,19 +228,23 @@ h2 {
 .datarow-item-lable {
 	color: #666;
 	font-size: small;
+	/*white-space:nowrap;*/
 	white-space:nowrap;
 }
 .datarow-item-value {
 	font-size: small;
-	white-space:nowrap;
+	/* white-space:nowrap; */
+	 white-space:nowrap; 
 }
 .datarow-items {
 	width: 1px;
 	text-align: left;
 }
 .datarow-lables {
+	/* word-wrap: break-word; */
+	/* max-width:400px; */
 	width: 1px;
-	text-align: right;
+	text-align: left;
 }
 .pager {
 	font-size: small;
@@ -352,3 +363,70 @@ h2 {
 .faqa{
 	padding-left: 20px;
 }
+
+#chartdiv {  
+       height: 450px;
+      /*width: 300px;  */
+      /*width: 50%; */
+      /*margin: 0 auto;*/
+ width: 600px; height: 300px; background-color: #fff; margin-bottom: 20px; 
+
+}  
+
+#jsddm {	
+	margin: 0;
+	padding: 0
+}
+
+#jsddm {	
+	float: right; 
+	font: 12px Tahoma, Arial
+}
+
+#jsddm a {	
+	display: block;
+	/* background: #20548E;*/
+	padding: 5px 12px;
+	text-decoration: none;
+	border-right: 1px solid white;
+	/* width: 70px;*/
+	/* color: #EAFFED; */
+	white-space: nowrap}
+
+#jsddm a:hover {	
+	 background: #fbfaff;
+	}
+		
+#menulist {	
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	visibility: hidden;
+	border-top: 1px solid white
+	}
+		
+#menulist li {	
+	float: none;
+	display: inline;
+	}
+		
+#menulist li a {	
+	width: auto;
+	background: #fff;
+	}
+		
+#menulist li a:hover {	
+	background: #dbdbdb;
+	}
+
+#chart_title {
+margin: 0;
+padding: 0;
+font-weight: normal;
+background: none;
+border: none;
+float: none;
+display: inline;
+}
+
+
