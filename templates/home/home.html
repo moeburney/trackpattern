@@ -194,7 +194,9 @@ function rrandom(min, max) {
     var profit_over_time_chart = function() {  
 	$("#chart_title").html("Total Revenue Over The Last 12 Months");
 
+	{% if charts.total_monthly_profit_values != 0 %}
 	new Ico.BarGraph(getid('chartdiv'), {{charts.total_monthly_profit_values}}, { colour: '#00bf74', labels: {{charts.total_monthly_profit_names}} });            
+	{% endif %}
     }
 
 
