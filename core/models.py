@@ -17,7 +17,7 @@ class Group():
 
     def __init__(self, user):
         self.user = user
-        self.GROUP_DEFINITIONS = ({'id':0, 'name':'Silver (Prospective Buyers)'}, {'id':1, 'name':'Gold (First Time Buyers)'},{'id':2, 'name':'Platinum (Repeat Buyers)'})
+        self.GROUP_DEFINITIONS = ({'id':0, 'name':'Prospective Buyers'}, {'id':1, 'name':'First Time Buyers'},{'id':2, 'name':'Repeat Buyers'})
         
     def get_group(self, id):
         id = int(id)
@@ -26,8 +26,9 @@ class Group():
         else:
             customers = Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought__gte=id)
         self.GROUP_DEFINITIONS[id]['customers'] = customers
+        self.GROUP_DEFINITIONS[id]['total_turnover'] = sum([customer.total_turnover_generated() for customer in customers])
         return self.GROUP_DEFINITIONS[id]
-    
+
 class Category(models.Model):
     """
     represents a group
@@ -158,6 +159,10 @@ class Product(models.Model):
         result = Sale.objects.filter(product=self).aggregate(turnover=Sum('price'))
         return result['turnover'] or 0.0
 
+    def turnover_generated_in_month(self, month):
+        result = Sale.objects.filter(product=self, transaction_date__month=str(month)).aggregate(turnover=Sum('price'))
+        return result['turnover'] or 0.0
+
     
 class Customer(models.Model):
     """
@@ -170,8 +175,10 @@ class Customer(models.Model):
         (2, 'Low'),
         )
     
-    first_name = models.CharField(_('first name'), max_length=50, blank=False, null=False)
-    last_name =  models.CharField(_('last name'), max_length=50, blank=False, null=False)
+    #first_name = models.CharField(_('first name'), max_length=50, blank=False, null=False)
+    #last_name =  models.CharField(_('last name'), max_length=50, blank=False, null=False)
+    full_name =  models.CharField(_('full name'), max_length=50, blank=False, null=False)
+    
     company_name = models.CharField(_('company name'), max_length=100, blank=True, null=False, default="")
     email = models.EmailField(_('email'), max_length=75, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=15, blank=True, null=True)
@@ -185,18 +192,27 @@ class Customer(models.Model):
     connection = models.SmallIntegerField(_('connection'), choices=CONNECTION_CHOICES, default=2)
     gifts_sent = models.PositiveIntegerField(_('gifts sent'), default=0)
     surveys_sent = models.PositiveIntegerField(_('surveys sent'), default=0)
+
     
     user = models.ForeignKey(User, blank=False, null=False)
     #category = models.ForeignKey(Category, blank=False, null=False)
 
     class Meta:
-        ordering = ['first_name', 'last_name']
+        #ordering = ['first_name', 'last_name']
+        ordering = ['full_name']
 
-    def full_name(self):
-        return '%s %s'% (self.first_name, self.last_name)
+    #def full_name(self):
+    #    return '%s %s'% (self.first_name, self.last_name)
+
+    def first_name(self):
+        return self.full_name.split(' ')[0]
     
+    def last_name(self):
+        return self.full_name.split(' ')[len(self.full_name.split(' ')) - 1]
+
     def __unicode__(self):
-        return self.full_name()
+        #return self.full_name()
+        return self.full_name
 
     def group(self):
         """
@@ -247,6 +263,11 @@ class Campaign(models.Model):
     def __unicode__(self):
         return '%s %s'%(self.campaign_name, self.start_date)
 
+    def total_sales(self):
+        sales = Sale.objects.filter(marketing_source=self).count()
+        return sales
+
+
 class Sale(models.Model):
     """
     represents a sale transaction
@@ -266,4 +287,18 @@ class Sale(models.Model):
 
     def __unicode__(self):
         return '%s %s %s'%(self.customer, self.product, self.transaction_date)
+
+class Activity(models.Model):
+    """
+    represents a sale transaction
+    """
+    activity_date = models.DateTimeField(_('created_at'), blank=False, null=False, default=datetime.now)
+    activity_desc = models.CharField('activity', max_length=100, blank=False, null=False)
+    user = models.ForeignKey(User, blank=False, null=False)
+    
+    class Meta:
+        ordering = ['activity_date']
+
+    def __unicode__(self):
+        return '%s %s %s'%(self.user, self.activity_desc, self.activity_date)
     
