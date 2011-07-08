@@ -8,10 +8,13 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models import Sum, Avg, Count
 from django.conf import settings
 
-from core.models import Customer, Category, Product, Sale, Group, Campaign
+from core.models import Customer, Category, Product, Sale, Group, Campaign, Activity
 from core.forms import CustomerForm, CategoryForm, ProductForm, SaleForm, CampaignForm
 
-    
+def add_activity(user, activity_string):
+    a = Activity(activity_desc = activity_string, user = user)
+    a.save()
+
 @login_required
 def customer_home(request):
     """
@@ -22,10 +25,12 @@ def customer_home(request):
     page = int(request.GET.get('page', '1'))
     sort = request.GET.get('sort','fname')
     if sort:
-        if sort == 'fname':
-            customer_list = customer_list.order_by('first_name')
-        elif sort == 'lname':
-            customer_list = customer_list.order_by('last_name')
+        if sort == 'fullname':
+            customer_list = customer_list.order_by('full_name')
+        #if sort == 'fname':
+        #    customer_list = customer_list.order_by('first_name')
+        #elif sort == 'lname':
+        #    customer_list = customer_list.order_by('last_name')
         elif sort == 'cname':
             customer_list = customer_list.order_by('company_name')
         elif sort == 'turnover':
@@ -50,6 +55,10 @@ def customer_view(request, id):
     note: this is not customers info.
     """
     customer = Customer.objects.get(pk=id)
+
+    #activity_string = "Viewed Customer " + str(customer.first_name) + " " + str(customer.last_name)
+    #add_activity(request.user, activity_string)
+
     return render_to_response('core/customer_view.html',
                               {'customer': customer,},
                               context_instance=RequestContext(request))
@@ -65,6 +74,10 @@ def add_customer(request):
             customer = form.save(commit=False)
             customer.user = request.user
             customer.save()
+
+            #activity_string = "Added Customer " + str(customer.first_name) + " " + str(customer.last_name)
+            #add_activity(request.user, activity_string)
+
             return HttpResponseRedirect('/core/customer/')
     else:
         form = CustomerForm()
@@ -81,6 +94,12 @@ def edit_customer(request, id):
         form = CustomerForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
+
+            
+            #activity_string = "Edited Customer " + str(customer.first_name) + " " + str(customer.last_name)
+            #add_activity(request.user, activity_string)
+
+
             return HttpResponseRedirect('/core/customer/')
     else:
         form = CustomerForm(instance=customer)
@@ -96,6 +115,12 @@ def delete_customer(request, id):
     customer = Customer.objects.get(pk=id)
     customer.sale_set.all().delete()
     customer.delete()
+
+    
+    #activity_string = "Deleted Customer " + str(customer.first_name) + " " + str(customer.last_name)
+    #add_activity(request.user, activity_string)
+
+
     return HttpResponseRedirect('/core/customer/')
 
 
@@ -220,6 +245,12 @@ def product_view(request, id):
     renders a specific products's view.
     """
     product = Product.objects.get(pk=id)
+
+    
+    activity_string = "Viewed Product " + str(product.name)
+    add_activity(request.user, activity_string)
+
+
     return render_to_response('core/product_view.html',
                               {'product': product,},
                               context_instance=RequestContext(request))
@@ -235,6 +266,10 @@ def add_product(request):
             product = form.save(commit=False)
             product.user = request.user
             product.save()
+
+            activity_string = "Added Product " + str(product.name)
+            add_activity(request.user, activity_string)
+
             return HttpResponseRedirect('/core/product/')
     else:
         form = ProductForm()
@@ -251,6 +286,10 @@ def edit_product(request, id):
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             form.save()
+
+            activity_string = "Edited Product " + str(product.name)
+            add_activity(request.user, activity_string)
+
             return HttpResponseRedirect('/core/product/')
     else:
         form = ProductForm(instance=product)
@@ -266,6 +305,9 @@ def delete_product(request, id):
     product = Product.objects.get(pk=id)
     product.sale_set.all().delete()
     product.delete()
+
+    activity_string = "Deleted Product " + str(product.name)
+    add_activity(request.user, activity_string)
     return HttpResponseRedirect('/core/product/')
 
 @login_required
@@ -277,10 +319,12 @@ def sale_home(request):
     page = int(request.GET.get('page', '1'))
     sort = request.GET.get('sort', 'date')
     if sort:
-        if sort == 'fname':
-            sale_list = sale_list.order_by('customer__first_name')
-        elif sort == 'lname':
-            sale_list = sale_list.order_by('customer__last_name')
+        if sort == 'fullname':
+            sale_list = sale_list.order_by('customer__full_name')
+        #if sort == 'fname':
+        #    sale_list = sale_list.order_by('customer__first_name')
+        #elif sort == 'lname':
+        #    sale_list = sale_list.order_by('customer__last_name')
         elif sort == 'date':
             sale_list = sale_list.order_by('-transaction_date')
         elif sort == 'product':
