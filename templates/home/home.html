@@ -179,14 +179,23 @@ function rrandom(min, max) {
 <script>
     var sales_by_campaign_chart = function() {  
 	$("#chart_title").html("Percentage of Sales By Campaign");
+	{% if charts.campaign_values == 0 %}
+	$("#chartdiv").html("<span class='datarow-item-lable'> Not enough data to generate this chart.</span>")
+	{% else %}
        var r = Raphael("chartdiv", "100%", "100%");  
        r.g.piechart(250, 155, 140, {{charts.campaign_values}}, {legend:  {{charts.campaign_names}}, legendpos: "east"});
+	{% endif %}
     } 
 
     var profit_by_group_chart = function() {  
 	$("#chart_title").html("Revenue by Group");
+	{% if charts.group_values == 0 %}
+	$("#chartdiv").html("<span class='datarow-item-lable'> Not enough data to generate this chart.</span>")
+	{% else %}
        var r = Raphael("chartdiv", "100%", "100%");  
        r.g.piechart(250, 155, 140, {{charts.group_values}}, {legend:  {{charts.group_names}}, legendpos: "east"});
+	{% endif %}
+	
     }  
 
  
@@ -194,7 +203,9 @@ function rrandom(min, max) {
     var profit_over_time_chart = function() {  
 	$("#chart_title").html("Total Revenue Over The Last 12 Months");
 
-	{% if charts.total_monthly_profit_values != 0 %}
+	{% if charts.total_monthly_profit_values == 0 %}
+	$("#chartdiv").html("<span class='datarow-item-lable'> Not enough data to generate this chart.</span>")
+	{% else %}
 	new Ico.BarGraph(getid('chartdiv'), {{charts.total_monthly_profit_values}}, { colour: '#00bf74', labels: {{charts.total_monthly_profit_names}} });            
 	{% endif %}
     }
@@ -208,7 +219,12 @@ function rrandom(min, max) {
 
 	$("#chartrow").html("<div id='chartlegend' style='font-size:11px; font-weight:bold;background-color:#fff'><span style='color: #990000;'>{{charts.name_product_one}}</span><br><span style='color: #009900;'>{{charts.name_product_two}}</span><br><span style='color: #000099;'>{{charts.name_product_three}}</span></div><div id='chartdiv'></div>");
 
+	{% if charts.monthly_sales_all_products == 0 %}
+	$("#chartrow").html("<div id='chartdiv'><span class='datarow-item-lable'> Not enough data to generate this chart.</span></div>")
+	{% else %}
+	$("#chartdiv").html("<span class='datarow-item-lable'> Not enough data to generate this chart.</span>")
 new Ico.LineGraph(getid('chartdiv'), { one: {{charts.monthly_sales_product_one}}, two: {{charts.monthly_sales_product_two}}, three:{{charts.monthly_sales_product_three}}}, {  markers: 'circle', colours: { one: '#990000', two: '#009900', three: '#000099'}, labels: {{charts.total_monthly_profit_names}}, meanline: false, grid: true});
+	{% endif %}
 }  
 
 
