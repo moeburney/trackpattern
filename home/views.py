@@ -1,5 +1,7 @@
 import operator
 
+import datetime
+
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,18 +10,151 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.conf import settings
 from django.db.models import Count, Avg, Max
-from core.models import Customer, Category, Product, Sale
+from core.models import Customer, Category, Product, Sale, Activity, Campaign, Group
 from home.forms import PersonalForm
+from django.utils.safestring import SafeString
+
+
+
+
 
 @login_required
 def home(request):
     """
     renders dashboard.
     """
-    
+    activities = Activity.objects.filter(user=request.user)
+
+
     return render_to_response('home/home.html',
-                              {'stats': calculate_stats(request.user)},
+                              {'activities': activities,
+                              'charts': calculate_charts(request.user),
+                              'stats': calculate_stats(request.user)},
                               context_instance=RequestContext(request))
+
+def calculate_charts(user):
+    # sales per campaign
+
+    month_translate =  {1 : 'jan',
+    2 : 'feb',
+    3 : 'mar',
+    4 : 'apr',
+    5 : 'may',
+    6 : 'jun',
+    7 : 'jul',
+    8 : 'aug',
+    9 : 'sep',
+    10 : 'oct',
+    11 : 'nov',
+    12 : 'dec',
+    }
+
+    total_profit_monthly_names = []
+    total_profit_monthly_values = []
+
+    top_3_popular_products = Product.objects.filter(user=user) \
+            .annotate(bought=Count('sale')) \
+            .order_by('-bought')[:3]
+
+
+    monthly_sales_of_product = [[],[],[]]
+    name_product = [[],[],[]]
+
+    x = 0
+    for product in top_3_popular_products:
+        name_product[x] = product.name
+        x += 1
+    x = 0
+
+
+    month = datetime.datetime.now().month
+    year = datetime.datetime.now().year
+    i = 0
+    while i < 12:
+        salez = Sale.objects.filter(user=user, transaction_date__year=str(year), transaction_date__month=str(month))
+        total_profit_monthly_names.append(month_translate[month])
+        profits = []
+        profits = [int(sale.price) for sale in salez]
+        total_profit_monthly_values.append(sum(profits))
+
+        x = 0
+        for product in top_3_popular_products:
+            monthly_sales_of_product[x].append(int(product.turnover_generated_in_month(month)))
+            x += 1
+
+
+
+        i += 1
+        if month != 1:
+            month = month - 1
+        else:
+            year = year - 1
+            month = 12
+
+    for sale in salez:
+        campaign_values.append(sale.campaign_count)
+        campaign_names.append("%% " + str(sale.marketing_source.campaign_name))
+
+    campaignz = Campaign.objects.filter(user=user)
+
+    campaign_values = []
+    campaign_names = []
+
+    for campaign in campaignz:
+        campaign_values.append(campaign.total_sales())
+        campaign_names.append("%% " + str(campaign.campaign_name))
+
+
+    group_values = []
+    group_names = []
+
+    g = Group(user)
+    for id in xrange(1, 3):
+        group_values.append(int(g.get_group(id)['total_turnover']))
+        group_names.append("%% " + str(g.get_group(id)['name']))
+
+
+
+    charts = {}
+    charts['campaign_values'] = campaign_values
+    charts['campaign_names'] = SafeString(campaign_names)
+    total_profit_monthly_names.reverse()
+    total_profit_monthly_values.reverse()
+
+    charts['total_monthly_profit_values'] = SafeString(total_profit_monthly_values)
+    charts['total_monthly_profit_names'] = SafeString(total_profit_monthly_names)
+
+    charts['group_values'] = group_values
+    charts['group_names'] = SafeString(group_names)
+
+
+
+    monthly_sales_of_product[0].reverse()
+    monthly_sales_of_product[1].reverse()
+    monthly_sales_of_product[2].reverse()
+
+    if name_product[0]:
+        charts['name_product_one'] = SafeString(name_product[0])
+    else:
+        charts['name_product_one'] = ""
+    if name_product[1]:
+        charts['name_product_two'] = SafeString(name_product[1])
+    else:
+        charts['name_product_two'] = ""
+    if name_product[2]:
+        charts['name_product_three'] = SafeString(name_product[2])
+    else:
+        charts['name_product_three'] = ""
+
+    charts['monthly_sales_product_one'] = SafeString(monthly_sales_of_product[0])
+    charts['monthly_sales_product_two'] = SafeString(monthly_sales_of_product[1])
+    charts['monthly_sales_product_three'] = SafeString(monthly_sales_of_product[2])
+
+
+    return charts
+
+
+
 def calculate_stats(user):
     # 1. most popular product
     popular_products = Product.objects.filter(user=user) \
