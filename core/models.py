@@ -177,7 +177,7 @@ class Customer(models.Model):
     
     #first_name = models.CharField(_('first name'), max_length=50, blank=False, null=False)
     #last_name =  models.CharField(_('last name'), max_length=50, blank=False, null=False)
-    full_name =  models.CharField(_('full name'), max_length=50, blank=False, null=False)
+    full_name =  models.CharField(_('full name'), max_length=50, blank=False, null=False, default="")
     
     company_name = models.CharField(_('company name'), max_length=100, blank=True, null=False, default="")
     email = models.EmailField(_('email'), max_length=75, blank=True, null=True)
