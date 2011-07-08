@@ -44,9 +44,9 @@ def str_to_customer(element, user):
     #cut out salutations
     #element = element.remove("Mr") etc.
 
-    first_name = element.split(' ')[0]
-    last_name = element.split(' ')[1]
-    obj, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, user=user, defaults={})
+    #first_name = element.split(' ')[0]
+    #last_name = element.split(' ')[1]
+    obj, created = Customer.objects.get_or_create(full_name=element, user=user, defaults={})
     return obj
 
 def str_to_campaign(element, user):
