@@ -20,6 +20,11 @@ class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
         exclude = ['user']
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id', None)
+        super(SaleForm, self).__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.filter(user__id=user_id)
+        self.fields['customer'].queryset = Customer.objects.filter(user__id=user_id)
 
 class CampaignForm(forms.ModelForm):
     class Meta:

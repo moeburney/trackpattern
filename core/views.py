@@ -359,14 +359,14 @@ def add_sale(request):
     Creates a sale transaction
     """
     if request.method == 'POST':
-        form = SaleForm(request.POST)
+        form = SaleForm(request.POST, user_id=request.user.pk)
         if form.is_valid():
             sale = form.save(commit=False)
             sale.user = request.user
             sale.save()
             return HttpResponseRedirect('/core/sale/')
     else:
-        form = SaleForm()
+        form = SaleForm(user_id=request.user.pk)
     return render_to_response('core/manage_sale.html',
                               {'form': form, 'is_new': True, 'products': Product.objects.filter(user=request.user)},
                               context_instance=RequestContext(request))
@@ -377,12 +377,12 @@ def edit_sale(request, id):
     """
     sale = Sale.objects.get(pk=id)
     if request.method == 'POST':
-        form = SaleForm(request.POST, instance=sale)
+        form = SaleForm(request.POST, instance=sale, user_id=request.user.pk)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/core/sale/')
     else:
-        form = SaleForm(instance=sale)
+        form = SaleForm(instance=sale, user_id=request.user.pk)
     return render_to_response('core/manage_sale.html',
                               {'form': form, 'is_new': False},
                               context_instance=RequestContext(request))
