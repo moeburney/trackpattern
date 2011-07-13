@@ -144,7 +144,7 @@ def calculate_charts(user):
     monthly_sales_of_product[1].reverse()
     monthly_sales_of_product[2].reverse()
     
-    if sum(monthly_sales_of_product[0]) + sum(monthly_sales_of_product[1]) + sum(monthly_sales_of_product[2]) == 0:
+    if (sum(monthly_sales_of_product[0]) + sum(monthly_sales_of_product[1]) + sum(monthly_sales_of_product[2])) == 0:
         charts['monthly_sales_all_products'] = 0
 
     if name_product[0]:
