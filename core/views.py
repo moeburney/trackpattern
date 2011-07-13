@@ -139,8 +139,14 @@ def group_view(request, id):
     renders a specific group's view.
     """
     group = Group(request.user).get_group(id)
+    paginator = Paginator(group, settings.DEFAULT_PAGESIZE)
+    
     try:
-        paginator = Paginator(group, settings.DEFAULT_PAGESIZE)
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
         group = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope
