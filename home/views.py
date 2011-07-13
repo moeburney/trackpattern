@@ -262,7 +262,7 @@ def forgot_password(request):
                                                   {'password': new_password, 
                                                    'username': user.username,
                                                    }),
-                                 from_email=['accounts@tracklist.com'],
+                                 from_email='accounts@tracklist.com',
                                  to=[user.email])
             email.send()
             reset = True
