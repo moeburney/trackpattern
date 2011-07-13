@@ -229,9 +229,9 @@ def search(request):
     """
     word = request.POST.get('word','')
 
-    categories = Category.objects.filter(name__icontains=word)
-    customers = Customer.objects.filter(full_name__icontains=word)
-    products = Product.objects.filter(name__icontains=word)
+    categories = Category.objects.filter(user=request.user, name__icontains=word)
+    customers = Customer.objects.filter(user=request.user, full_name__icontains=word)
+    products = Product.objects.filter(user=request.user, name__icontains=word)
     
     return render_to_response('home/search_result.html',
                               {'word': word,
