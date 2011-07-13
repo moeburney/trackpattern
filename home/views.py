@@ -230,7 +230,7 @@ def search(request):
     word = request.POST.get('word','')
 
     categories = Category.objects.filter(name__icontains=word)
-    customers = Customer.objects.filter(first_name__icontains=word)
+    customers = Customer.objects.filter(full_name__icontains=word)
     products = Product.objects.filter(name__icontains=word)
     
     return render_to_response('home/search_result.html',
