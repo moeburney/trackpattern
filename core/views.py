@@ -139,6 +139,13 @@ def group_view(request, id):
     renders a specific group's view.
     """
     group = Group(request.user).get_group(id)
+    try:
+        paginator = Paginator(group, settings.DEFAULT_PAGESIZE)
+        group = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+        group = paginator.page(paginator.num_pages)
     return render_to_response('core/group_view.html',
                               {'group': group,},
                               context_instance=RequestContext(request))
