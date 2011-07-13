@@ -25,6 +25,7 @@ class SaleForm(forms.ModelForm):
         super(SaleForm, self).__init__(*args, **kwargs)
         self.fields['product'].queryset = Product.objects.filter(user__id=user_id)
         self.fields['customer'].queryset = Customer.objects.filter(user__id=user_id)
+        self.fields['campaign'].queryset = Customer.objects.filter(user__id=user_id)
 
 class CampaignForm(forms.ModelForm):
     class Meta:
