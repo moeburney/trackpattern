@@ -16,7 +16,9 @@ $('#tabSales').addClass('selected');
 <table width=100% class='datatable'>
 
 	<tr class='datarow pager'>
-		<td colspan=4 style='text-align:right;'>
+		<td colspan=4>
+			<span style='text-align:left'><button id='remove_all_sales'>Remove All</button></span>
+			<span style='float:right'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
 				<option value="fullname" {% ifequal sort 'fullname' %}selected="selected"{% endifequal %}">Name</option>
@@ -35,6 +37,7 @@ $('#tabSales').addClass('selected');
 			{% if sales.has_next %}
 				<a href="?page={{ sales.next_page_number }}">next</a>
 			{% endif %}
+			</span>
 		</td>
 	</tr>
 	
@@ -74,6 +77,12 @@ $('#tabSales').addClass('selected');
 		});
 	});
 	
+	$( "#remove_all_sales").click(function(){
+		// alert the user. because it is irreversible action
+		result = confirm("Are sure want to remove all sales data?");
+		if (result){
+			window.location.href = '/core/sale/delete/0/'; }
+	});	
 </script>
 
 {% endblock %}

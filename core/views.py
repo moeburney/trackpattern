@@ -54,7 +54,7 @@ def customer_view(request, id):
     renders a specific customer's view.
     note: this is not customers info.
     """
-    customer = Customer.objects.get(pk=id)
+    customer = get_object_or_404(Customer, pk=id, user=request.user)
 
     #activity_string = "Viewed Customer " + str(customer.first_name) + " " + str(customer.last_name)
     #add_activity(request.user, activity_string)
@@ -74,10 +74,8 @@ def add_customer(request):
             customer = form.save(commit=False)
             customer.user = request.user
             customer.save()
-
             #activity_string = "Added Customer " + str(customer.first_name) + " " + str(customer.last_name)
             #add_activity(request.user, activity_string)
-
             return HttpResponseRedirect('/core/customer/')
     else:
         form = CustomerForm()
@@ -89,17 +87,13 @@ def edit_customer(request, id):
     """
     Updates a Customer details
     """
-    customer = Customer.objects.get(pk=id)
+    customer = get_object_or_404(Customer, pk=id, user=request.user)
     if request.method == 'POST':
         form = CustomerForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
-
-            
             #activity_string = "Edited Customer " + str(customer.first_name) + " " + str(customer.last_name)
             #add_activity(request.user, activity_string)
-
-
             return HttpResponseRedirect('/core/customer/')
     else:
         form = CustomerForm(instance=customer)
@@ -112,15 +106,18 @@ def delete_customer(request, id):
     Deletes a customer.
     NOTE: Also deletes dependent objects (Purchase)
     """
-    customer = Customer.objects.get(pk=id)
-    customer.sale_set.all().delete()
-    customer.delete()
-
+    if int(id) == 0:
+        # Delete all customers and associated sales
+        Sale.objects.filter(user=request.user).delete()
+        Customer.objects.filter(user=request.user).delete()
+    else:
+        # Delete specific customer and associated sales
+        customer = get_object_or_404(Customer, pk=id, user=request.user)
+        customer.sale_set.all().delete()
+        customer.delete()
     
     #activity_string = "Deleted Customer " + str(customer.first_name) + " " + str(customer.last_name)
     #add_activity(request.user, activity_string)
-
-
     return HttpResponseRedirect('/core/customer/')
 
 
@@ -139,23 +136,20 @@ def group_view(request, id):
     renders a specific group's view.
     """
     group = Group(request.user).get_group(id)
-    """ 
-    paginator = Paginator(group, settings.DEFAULT_PAGESIZE)
-    
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
+    customer_list = Group(request.user).get_group_customers_query(id)
+    page = int(request.GET.get('page', '1'))
 
     try:
-        group = paginator.page(page)
+        paginator = Paginator(customer_list, settings.DEFAULT_PAGESIZE)
+        customers = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope
         # show last page
-        group = paginator.page(paginator.num_pages)
-    """ 
+        customers = paginator.page(paginator.num_pages)
+    print customers.object_list
     return render_to_response('core/group_view.html',
-                              {'group': group,},
+                              {'group': group,
+                               'customers': customers},
                               context_instance=RequestContext(request))
 @login_required
 def category_home(request):
@@ -259,15 +253,20 @@ def product_view(request, id):
     """
     renders a specific products's view.
     """
-    product = Product.objects.get(pk=id)
-
+    product = get_object_or_404(Product, pk=id, user=request.user)
+    sale_list = product.sale_set.order_by('-transaction_date')
+    page = int(request.GET.get('page','1'))
+    try:
+        paginator = Paginator(sale_list, settings.DEFAULT_PAGESIZE)
+        sales = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        sales = paginator.page(paginator.num_pages)
     
     activity_string = "Viewed Product " + str(product.name)
     add_activity(request.user, activity_string)
-
-
     return render_to_response('core/product_view.html',
-                              {'product': product,},
+                              {'product': product,
+                               'sales': sales},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -296,7 +295,7 @@ def edit_product(request, id):
     """
     Updates a Product details
     """
-    product = Product.objects.get(pk=id)
+    product = get_object_or_404(Product, pk=id, user=request.user)
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
@@ -317,12 +316,15 @@ def delete_product(request, id):
     Deletes a product.
     Note: Also delete other dependent entries. (Purchase)
     """
-    product = Product.objects.get(pk=id)
-    product.sale_set.all().delete()
-    product.delete()
-
-    activity_string = "Deleted Product " + str(product.name)
-    add_activity(request.user, activity_string)
+    if int(id) == 0:
+        Sale.objects.filter(user=request.user).delete()
+        Product.objects.filter(user=request.user).delete()
+    else:
+        product = get_object_or_404(Product, pk=id, user=request.user)
+        product.sale_set.all().delete()
+        product.delete()
+        activity_string = "Deleted Product " + str(product.name)
+        add_activity(request.user, activity_string)
     return HttpResponseRedirect('/core/product/')
 
 @login_required
@@ -363,7 +365,7 @@ def sale_view(request, id):
     """
     renders a specific sale view.
     """
-    sale = Sale.objects.get(pk=id)
+    sale = get_object_or_404(Sale, pk=id, user=request.user)
     return render_to_response('core/sale_view.html',
                               {'sale': sale,},
                               context_instance=RequestContext(request))
@@ -390,7 +392,7 @@ def edit_sale(request, id):
     """
     Updates a sale transaction
     """
-    sale = Sale.objects.get(pk=id)
+    sale = get_object_or_404(Sale, pk=id, user=request.user)
     if request.method == 'POST':
         form = SaleForm(request.POST, instance=sale, user_id=request.user.pk)
         if form.is_valid():
@@ -406,8 +408,11 @@ def delete_sale(request, id):
     """
     Deletes a sale.
     """
-    sale = Sale.objects.get(pk=id)
-    sale.delete()
+    if int(id) == 0:
+        Sale.objects.filter(user=request.user).delete()
+    else:
+        sale = get_object_or_404(Sale, pk=id, user=request.user)
+        sale.delete()
     return HttpResponseRedirect('/core/sale/')
 
 
@@ -444,7 +449,7 @@ def campaign_view(request, id):
     """
     renders a specific sale view.
     """
-    campaign = Campaign.objects.get(pk=id)
+    campaign = get_object_or_404(Campaign, pk=id, user=request.user)
     return render_to_response('core/campaign_view.html',
                               {'campaign': campaign,},
                               context_instance=RequestContext(request))
@@ -471,7 +476,7 @@ def edit_campaign(request, id):
     """
     Updates a sale transaction
     """
-    campaign = Campaign.objects.get(pk=id)
+    campaign = get_object_or_404(Campaign, pk=id, user=request.user)
     if request.method == 'POST':
         form = CampaignForm(request.POST, instance=campaign)
         if form.is_valid():
@@ -487,6 +492,6 @@ def delete_campaign(request, id):
     """
     Deletes a sale.
     """
-    campaign = Campaign.objects.get(pk=id)
+    campaign = get_object_or_404(Campaign, pk=id, user=request.user)
     campaign.delete()
     return HttpResponseRedirect('/core/campaign/')

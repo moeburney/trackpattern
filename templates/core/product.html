@@ -17,7 +17,9 @@ $('#tabProducts').addClass('selected');
 
 	<tr class='datarow pager'>
 
-		<td colspan=4 style='text-align:right;'>
+		<td colspan=4>
+			<span style='text-align:left'><button id='remove_all_products'>Remove All</button></span>
+			<span style='float:right'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
 				<option value="name" {% ifequal sort 'name' %}selected="selected"{% endifequal %}">Name</option>
@@ -32,6 +34,7 @@ $('#tabProducts').addClass('selected');
 			{% if products.has_next %}
 				<a href="?page={{ products.next_page_number }}">next</a>
 			{% endif %}
+			</span>
 		</td>
 	</tr>
 	
@@ -67,7 +70,13 @@ $('#tabProducts').addClass('selected');
 			window.location.href = '/core/product/?sort=' + $(this).val();
 		});
 	});
-	
+
+	$( "#remove_all_products").click(function(){
+		// alert the user. because it is irreversible action
+		result = confirm("Are sure want to remove all products and related sales data?");
+		if (result){
+			window.location.href = '/core/product/delete/0/'; }
+	});	
 </script>
 
 {% endblock %}

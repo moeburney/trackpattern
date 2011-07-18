@@ -16,7 +16,10 @@ $('#tabCustomers').addClass('selected');
 <table width=100% class='datatable'>
 
 	<tr class='datarow pager'>
-		<td colspan=4 style='text-align:right;'>
+		
+		<td colspan=4 >
+			<span style='text-align:left'><button id='remove_all_customers'>Remove All</button></span>
+			<span style='float:right'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
 				<option value="lname" {% ifequal sort 'fullname' %}selected="selected"{% endifequal %}">Name</option>
@@ -35,6 +38,7 @@ $('#tabCustomers').addClass('selected');
 			{% if customers.has_next %}
 				<a href="?sort={{sort}}&page={{ customers.next_page_number }}">next</a>
 			{% endif %}
+			</span>
 		</td>
 	</tr>
 
@@ -66,6 +70,13 @@ $('#tabCustomers').addClass('selected');
 			// findout selected sort order
 			// and navigate to ... with details
 			window.location.href = '/core/customer/?sort=' + $(this).val();
+		});
+		
+		$( "#remove_all_customers").click(function(){
+			// alert the user. because it is irreversible action
+			result = confirm("Are sure want to remove all customers and related sales data?");
+			if (result){
+				window.location.href = '/core/customer/delete/0/'; }
 		});
 	});
 	

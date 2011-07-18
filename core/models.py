@@ -29,6 +29,13 @@ class Group():
         self.GROUP_DEFINITIONS[id]['total_turnover'] = sum([customer.total_turnover_generated() for customer in customers])
         return self.GROUP_DEFINITIONS[id]
 
+    def get_group_customers_query(self, id):
+        id=int(id)
+        if id < 2:
+            return Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought=id)
+        else:
+            return Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought__gte=id)
+
 class Category(models.Model):
     """
     represents a group

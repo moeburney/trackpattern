@@ -23,8 +23,8 @@ $('#tabProducts').addClass('selected');
  <td></td>
  <td class='viewrow-lables'><span class='viewrow-item-lable'>Total Turnover Generated</span></td>
  <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.total_turnover_generated}}</span></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'># of Purchases</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.total_purchases}}</span></td>
+ <td class='viewrow-lables'><span class='viewrow-item-lable'># of Sales</span></td>
+ <td class='viewrow-item-value'><span class='viewrow-item-value'>{{product.total_sales}}</span></td>
  
 </tr>
 <tr>
@@ -65,21 +65,32 @@ $('#tabProducts').addClass('selected');
 </tr>
 </table>
 
-<h2 class='pad20'>Purchases of {{product.name}}</h2>
+<h2 class='pad20'>Sales of {{product.name}}</h2>
 <table class='datatable' width=100%>
-{% for purchase in product.purchase_set.all %}
+	<tr class='datarow pager'>
+		<td colspan=4 style='text-align:right;'>
+			{% if sales.has_previous %}
+				<a href="?page={{ sales.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ sales.number }} of {{ sales.paginator.num_pages }}.&nbsp;
+			{% if sales.has_next %}
+				<a href="?page={{ sales.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>	
+{% for sale in sales.object_list %}
 	<tr class='datarow'>
 		<td class='icon-cell'><img src='/static/img/purchase.png'></td>
 		<td class='datarow-prime'>
-			<a class='datarow-title' href='/core/purchase/view/{{purchase.pk}}/'>Purchase#{{purchase.pk}}</a>
+			<a class='datarow-title' href='/core/purchase/view/{{sale.pk}}/'>Sale#{{sale.pk}}</a>
 		</td>
 		<td class='datarow-lables'>
 			<span class='datarow-item-lable'>Customer</span><br>
 			<span class='datarow-item-lable'>Date</span>
 		</td>
 		<td class='datarow-items'>
-			<span class='datarow-item-value'><a href='/core/customer/view/{{purchase.customer.pk}}/'>{{purchase.customer.full_name}}</a></span><br>
-			<span class='datarow-item-value'>{{purchase.transaction_date}}</span>
+			<span class='datarow-item-value'><a href='/core/customer/view/{{sale.customer.pk}}/'>{{sale.customer.full_name}}</a></span><br>
+			<span class='datarow-item-value'>{{sale.transaction_date}}</span>
 		</td>
 	</tr>
 {% endfor %}

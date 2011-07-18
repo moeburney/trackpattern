@@ -16,9 +16,20 @@ $('#tabVategories').addClass('selected');
 </tr>
 </table>
 
-<h2 class='pad20'>Customers in {{group.name}}</h2>
+<h2 class='pad20'>Customers in {{group.name}} group</h2>
 <table class='datatable' width=100%>
-{% for customer in group.customers %}
+	<tr class='datarow pager'>
+		<td colspan=4 style='text-align:right;'>
+			{% if customers.has_previous %}
+				<a href="?page={{ customers.previous_page_number }}">previous</a>&nbsp;
+			{% endif %}
+			Page {{ customers.number }} of {{ customers.paginator.num_pages }}.&nbsp;
+			{% if customers.has_next %}
+				<a href="?page={{ customers.next_page_number }}">next</a>
+			{% endif %}
+		</td>
+	</tr>
+{% for customer in customers.object_list %}
 	<tr class='datarow'>
 		<td class='icon-cell'><img src='/static/img/person.png'></td>
 		<td class='datarow-prime'>
