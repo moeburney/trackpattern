@@ -287,7 +287,7 @@ def signup(request):
             user.is_active=True
             user.save()
 
-            profile = UserProfile(paid=False, user=user)
+            profile = UserProfile(paid_user=False, user=user)
             profile.save()
 
             if user.username.startswith('test2011'):
