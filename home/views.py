@@ -287,9 +287,17 @@ def signup(request):
             user.is_active=True
             user.save()
 
-            login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
-            login(request, login_user)
-            return redirect('/home/')
+            profile = UserProfile(paid=False, user=user)
+            profile.save()
+
+            if user.username.startswith('test2011'):
+                return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?first_name=%s&last_name=%s&email=%s' /
+                % (user.first_name, user.last_name, user.email))
+            else:
+                login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+                login(request, login_user)
+                return redirect('/home/')
+
     else:
         form = SignupForm()
     return render_to_response('registration/signup.html',
