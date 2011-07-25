@@ -291,7 +291,7 @@ def signup(request):
             profile.save()
 
             if user.username.startswith('test2011'):
-                return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?first_name=%s&last_name=%s&email=%s' % (user.first_name, user.last_name, user.email))
+                return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.user_id, user.first_name, user.last_name, user.email))
             else:
                 login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
                 login(request, login_user)
