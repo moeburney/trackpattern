@@ -1,0 +1,14 @@
+Hello {{first_name}},
+
+Thank you for signing up for Trackpattern! We hope you enjoy it.
+
+You can access your account by logging into http://app.trackpattern.com/login/
+
+Your username is {{username}}
+
+If you forget your password you can use the password reset feature on the login page, or just email us.
+
+Trackpattern is a brand new product and we plan to grow it to become bigger and even more suited for your needs. But we can only do it with your help. So we urge you: if you have a question, or want to request a feature, please let us know! Send an email any time to moe@trackpattern.com and I'll be happy to oblige.
+
+Regards,
+Moe Burney and the Trackpattern team
