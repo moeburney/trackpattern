@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     (r'^logout/$', 'django.contrib.auth.views.logout'),
     (r'^forgot_password/$', 'tracklist.home.views.forgot_password'),
     (r'^signup/$', 'tracklist.home.views.signup'),
+    (r'^signup_success/$', 'tracklist.home.views.signup_success'),
     url(r'^groups/(?P<name>.+)/$', 'groups.views.detail', {}, name='group_detail'),
 
 )
