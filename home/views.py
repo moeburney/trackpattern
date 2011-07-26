@@ -308,7 +308,7 @@ def signup_success(request):
     this_user = User.objects.filter(id=user_id).get()
     UserProfile.objects.filter(user=this_user).update(paid_user=True)
     return render_to_response('registration/login.html',
-                        {'first_login':True},
+                        {'first_login':1},
                        context_instance=RequestContext(request))
 
 
