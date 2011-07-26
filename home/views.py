@@ -305,7 +305,7 @@ def signup(request):
 
 def signup_success(request):
     user_id = int(request.GET.get('customer_reference', ''))
-    user = User.objects.filter(id=user_id).get()
+    this_user = User.objects.filter(id=user_id).get()
     UserProfile.objects.filter(user=this_user).update(paid=True)
     return render_to_response('registration/login.html',
                         {'first_login':True},
