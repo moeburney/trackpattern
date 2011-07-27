@@ -15,7 +15,23 @@ from home.forms import PersonalForm
 from django.utils.safestring import SafeString
 
 
-
+def paid_required(request):
+    #work in progress
+    from django.contrib.auth.views import login as loginview
+    func = loginview
+    def decorator(func):
+        if request.method == "POST":
+            form = authentication_form(data=request.POST)
+                if form.is_valid():
+                    this_user = form.get_user()
+                    profile = UserProfile.objects.filter(user=this_user).get()
+                    if not profile.paid_user:
+                        return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email))
+                    else:
+                        return func
+        else:
+            return func
+    return decorator
 
 
 @login_required
@@ -291,6 +307,17 @@ def signup(request):
             profile.save()
 
             if user.username.startswith('test2011'):
+                # send a mail with registration details
+                from django.template.loader import render_to_string
+                from django.core.mail import EmailMessage
+                email = EmailMessage('Welcome to Trackpattern',
+                                     render_to_string('registration/welcome_mail.txt',
+                                                      {'username': user.username
+                                                      'first_name':user.first_name}),
+                                     from_email='moe@trackpattern.com',
+                                     to=[user.email])
+                email.send()
+                #reset = True
                 return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
             else:
                 login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
