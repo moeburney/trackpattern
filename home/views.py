@@ -31,7 +31,7 @@ def paid_required(request):
                     return func
         else:
             return func
-    return decorator
+    return decorator(func)
 
 
 @login_required
