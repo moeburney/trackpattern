@@ -1,5 +1,6 @@
 from django.db import connection
 from django.contrib.auth.models import User, Permission
+from django.shortcuts import redirect
 from core.models import UserProfile
 
 
