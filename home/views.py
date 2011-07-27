@@ -19,19 +19,17 @@ def paid_required(request):
     #work in progress
     from django.contrib.auth.views import login as loginview
     func = loginview
-    def decorator(func):
-        if request.method == "POST":
-            form = authentication_form(data=request.POST)
-            if form.is_valid():
-                this_user = form.get_user()
-                profile = UserProfile.objects.filter(user=this_user).get()
-                if not profile.paid_user:
-                    return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email))
-                else:
-                    return func
-        else:
-            return func
-    return decorator(func)
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            this_user = form.get_user()
+            profile = UserProfile.objects.filter(user=this_user).get()
+            if not profile.paid_user:
+                return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email))
+            else:
+                return func
+    else:
+        return func
 
 
 @login_required
