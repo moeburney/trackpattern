@@ -312,7 +312,7 @@ def signup(request):
                 from django.core.mail import EmailMessage
                 email = EmailMessage('Welcome to Trackpattern',
                                      render_to_string('registration/welcome_mail.txt',
-                                                      {'username': user.username
+                                                      {'username': user.username,
                                                       'first_name':user.first_name}),
                                      from_email='moe@trackpattern.com',
                                      to=[user.email])
