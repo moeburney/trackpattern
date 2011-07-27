@@ -20,7 +20,7 @@ class TracklistAuthBackend(object):
             if user.check_password(password):
                 profile = UserProfile.objects.filter(user=user).get()
                 if not profile.paid_user:
-                    return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
+                    return None 
                 else:
                     return user
         except User.DoesNotExist:
