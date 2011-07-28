@@ -377,12 +377,12 @@ def tlogin(request, template_name='registration/login.html',
 
             # Use default setting if redirect_to is empty
             if not redirect_to:
-                redirect_to = '/home' 
+                redirect_to = '/home'
 
             # Security check -- don't allow redirection to a different
             # host.
             elif netloc and netloc != request.get_host():
-                redirect_to = '/home' 
+                redirect_to = '/home'
 
             # redirect to payment form if user is not paid user
             this_user = form.get_user()
@@ -391,8 +391,8 @@ def tlogin(request, template_name='registration/login.html',
                 if not profile.paid_user:
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email)
 
-            # Okay, security checks complete. Log the user in.
-            auth_login(request, this_user)
+                else:
+                    auth_login(request, this_user)
 
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
