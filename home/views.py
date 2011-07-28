@@ -349,57 +349,70 @@ def faq(request):
                               {},
                               context_instance=RequestContext(request))
 
-def login_decorator(func):
-    """
-    user = func
-    login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
 
-    if user is not None:
-        profile = UserProfile.objects.filter(user=user).get()
-        if not profile.paid_user:
-            return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
-        else:
-            return func
-    else:
-        return func
-    def wrap(*args, **kwargs):
-        result = func(*args, **kwargs)
-        request = args[0]
-        from django.contrib.auth.forms import AuthenticationForm
-        authentication_from = AuthenticationForm
-        if request.method == "POST":
-            form = authentication_form(data=request.POST)
-            if form.is_valid():
-                user = form.get_user()
+
+@csrf_protect
+@never_cache
+def tlogin(request, template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm,
+          current_app=None, extra_context=None):
+
+    import urlparse
+
+    from django.views.decorators.cache import never_cache
+    from django.views.decorators.csrf import csrf_protect
+
+    # Avoid shadowing the login() and logout() views below.
+    from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+    from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
+    from django.contrib.sites.models import get_current_site
+
+    """
+    Displays the login form and handles the login action.
+    """
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            netloc = urlparse.urlparse(redirect_to)[1]
+
+            # Use default setting if redirect_to is empty
+            if not redirect_to:
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Security check -- don't allow redirection to a different
+            # host.
+            elif netloc and netloc != request.get_host():
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # redirect to payment form if user is not paid user
+            if form.get_user() is not None:
                 profile = UserProfile.objects.filter(user=user).get()
                 if not profile.paid_user:
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
-                    return redirect(redirect_to)
-                else:
-                    return result
-            else:
-                return result
-        else:
-            return result
-    return wrap
 
-    def wrap(*a, **kw):
-        def paid_or_redirect(result):
-            user = result
-            if user is not None:
-                profile = UserProfile.objects.filter(user=user).get()
-                if not profile.paid_user:
-                    return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
-                else:
-                    return None
-            else:
-                return None
+            # Okay, security checks complete. Log the user in.
+            auth_login(request, form.get_user())
 
-        result = func(*a, **kw)
-        if paid_or_redirect(result) is not None:
-            return paid_or_redirect(result)
-        else:
-            return result
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
 
-    return wrap
-    """
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+    request.session.set_test_cookie()
+
+    current_site = get_current_site(request)
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+    }
+    context.update(extra_context or {})
+    return render_to_response(template_name, context,
+                              context_instance=RequestContext(request, current_app=current_app))
+
