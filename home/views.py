@@ -375,6 +375,7 @@ def auth_decorator(func):
 
         result = func(*a, **kw)
         paid_or_redirect(result)
+        return result
 
     return wrap
 
