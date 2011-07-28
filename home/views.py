@@ -375,6 +375,13 @@ def login_decorator(func):
                 if not profile.paid_user:
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
                     return redirect(redirect_to)
+                else:
+                    return None
+            else:
+                return None
+        else:
+            return None
+
     if wrap is not None:
         return wrap
     else:
