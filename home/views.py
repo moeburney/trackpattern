@@ -13,6 +13,8 @@ from django.db.models import Count, Avg, Max
 from core.models import Customer, Category, Product, Sale, Activity, Campaign, Group, UserProfile
 from home.forms import PersonalForm
 from django.utils.safestring import SafeString
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
 
 
@@ -360,8 +362,6 @@ def tlogin(request, template_name='registration/login.html',
 
     import urlparse
 
-    from django.views.decorators.cache import never_cache
-    from django.views.decorators.csrf import csrf_protect
 
     # Avoid shadowing the login() and logout() views below.
     from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
