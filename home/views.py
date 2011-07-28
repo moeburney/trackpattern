@@ -306,7 +306,7 @@ def signup(request):
                                  to=[user.email])
             email.send()
             #reset = True
-            return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
+            return redirect('https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
 
             #login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
             #tlogin(request, login_user)
@@ -388,7 +388,7 @@ def tlogin(request, template_name='registration/login.html',
             if this_user is not None:
                 profile = UserProfile.objects.filter(user=this_user).get()
                 if not profile.paid_user:
-                    redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email)
+                    redirect_to = 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email)
 
                 else:
                     auth_login(request, this_user)
