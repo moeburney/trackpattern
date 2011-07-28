@@ -377,12 +377,12 @@ def tlogin(request, template_name='registration/login.html',
 
             # Use default setting if redirect_to is empty
             if not redirect_to:
-                redirect_to = settings.LOGIN_REDIRECT_URL
+                redirect_to = '/home' 
 
             # Security check -- don't allow redirection to a different
             # host.
             elif netloc and netloc != request.get_host():
-                redirect_to = settings.LOGIN_REDIRECT_URL
+                redirect_to = '/home' 
 
             # redirect to payment form if user is not paid user
             this_user = form.get_user()
