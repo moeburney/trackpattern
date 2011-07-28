@@ -362,7 +362,6 @@ def login_decorator(func):
             return func
     else:
         return func
-    """
     def wrap(*args, **kwargs):
         result = func(*args, **kwargs)
         request = args[0]
@@ -384,7 +383,6 @@ def login_decorator(func):
             return result
     return wrap
 
-    """
     def wrap(*a, **kw):
         def paid_or_redirect(result):
             user = result
