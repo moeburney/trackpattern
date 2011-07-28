@@ -3,7 +3,7 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import redirect_to
 from django.views.generic.simple import direct_to_template
 from home.views import login_decorator
-from django.contri.auth.views.login import login as login_page
+from django.contrib.auth.views.login import login as login_page
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
