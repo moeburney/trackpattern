@@ -2,7 +2,6 @@ from django.db import connection
 from django.contrib.auth.models import User, Permission
 from django.shortcuts import redirect
 from core.models import UserProfile
-from home.views import auth_decorator
 
 class TracklistAuthBackend(object):
     """
@@ -14,7 +13,6 @@ class TracklistAuthBackend(object):
 
     # TODO: Model, login attribute name and password attribute name should be
     # configurable.
-    @auth_decorator
     def authenticate(self, username=None, password=None):
         try:
             user = User.objects.get(username=username)
