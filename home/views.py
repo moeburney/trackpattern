@@ -379,6 +379,8 @@ def login_decorator(func):
                     return func
             else:
                 return func
+        else:
+            return func
     return wrap
 
     """
