@@ -5,7 +5,7 @@ import datetime
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.conf import settings
@@ -295,23 +295,22 @@ def signup(request):
             profile = UserProfile(paid_user=False, user=user)
             profile.save()
 
-            if user.username.startswith('test2011'):
-                # send a mail with registration details
-                from django.template.loader import render_to_string
-                from django.core.mail import EmailMessage
-                email = EmailMessage('Welcome to Trackpattern',
-                                     render_to_string('registration/welcome_mail.txt',
-                                                      {'username': user.username,
-                                                      'first_name':user.first_name}),
-                                     from_email='moe@trackpattern.com',
-                                     to=[user.email])
-                email.send()
-                #reset = True
-                return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
-            else:
-                login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
-                login(request, login_user)
-                return redirect('/home/')
+            # send a mail with registration details
+            from django.template.loader import render_to_string
+            from django.core.mail import EmailMessage
+            email = EmailMessage('Welcome to Trackpattern',
+                                 render_to_string('registration/welcome_mail.txt',
+                                                  {'username': user.username,
+                                                  'first_name':user.first_name}),
+                                 from_email='moe@trackpattern.com',
+                                 to=[user.email])
+            email.send()
+            #reset = True
+            return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
+
+            #login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+            #tlogin(request, login_user)
+            #return redirect('/home/')
 
     else:
         form = SignupForm()
