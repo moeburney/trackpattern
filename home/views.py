@@ -377,11 +377,14 @@ def login_decorator(func):
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
                     return redirect(redirect_to)
                 else:
+                    pass
                     #return result
             else:
-               # return result
+                pass
+                #return result
         else:
-           # return result
+            pass
+            #return result
     return wrap
 
     """
