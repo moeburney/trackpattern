@@ -349,7 +349,7 @@ def faq(request):
                               {},
                               context_instance=RequestContext(request))
 
-def auth_decorator(func):
+def login_decorator(func):
     """
     user = func
     login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
@@ -363,8 +363,26 @@ def auth_decorator(func):
     else:
         return func
     """
-    #return func
 
+    def wrap(*a, *kw):
+        request = a[0]
+        from django.contrib.auth.forms import AuthenticationForm
+        authentication_from = AuthenticationForm
+        if request.method == "POST":
+            form = authentication_form(data=request.POST)
+            if form.is_valid():
+                user = form.get_user()
+                profile = UserProfile.objects.filter(user=user).get()
+                if not profile.paid_user:
+                    redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
+                    return redirect(redirect_to)
+                else:
+                    return func
+            else:
+                return func
+    return wrap
+
+    """
     def wrap(*a, **kw):
         def paid_or_redirect(result):
             user = result
@@ -384,4 +402,4 @@ def auth_decorator(func):
             return result
 
     return wrap
-
+    """
