@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     (r'^blog/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/blog.html'}),
     (r'^contact/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/contact.html'}),
 
-    (r'^login/$', login_decorator(login)),
+    (r'^login/$', login),
     #(r'^login/$', 'tracklist.home.views.paid_required'),
     (r'^logout/$', 'django.contrib.auth.views.logout'),
     (r'^forgot_password/$', 'tracklist.home.views.forgot_password'),
