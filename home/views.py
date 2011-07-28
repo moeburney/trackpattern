@@ -366,9 +366,6 @@ def auth_decorator(func):
     #return func
 
     def wrap(*a, **kw):
-        result = func(*a, **kw)
-        return paid_or_redirect(result)
-
         def paid_or_redirect(result):
             user = result
             if user is not None:
@@ -379,5 +376,9 @@ def auth_decorator(func):
                     return result
             else:
                 return result
+
+        result = func(*a, **kw)
+        return paid_or_redirect(result)
+
     return wrap
 
