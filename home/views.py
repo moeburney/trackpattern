@@ -382,7 +382,7 @@ def login_decorator(func):
         else:
             return None
 
-    if wrap() is not None:
+    if wrap(*a, **kw) is not None:
         return wrap
     else:
         return func
