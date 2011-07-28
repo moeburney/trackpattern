@@ -380,7 +380,7 @@ def login_decorator(func):
             else:
                 return func
         else:
-            return func
+            return func(*a, **kw)
     return wrap
 
     """
