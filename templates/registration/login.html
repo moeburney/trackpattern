@@ -102,7 +102,7 @@ Any issues? Contact moe@trackpattern.com <br />
 <!-- Container -->
 <div id="container">
 
-		<form method="post" id="login-form" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+		<form method="post" id="login-form" action="{% url home.views.tlogin %}">{% csrf_token %}
 		<table border=0 width=100% >
 		<tr>
 			<td class='form-label'>Don't have an Account?</td>
