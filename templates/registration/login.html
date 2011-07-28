@@ -15,7 +15,6 @@ background-repeat: no-repeat;
 background-position: 10px center;
 color: #00529B;
 background-color: #BDE5F8;
-background-image: url('info.png');
 }
 
 /* LOGIN FORM */
@@ -105,12 +104,14 @@ input[type=text], input[type=password], select{
 </head>
 
 <body class="login">
+{% if first_login %}
 <div id="first_login">
 You have succesfully signed up for Trackpattern! You may now log in. <br />
 Use the username and password that you chose during signup. Your receipt and username have also
 been emailed to you. <br />
 Any issues? Contact moe@trackpattern.com <br />
 </div>
+{% endif %}
 <!-- Container -->
 <div id="container">
 
