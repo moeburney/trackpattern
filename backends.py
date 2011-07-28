@@ -2,8 +2,9 @@ from django.db import connection
 from django.contrib.auth.models import User, Permission
 from django.shortcuts import redirect
 from core.models import UserProfile
+from home.views import auth_decorator
 
-
+@auth_decorator
 class TracklistAuthBackend(object):
     """
     Authenticates against django.contrib.auth.models.User.
@@ -18,11 +19,6 @@ class TracklistAuthBackend(object):
         try:
             user = User.objects.get(username=username)
             if user.check_password(password):
-                profile = UserProfile.objects.filter(user=user).get()
-                if not profile.paid_user:
-                    return None 
-                else:
-                    return user
         except User.DoesNotExist:
             return None
 
