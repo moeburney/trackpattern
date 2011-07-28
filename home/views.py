@@ -364,7 +364,7 @@ def login_decorator(func):
         return func
     """
     def wrap(*args, **kwargs):
-        result = func(args[0], *args, **kwargs)
+        result = func(*args, **kwargs)
         request = args[0]
         from django.contrib.auth.forms import AuthenticationForm
         authentication_from = AuthenticationForm
