@@ -363,7 +363,7 @@ def login_decorator(func):
     else:
         return func
     """
-    def wrap(*a, *kw):
+    def wrap(*a, **kw):
         request = a[0]
         from django.contrib.auth.forms import AuthenticationForm
         authentication_from = AuthenticationForm
