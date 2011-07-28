@@ -16,6 +16,11 @@ from django.utils.safestring import SafeString
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 
+# Avoid shadowing the login() and logout() views below.
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.sites.models import get_current_site
+import urlparse
 
 
 @login_required
@@ -359,14 +364,6 @@ def tlogin(request, template_name='registration/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
-
-    import urlparse
-
-
-    # Avoid shadowing the login() and logout() views below.
-    from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
-    from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
-    from django.contrib.sites.models import get_current_site
 
     """
     Displays the login form and handles the login action.
