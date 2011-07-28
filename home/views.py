@@ -372,10 +372,16 @@ def auth_decorator(func):
                 profile = UserProfile.objects.filter(user=user).get()
                 if not profile.paid_user:
                     return redirect('https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
+                else:
+                    return None
+            else:
+                return None
 
         result = func(*a, **kw)
-        paid_or_redirect(result)
-        return result
+        if paid_or_redirect(result) is not None:
+            return paid_or_redirect(result)
+        else:
+            return result
 
     return wrap
 
