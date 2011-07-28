@@ -376,8 +376,7 @@ def login_decorator(func):
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
                     return redirect(redirect_to)
         else:
-            from django.contrib.auth.views import login as login_page
-            return login_page
+            return func 
     return wrap
 
     """
