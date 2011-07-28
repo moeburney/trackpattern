@@ -377,7 +377,8 @@ def login_decorator(func):
                     return redirect(redirect_to)
         else:
             return func 
-    return wrap
+    #return wrap
+    return func
 
     """
     def wrap(*a, **kw):
