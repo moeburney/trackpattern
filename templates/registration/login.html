@@ -4,6 +4,17 @@
 
 <title>Trackpattern - Login</title>
 <style>
+
+#first_login {
+font-family:Arial, Helvetica, sans-serif; 
+font-size:13px;
+border: 1px solid;
+margin: 10px 0px;
+padding:15px 10px 15px 50px;
+background-repeat: no-repeat;
+background-position: 10px center;
+}
+
 /* LOGIN FORM */
 
 body.login {
@@ -91,14 +102,12 @@ input[type=text], input[type=password], select{
 </head>
 
 <body class="login">
-{% if first_login %}
 <div id="first_login">
 You have succesfully signed up for Trackpattern! You may now log in. <br />
 Use the username and password that you chose during signup. Your receipt and username have also
 been emailed to you. <br />
 Any issues? Contact moe@trackpattern.com <br />
 </div>
-{% endif %}
 <!-- Container -->
 <div id="container">
 
