@@ -364,6 +364,7 @@ def login_decorator(func):
         return func
     """
     def wrap(*a, **kw):
+        result = func(*a, **kw)
         request = a[0]
         from django.contrib.auth.forms import AuthenticationForm
         authentication_from = AuthenticationForm
@@ -376,17 +377,13 @@ def login_decorator(func):
                     redirect_to = 'https://marketlocomotion.chargify.com/h/46211/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email)
                     return redirect(redirect_to)
                 else:
-                    return None
+                    return result
             else:
-                return None
+                return result
         else:
-            return None
+            return result
 
-    a = wrap(*a, **kw)
-    if a is not None:
-        return a 
-    else:
-        return func
+        return wrap 
 
     """
     def wrap(*a, **kw):
