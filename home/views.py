@@ -350,7 +350,10 @@ def faq(request):
                               context_instance=RequestContext(request))
 
 def auth_decorator(func):
+    """
     user = func
+    login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+
     if user is not None:
         profile = UserProfile.objects.filter(user=user).get()
         if not profile.paid_user:
@@ -359,4 +362,6 @@ def auth_decorator(func):
             return func
     else:
         return func
+    """
+    return func
 
