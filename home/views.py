@@ -379,5 +379,5 @@ def auth_decorator(func):
                     return result
             else:
                 return result
-        return wrap
+    return wrap
 
