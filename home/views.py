@@ -394,6 +394,10 @@ def tlogin(request, template_name='registration/login.html',
                 else:
                     auth_login(request, this_user)
 
+            # If the user is 'None' log in anyway to get error
+            else:
+                auth_login(request,this_user)
+
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
