@@ -3,6 +3,7 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import redirect_to
 from django.views.generic.simple import direct_to_template
 from home.views import login_decorator
+from django.contri.auth.views.login import login as login_page
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -21,7 +22,7 @@ urlpatterns = patterns('',
     (r'^blog/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/blog.html'}),
     (r'^contact/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/contact.html'}),
 
-    (r'^login/$', login_decorator('django.contrib.auth.views.login')),
+    (r'^login/$', login_decorator(login_page)),
     #(r'^login/$', 'tracklist.home.views.paid_required'),
     (r'^logout/$', 'django.contrib.auth.views.logout'),
     (r'^forgot_password/$', 'tracklist.home.views.forgot_password'),
