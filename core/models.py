@@ -293,7 +293,7 @@ class Sale(models.Model):
     
     shopping_cart_source = models.CharField('shopping cart source', max_length=100, blank=True, null=False)
     #marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
-    marketing_source = models.ForeignKey(Campaign, blank=True, null=True)
+    marketing_source = models.ForeignKey(Campaign, blank=True, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(User, blank=False, null=False)
     
     class Meta:
