@@ -1,3 +1,4 @@
+import logging
 import operator
 
 import datetime
@@ -21,7 +22,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.sites.models import get_current_site
 import urlparse
-
+logger = logging.getLogger(__name__)
 
 @login_required
 def home(request):
@@ -225,6 +226,17 @@ def calculate_stats(user):
         stats['repeat_customer_percent'] = (repeat_customers.count() * 100)/total_customers.count()
     else:
         stats['repeat_customer_percent'] = 0
+    customers_by_revenue = sorted(Customer.objects.all(),key=lambda a:a.total_turnover_generated(),reverse=True)
+    if total_customers.count(): # avoid divide by 0 error
+        customers_top_20_percent = int(total_customers.count() * 0.20)
+
+    else:
+        customers_top_20_percent = 0
+    stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
+    print "top_20_customers_by_revenue"
+    logger.info("top_20_customers_by_revenue")
+    logger.info(stats['top_20_customers_by_revenue'])
+    print stats['top_20_customers_by_revenue']
     return stats
 
 @login_required

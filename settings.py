@@ -119,7 +119,6 @@ INSTALLED_APPS = (
     'tracklist.csvimporter',
 
     # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    'south',
-)
+    'django.contrib.admin'
+    )
 SESSION_COOKIE_DOMAIN = 'trackpattern.com'
