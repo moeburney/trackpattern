@@ -23,7 +23,6 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from django.contrib.sites.models import get_current_site
 import urlparse
 
-logger = logging.getLogger(__name__)
 
 @login_required
 def home(request):
@@ -222,6 +221,7 @@ def calculate_stats(user):
     else:
         customers_top_20_percent = 0
     stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
+    logging.getLogger("django.request").debug("top 20 ROHANN\n\n%s"%stats['top_20_customers_by_revenue'])
     return stats
 
 
