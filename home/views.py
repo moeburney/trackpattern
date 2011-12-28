@@ -214,14 +214,6 @@ def calculate_stats(user):
         stats['repeat_customer_percent'] = (repeat_customers.count() * 100) / total_customers.count()
     else:
         stats['repeat_customer_percent'] = 0
-    customers_by_revenue = sorted(Customer.objects.all(), key=lambda a: a.total_turnover_generated(), reverse=True)
-    if total_customers.count(): # avoid divide by 0 error
-        customers_top_20_percent = int(total_customers.count() * 0.20)
-
-    else:
-        customers_top_20_percent = 0
-    stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
-    logging.getLogger("django.request").debug("top 20 ROHANN\n\n%s"%stats['top_20_customers_by_revenue'])
     return stats
 
 
@@ -243,6 +235,16 @@ def search(request):
              'products': products, },
         context_instance=RequestContext(request))
 
+def top_20_customers(user,by):
+    stats = {}
+    customers_by_revenue = sorted(Customer.objects.all(), key=lambda a: a.total_turnover_generated(), reverse=True)
+    if total_customers.count(): # avoid divide by 0 error
+        customers_top_20_percent = int(total_customers.count() * 0.20)
+
+    else:
+        customers_top_20_percent = 0
+    stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
+    logging.getLogger("django.request").debug("top 20 ROHANN\n\n%s"%stats['top_20_customers_by_revenue'])
 
 def forgot_password(request):
     """
