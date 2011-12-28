@@ -1,91 +1,94 @@
-
 <html>
 <head>
-<link href='/static/css/reset.css' rel='stylesheet' type='text/css' />
-<link href='/static/css/default.css' rel='stylesheet' type='text/css' />
-<link href='/static/css/jquery-ui-1.8.13.custom.css' rel='stylesheet' type='text/css' />
+    <link href='/static/css/reset.css' rel='stylesheet' type='text/css'/>
+    <link href='/static/css/default.css' rel='stylesheet' type='text/css'/>
+    <link href='/static/css/jquery-ui-1.8.13.custom.css' rel='stylesheet' type='text/css'/>
 
-<script type='text/javascript' src='/static/js/jquery-1.5.1.min.js'></script>
-<script type='text/javascript' src='/static/js/jquery-ui-1.8.13.custom.min.js'></script>
-<script type='text/javascript' src='/static/js/raphael-min.js'></script>
-<script type='text/javascript' src='/static/js/g.raphael-min.js'></script>
-<script type='text/javascript' src='/static/js/g.pie.js'></script>
-<script type='text/javascript' src='/static/js/g.bar-min.js'></script>
-<script type='text/javascript' src='/static/js/g.line-min.js'></script>
-<script type='text/javascript' src='/static/js/ico/ico-min.js'></script>
+    <script type='text/javascript' src='/static/js/jquery-1.5.1.min.js'></script>
+    <script type='text/javascript' src='/static/js/jquery-ui-1.8.13.custom.min.js'></script>
+    <script type='text/javascript' src='/static/js/raphael-min.js'></script>
+    <script type='text/javascript' src='/static/js/g.raphael-min.js'></script>
+    <script type='text/javascript' src='/static/js/g.pie.js'></script>
+    <script type='text/javascript' src='/static/js/g.bar-min.js'></script>
+    <script type='text/javascript' src='/static/js/g.line-min.js'></script>
+    <script type='text/javascript' src='/static/js/ico/ico-min.js'></script>
 
 
-<style>
-</style>
+    <style>
+    </style>
 </head>
 
 <body>
 
 <table class='layout' width=100% height=100%>
-	<tr class='header-row'>
-		<td colspan=2 class='header-col1'>
-			<span class='logo'>Trackpattern.</span>
-			<div class='superbar'>
-				Hello <b>{{user.username}}</b> &nbsp; | &nbsp;
-				<a href='/home/settings/'>My Settings</a> &nbsp; | &nbsp;
-				<a href='/home/faq/'>Help</a> &nbsp; | &nbsp;
-				<a id='login-logout' href="/logout/">Logout</a>
-			</div>
-		</td>
-		</tr>
-	<tr class='nav-row'>
-		<td colspan=2 class='header-col1'>
-			<span class='nav' >
+    <tr class='header-row'>
+        <td colspan=2 class='header-col1'>
+            <span class='logo'>Trackpattern.</span>
+
+            <div class='superbar'>
+                Hello <b>{{ user.username }}</b> &nbsp; | &nbsp;
+                <a href='/home/settings/'>My Settings</a> &nbsp; | &nbsp;
+                <a href='/home/faq/'>Help</a> &nbsp; | &nbsp;
+                <a id='login-logout' href="/logout/">Logout</a>
+            </div>
+        </td>
+    </tr>
+    <tr class='nav-row'>
+        <td colspan=2 class='header-col1'>
+			<span class='nav'>
 				<ul>
-					<li style='margin-left:0px;' ><a id='tabHome' href="/home/">Home</a></li>
-					<li><a id='tabGroups' href="/core/group/">Groups</a></li>
-					<li><a id='tabCustomers' href="/core/customer/">Customers</a></li>
-					<li><a id='tabProducts' href="/core/product/">Products</a></li>
-					<li><a id='tabSales' href="/core/sale/">Sales</a></li>
-					<li><a id='tabCampaigns' href="/core/campaign/">Campaigns</a></li>
-				</ul>
+                    <li style='margin-left:0px;'><a id='tabHome' href="/home/">Home</a></li>
+                    <li><a id='tabGroups' href="/core/group/">Groups</a></li>
+                    <li><a id='tabCustomers' href="/core/customer/">Customers</a></li>
+                    <li><a id='tabProducts' href="/core/product/">Products</a></li>
+                    <li><a id='tabSales' href="/core/sale/">Sales</a></li>
+                    <li><a id='tabCampaigns' href="/core/campaign/">Campaigns</a></li>
+                </ul>
 			</span>
 			<span style='float: right;'>
 			<form action='/home/search/' method='POST'>{% csrf_token %}
-						<input style='vertical-align: middle;' type=text name='word'></input>
-						<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
-						</form>
+                <input style='vertical-align: middle;' type=text name='word'></input>
+                <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit
+                       value="Search"></input>
+            </form>
 			</span>
-		</td>
-		</tr>
-	<tr class='content-row'>
-		<td class='content-col1'>
-			<div class="content">
-			{% block content %}{% endblock %}
-			</div>
-		</td>
-		<td class='content-col2'>
-			<div class="quicklinks">
-				<ul>
-				<span class='quicklinks-header'>Quick Links</span>
-				<li><a href="/core/customer/add/">Add Customer</a></li>
-				<li><a href="/core/product/add/">Add Product</a></li>
-				<li><a href="/core/sale/add/">Add Sale</a></li>
-				<li><a href="/core/campaign/add/">Add Campaign</a></li>
-				</ul>
-			</div>		
-		</td></tr>
-	<tr class='footer-row'>
-		<td colspan=2 class='footer-col1'>
-			<div class="footer">Copyright &copy; 2011 Trackpattern</div>
-		</td>
-		</tr>
-</table> <!-- table layout -->
+        </td>
+    </tr>
+    <tr class='content-row'>
+        <td class='content-col1'>
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </td>
+        <td class='content-col2'>
+            <div class="quicklinks">
+                <ul>
+                    <span class='quicklinks-header'>Quick Links</span>
+                    <li><a href="/core/customer/add/">Add Customer</a></li>
+                    <li><a href="/core/product/add/">Add Product</a></li>
+                    <li><a href="/core/sale/add/">Add Sale</a></li>
+                    <li><a href="/core/campaign/add/">Add Campaign</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    <tr class='footer-row'>
+        <td colspan=2 class='footer-col1'>
+            <div class="footer">Copyright &copy; 2011 Trackpattern</div>
+        </td>
+    </tr>
+</table>
+<!-- table layout -->
 
 <script>
-function getConfirmed(title){
-	result = confirm("Are sure want to delete " + title);
-	if(result){
-	}else{
-		
-		return false;
-	}
-} // getConfirmed
+    function getConfirmed(title) {
+        result = confirm("Are sure want to delete " + title);
+        if (result) {
+        } else {
+
+            return false;
+        }
+    } // getConfirmed
 
 </script>
 {% block scripts %}
