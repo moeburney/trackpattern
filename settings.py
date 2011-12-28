@@ -64,7 +64,7 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/'
-ADMIN_MEDIA_ROOT = '/home/tracklist_git/'
+ADMIN_MEDIA_ROOT = '/home/tracklist_git/static/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
