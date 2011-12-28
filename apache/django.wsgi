@@ -1,7 +1,7 @@
 import os
 import sys
 
-path = '/home/tracklist_git'
+path = '/home/tracklist'
 if path not in sys.path:
 	sys.path.append('/home')
 	sys.path.append(path)
