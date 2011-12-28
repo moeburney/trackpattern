@@ -42,7 +42,10 @@ def home(request):
 def reports(request):
     return render_to_response('home/reports.html',
     {'stats_rev':top_20_customers(request.user,"revenue"),
-     'stats_pur':top_20_customers(request.user,"purchases")},
+     'stats_pur':top_20_customers(request.user,"purchases"),
+    'stats_bottom_30':bottom_30_customers(request.user,"revenue"),
+     'stats_no_purchase_3_months':no_purchase_x_months(request.user,3),
+     },
      context_instance=RequestContext(request))
 
 #for chart calculations
@@ -249,24 +252,46 @@ def top_20_customers(user,by):
     back_three_months = today - datetime.timedelta(days=91)
     back_one_year = today - datetime.timedelta(days=365)
     if by in "revenue":
-        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
-        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
-        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
+        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
+        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
         logger.debug("\n\n $$$ revenue \n\n")
         logger.debug(stat)
     if by in "purchases":
-        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
-        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
-        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
+        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
+        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
         logger.debug("\n\n $$$ purchase \n\n")
         logger.debug(stat)
     return stat
+def bottom_30_customers(user,by):
+    stat={}
+    total_customer_count = Customer.objects.filter(user=user).count()
+    if by in "revenue":
+        customers = Customer.objects.filter(user=user).annotate(tot_rev=Sum('sale__price')).order_by('tot_rev')
+        bottom_30_count = int(total_customer_count * 0.30)
+        stat['bottom_30_cust'] = customers[:bottom_30_count]
+        logger.info("\n\nbottom 30 %%%%%\n")
+        logger.info(customers)
+    return stat
+
+
+def no_purchase_x_months(user,x):
+    stat={}
+    today = datetime.date.today()
+    back_3_months = today - datetime.timedelta(days=x*30)
+    cust = Customer.objects.filter(user=user).exclude(sale__transaction_date__range=(back_3_months,today))
+    stat['no_purchase_x_months'] = cust
+    logger.info("\n\nNO PURCHASE %%%% \n")
+    logger.info(cust)
+    return stat
+
 def forgot_password(request):
     """
     resets user password and sends mail with new password
