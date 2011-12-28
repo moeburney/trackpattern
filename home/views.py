@@ -222,10 +222,6 @@ def calculate_stats(user):
     else:
         customers_top_20_percent = 0
     stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
-    print "top_20_customers_by_revenue"
-    logger.info("top_20_customers_by_revenue")
-    logger.info(stats['top_20_customers_by_revenue'])
-    print stats['top_20_customers_by_revenue']
     return stats
 
 
