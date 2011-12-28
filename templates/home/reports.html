@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-hi
-</body>
-</html>
+{% extends "home/base.html" %}
+
+{% block content %}
+    {% for item in stats_rev %}
+        <br/> {{item.full_name}}
+    {% endfor %}
+    <hr><hr>
+    {% for item in stats_pur %}
+        {{item.full_name}}
+    {% endfor %}
+{% endblock %}
