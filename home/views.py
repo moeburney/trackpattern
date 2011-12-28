@@ -249,18 +249,18 @@ def top_20_customers(user,by):
     back_three_months = today - datetime.timedelta(days=91)
     back_one_year = today - datetime.timedelta(days=365)
     if by in "revenue":
-        cust_one_month = Customer.objects.filter(sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
-        cust_three_month = Customer.objects.filter(sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
-        cust_one_year = Customer.objects.filter(sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
         logger.debug("\n\n $$$ revenue \n\n")
         logger.debug(stat)
     if by in "purchases":
-        cust_one_month = Customer.objects.filter(sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
-        cust_three_month = Customer.objects.filter(sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
-        cust_one_year = Customer.objects.filter(sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
