@@ -13,11 +13,10 @@ from django.utils.translation import ugettext as _
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.utils import create_csv_reader
 
-from core.models import Customer, Product, Sale, Campaign
+from core.models import Customer, Product, Campaign
 
 
 class CSVForm(forms.ModelForm):
-
     def __init__(self, model=None, *args, **kwargs):
         self.model = model
 
@@ -34,11 +33,12 @@ class CSVForm(forms.ModelForm):
         model = CSV
 
 
-key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ','_').lower())
+key_to_field_map = getattr(settings, 'CSVIMPORTER_KEY_TO_FIELD_MAP', lambda k: k.replace(' ', '_').lower())
 
 def str_to_product(element, user):
     obj, created = Product.objects.get_or_create(name=element, user=user, defaults={})
     return obj
+
 
 def str_to_customer(element, user):
     #cut out salutations
@@ -49,6 +49,7 @@ def str_to_customer(element, user):
     obj, created = Customer.objects.get_or_create(full_name=element, user=user, defaults={})
     return obj
 
+
 def str_to_campaign(element, user):
     obj, created = Campaign.objects.get_or_create(campaign_name=element, user=user, defaults={})
     return obj
@@ -57,7 +58,6 @@ def str_to_campaign(element, user):
 def str_to_company(element):
     #To be used after we add company name to customer model
     pass
-
 
 
 class CSVAssociateForm(forms.Form):
@@ -126,7 +126,7 @@ class CSVAssociateForm(forms.Form):
                     field = new_obj._meta.get_field(key)
                 except FieldDoesNotExist:
                     continue
-                # Cleaning
+                    # Cleaning
                 if type(data[key]) in (str, unicode):
                     data[key] = re.sub(
                         r"^ +$", "", data[key].encode()).decode()

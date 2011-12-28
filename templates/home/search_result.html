@@ -1,27 +1,42 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<h1>Search results for <i>{{word}}</i></h1><br>
+    <h1>Search results for <i>{{ word }}</i></h1><br>
 
-<h2>Categories</h2>
-<table><tr class='header'><td class='first'>Name</td></tr>
-{% for category in categories %}
-<tr class="{% cycle 'odd' 'even' %}"><td class='first'><a href='/core/category/view/{{category.pk}}/'>{{category.name}}</a></td></tr>
-{% endfor %}
-</table>
-<br>
-<h2>Customers</h2>
-<table><tr class='header'><td class='first'>Name</td></tr>
-{% for customer in customers %}
-<tr class="{% cycle 'odd' 'even' %}"><td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a></td></tr>
-{% endfor %}
-</table>
-<br>
-<h2>Products</h2>
-<table><tr class='header'><td class='first'>Name</td></tr>
-{% for product in products %}
-<tr class="{% cycle 'odd' 'even' %}"><td class='first'><a href='/core/product/view/{{product.pk}}/'>{{product.name}}</a></td></tr>
-{% endfor %}
-</table>
+    <h2>Categories</h2>
+    <table>
+        <tr class='header'>
+            <td class='first'>Name</td>
+        </tr>
+        {% for category in categories %}
+            <tr class="{% cycle 'odd' 'even' %}">
+                <td class='first'><a href='/core/category/view/{{category.pk}}/'>{{ category.name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <h2>Customers</h2>
+    <table>
+        <tr class='header'>
+            <td class='first'>Name</td>
+        </tr>
+        {% for customer in customers %}
+            <tr class="{% cycle 'odd' 'even' %}">
+                <td class='first'><a href='/core/customer/view/{{customer.pk}}/'>{{ customer.full_name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <h2>Products</h2>
+    <table>
+        <tr class='header'>
+            <td class='first'>Name</td>
+        </tr>
+        {% for product in products %}
+            <tr class="{% cycle 'odd' 'even' %}">
+                <td class='first'><a href='/core/product/view/{{product.pk}}/'>{{ product.name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}

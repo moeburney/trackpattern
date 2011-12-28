@@ -1,85 +1,94 @@
 {% extends "core/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript" charset="utf-8">
-$('#tabCustomers').addClass('selected');
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $('#tabCustomers').addClass('selected');
+    </script>
 {% endblock %}
 
 {% block content %}
-<form action='/home/search/' method='POST'>{% csrf_token %}
-<input class='content-searchbar' type=text name='word'/>
-<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
-</form>
+    <form action='/home/search/' method='POST'>{% csrf_token %}
+        <input class='content-searchbar' type=text name='word'/>
+        <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
+    </form>
 
-<h2 class='pad20'>Customer List</h2>
-<table width=100% class='datatable'>
+    <h2 class='pad20'>Customer List</h2>
+    <table width=100% class='datatable'>
 
-	<tr class='datarow pager'>
-		
-		<td colspan=4 >
-			<span style='text-align:left'><button id='remove_all_customers'>Remove All</button></span>
+        <tr class='datarow pager'>
+
+            <td colspan=4>
+                <span style='text-align:left'><button id='remove_all_customers'>Remove All</button></span>
 			<span style='float:right'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
-				<option value="lname" {% ifequal sort 'fullname' %}selected="selected"{% endifequal %}">Name</option>
-				<!--
+                <option value="lname" {% ifequal sort 'fullname' %}selected="selected"{% endifequal %}
+                ">Name</option>
+                <!--
 				<option value="fname" {% ifequal sort 'fname' %}selected="selected"{% endifequal %}">First Name</option>
 				<option value="lname" {% ifequal sort 'lname' %}selected="selected"{% endifequal %}">Last Name</option>
 				-->
-				<option value="cname" {% ifequal sort 'cname' %}selected="selected"{% endifequal %}">Company Name</option>
-				<option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}">Turnover</option>
-			</select>&nbsp;&nbsp;
+                <option value="cname" {% ifequal sort 'cname' %}selected="selected"{% endifequal %}
+                ">Company Name</option>
+                <option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}
+                ">Turnover</option>
+            </select>&nbsp;&nbsp;
 
-			{% if customers.has_previous %}
-				<a href="?sort={{sort}}&page={{ customers.previous_page_number }}">previous</a>&nbsp;
-			{% endif %}
-			Page {{ customers.number }} of {{ customers.paginator.num_pages }}.&nbsp;
-			{% if customers.has_next %}
-				<a href="?sort={{sort}}&page={{ customers.next_page_number }}">next</a>
-			{% endif %}
+                {% if customers.has_previous %}
+                    <a href="?sort={{sort}}&page={{ customers.previous_page_number }}">previous</a>&nbsp;
+                {% endif %}
+                Page {{ customers.number }} of {{ customers.paginator.num_pages }}.&nbsp;
+                {% if customers.has_next %}
+                    <a href="?sort={{sort}}&page={{ customers.next_page_number }}">next</a>
+                {% endif %}
 			</span>
-		</td>
-	</tr>
+            </td>
+        </tr>
 
-{% for customer in customers.object_list %}
-	<tr class='datarow'>
-		<td class='icon-cell'><img src='/static/img/person.png'></td>
-		<td class='datarow-prime'>
-			<a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{customer.full_name}}</a> 
-			{% if customer.company_name != "" %}
-			<br> 
-			<span style="font-style: italic; font-size: 12px;">{{customer.company_name}}</span>
-			{% endif %}
-			<br>
-			<a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
-			<a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/' onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'> Delete</a>
-		</td>
-		<td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span class='datarow-item-lable'>Turnover</span></td>
-		<td class='datarow-items'><span class='datarow-item-value'>{{customer.group.name}}</span><br><span class='datarow-item-value'>{{customer.total_turnover_generated|default:"0.00"}}</span></td>
-	</tr>
-{% endfor %}
+        {% for customer in customers.object_list %}
+            <tr class='datarow'>
+                <td class='icon-cell'><img src='/static/img/person.png'></td>
+                <td class='datarow-prime'>
+                    <a class='datarow-title' href='/core/customer/view/{{customer.pk}}/'>{{ customer.full_name }}</a>
+                    {% if customer.company_name != "" %}
+                        <br>
+                        <span style="font-style: italic; font-size: 12px;">{{ customer.company_name }}</span>
+                    {% endif %}
+                    <br>
+                    <a class='datarow-action-link' href='/core/customer/edit/{{customer.pk}}/'><img
+                            src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+                    <a class='datarow-action-link' href='/core/customer/delete/{{customer.pk}}/'
+                       onclick='return getConfirmed("{{customer.full_name}}");'><img src='/static/img/delete.png'>
+                        Delete</a>
+                </td>
+                <td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span
+                        class='datarow-item-lable'>Turnover</span></td>
+                <td class='datarow-items'><span class='datarow-item-value'>{{ customer.group.name }}</span><br><span
+                        class='datarow-item-value'>{{ customer.total_turnover_generated|default:"0.00" }}</span></td>
+            </tr>
+        {% endfor %}
 
-</table>
+    </table>
 
-<script>
-	
-	$(document).ready(function() {
-		// register a listener with JQ to intimate when sort order changed
-		$( "#sort" ).change(function(a){
-			// findout selected sort order
-			// and navigate to ... with details
-			window.location.href = '/core/customer/?sort=' + $(this).val();
-		});
-		
-		$( "#remove_all_customers").click(function(){
-			// alert the user. because it is irreversible action
-			result = confirm("Are sure want to remove all customers and related sales data?");
-			if (result){
-				window.location.href = '/core/customer/delete/0/'; }
-		});
-	});
-	
-</script>
+    <script>
+
+        $(document).ready(function () {
+            // register a listener with JQ to intimate when sort order changed
+            $("#sort").change(function (a) {
+                // findout selected sort order
+                // and navigate to ... with details
+                window.location.href = '/core/customer/?sort=' + $(this).val();
+            });
+
+            $("#remove_all_customers").click(function () {
+                // alert the user. because it is irreversible action
+                result = confirm("Are sure want to remove all customers and related sales data?");
+                if (result) {
+                    window.location.href = '/core/customer/delete/0/';
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}

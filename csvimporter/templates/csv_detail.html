@@ -2,17 +2,20 @@
 
 {% block content %}
 
-<div id="content-main">
-    <h2>Import CSV</h2>
-    <em>{{ csv.filename }}, uploaded {{ csv.created|timesince }} ago</em>
-    <p style="font-weight: bold;"> <br /> Please associate your csv file column headings (on the left) with Trackpattern fields (on the right) </p>
-	<br />
-    <form action='.' method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-        <table>
-            {{form.as_table}}
-        </table>
-        <input type="submit" class="submit" />
-    </form>
-</div>
+    <div id="content-main">
+        <h2>Import CSV</h2>
+        <em>{{ csv.filename }}, uploaded {{ csv.created|timesince }} ago</em>
+
+        <p style="font-weight: bold;"><br/> Please associate your csv file column headings (on the left) with
+            Trackpattern fields (on the right) </p>
+        <br/>
+
+        <form action='.' method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" class="submit"/>
+        </form>
+    </div>
 
 {% endblock %}

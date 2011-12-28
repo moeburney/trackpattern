@@ -22,6 +22,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.sites.models import get_current_site
 import urlparse
+
 logger = logging.getLogger(__name__)
 
 @login_required
@@ -31,49 +32,46 @@ def home(request):
     """
     activities = Activity.objects.filter(user=request.user)
 
-
     return render_to_response('home/home.html',
-                              {'activities': activities,
-                              'charts': calculate_charts(request.user),
-                              'stats': calculate_stats(request.user)},
-                              context_instance=RequestContext(request))
+            {'activities': activities,
+             'charts': calculate_charts(request.user),
+             'stats': calculate_stats(request.user)},
+        context_instance=RequestContext(request))
 
 
 #for chart calculations
 def calculate_charts(user):
     # sales per campaign
 
-    month_translate =  {1 : 'jan',
-    2 : 'feb',
-    3 : 'mar',
-    4 : 'apr',
-    5 : 'may',
-    6 : 'jun',
-    7 : 'jul',
-    8 : 'aug',
-    9 : 'sep',
-    10 : 'oct',
-    11 : 'nov',
-    12 : 'dec',
-    }
+    month_translate = {1: 'jan',
+                       2: 'feb',
+                       3: 'mar',
+                       4: 'apr',
+                       5: 'may',
+                       6: 'jun',
+                       7: 'jul',
+                       8: 'aug',
+                       9: 'sep',
+                       10: 'oct',
+                       11: 'nov',
+                       12: 'dec',
+                       }
 
     total_profit_monthly_names = []
     total_profit_monthly_values = []
 
-    top_3_popular_products = Product.objects.filter(user=user) \
-            .annotate(bought=Count('sale')) \
-            .order_by('-bought')[:3]
+    top_3_popular_products = Product.objects.filter(user=user)\
+                             .annotate(bought=Count('sale'))\
+                             .order_by('-bought')[:3]
 
-
-    monthly_sales_of_product = [[],[],[]]
-    name_product = [[],[],[]]
+    monthly_sales_of_product = [[], [], []]
+    name_product = [[], [], []]
 
     x = 0
     for product in top_3_popular_products:
         name_product[x] = product.name
         x += 1
     x = 0
-
 
     month = datetime.datetime.now().month
     year = datetime.datetime.now().year
@@ -89,8 +87,6 @@ def calculate_charts(user):
         for product in top_3_popular_products:
             monthly_sales_of_product[x].append(int(product.turnover_generated_in_month(month)))
             x += 1
-
-
 
         i += 1
         if month != 1:
@@ -112,7 +108,6 @@ def calculate_charts(user):
         campaign_values.append(campaign.total_sales())
         campaign_names.append("%% " + str(campaign.campaign_name))
 
-
     group_values = []
     group_names = []
 
@@ -120,8 +115,6 @@ def calculate_charts(user):
     for id in xrange(1, 3):
         group_values.append(int(g.get_group(id)['total_turnover']))
         group_names.append("%% " + str(g.get_group(id)['name']))
-
-
 
     charts = {}
     if sum(campaign_values) == 0:
@@ -133,23 +126,21 @@ def calculate_charts(user):
     total_profit_monthly_values.reverse()
 
     if sum(total_profit_monthly_values) == 0:
-        charts['total_monthly_profit_values'] = 0 
+        charts['total_monthly_profit_values'] = 0
     else:
         charts['total_monthly_profit_values'] = SafeString(total_profit_monthly_values)
     charts['total_monthly_profit_names'] = SafeString(total_profit_monthly_names)
 
     if sum(group_values) == 0:
-        charts['group_values'] = 0 
+        charts['group_values'] = 0
     else:
         charts['group_values'] = group_values
     charts['group_names'] = SafeString(group_names)
 
-
-
     monthly_sales_of_product[0].reverse()
     monthly_sales_of_product[1].reverse()
     monthly_sales_of_product[2].reverse()
-    
+
     if (sum(monthly_sales_of_product[0]) + sum(monthly_sales_of_product[1]) + sum(monthly_sales_of_product[2])) == 0:
         charts['monthly_sales_all_products'] = 0
 
@@ -170,27 +161,25 @@ def calculate_charts(user):
     charts['monthly_sales_product_two'] = SafeString(monthly_sales_of_product[1])
     charts['monthly_sales_product_three'] = SafeString(monthly_sales_of_product[2])
 
-
     return charts
-
 
 
 def calculate_stats(user):
     # 1. most popular product
-    popular_products = Product.objects.filter(user=user) \
-                       .annotate(bought=Count('sale')) \
-                       .order_by('-bought')
-        
+    popular_products = Product.objects.filter(user=user)\
+    .annotate(bought=Count('sale'))\
+    .order_by('-bought')
+
     # 2. repeat customers percent
     total_customers = Customer.objects.filter(user=user)
-    repeat_customers = Customer.objects.filter(user=user) \
-                       .annotate(bought=Count('sale')) \
-                       .filter(bought__gte=2)
-    
+    repeat_customers = Customer.objects.filter(user=user)\
+    .annotate(bought=Count('sale'))\
+    .filter(bought__gte=2)
+
     # 3. repeat customers mostly bought x first, and then y
-    repeat_buyers = Customer.objects.filter(user=user) \
-                   .annotate(bought=Count('sale')) \
-                   .filter(bought__gte=2)
+    repeat_buyers = Customer.objects.filter(user=user)\
+    .annotate(bought=Count('sale'))\
+    .filter(bought__gte=2)
     # identify top repeat buyer, could be more than one buyer
     top_repeat_buyers = []
     for buyer in repeat_buyers:
@@ -201,9 +190,9 @@ def calculate_stats(user):
                 top_repeat_buyers.append(buyer)
             else:
                 break
-    repeat_buyers_sales = Sale.objects.filter(customer__in=[x.pk for x in top_repeat_buyers]) \
-                             .order_by('customer','transaction_date')
-    buyer_product_order= {}
+    repeat_buyers_sales = Sale.objects.filter(customer__in=[x.pk for x in top_repeat_buyers])\
+    .order_by('customer', 'transaction_date')
+    buyer_product_order = {}
     for p in repeat_buyers_sales:
         if not p.customer in buyer_product_order:
             buyer_product_order[p.customer] = []
@@ -215,7 +204,7 @@ def calculate_stats(user):
             product_sale_pattern[pattern] = 1
         else:
             product_sale_pattern[pattern] = product_sale_pattern[pattern] + 1
-    # now we have sale patterns & no of occurances of those pattern
+        # now we have sale patterns & no of occurances of those pattern
     # { 'x,y': 1, 'y,x': 4, 'x,z': 2 }
     # let's sort them on pattern frequency, and identify top one. multiple also possible
     sorted_patterns_by_freq = sorted(product_sale_pattern.iteritems(), reverse=True, key=operator.itemgetter(1))
@@ -223,10 +212,10 @@ def calculate_stats(user):
     stats['popular_products'] = popular_products
     stats['top_sale_patterns'] = sorted_patterns_by_freq
     if total_customers.count(): # avoid divide by 0 error
-        stats['repeat_customer_percent'] = (repeat_customers.count() * 100)/total_customers.count()
+        stats['repeat_customer_percent'] = (repeat_customers.count() * 100) / total_customers.count()
     else:
         stats['repeat_customer_percent'] = 0
-    customers_by_revenue = sorted(Customer.objects.all(),key=lambda a:a.total_turnover_generated(),reverse=True)
+    customers_by_revenue = sorted(Customer.objects.all(), key=lambda a: a.total_turnover_generated(), reverse=True)
     if total_customers.count(): # avoid divide by 0 error
         customers_top_20_percent = int(total_customers.count() * 0.20)
 
@@ -239,23 +228,25 @@ def calculate_stats(user):
     print stats['top_20_customers_by_revenue']
     return stats
 
+
 @login_required
 def search(request):
     """
     search for given name in categories, customer, product etc.
     """
-    word = request.POST.get('word','')
+    word = request.POST.get('word', '')
 
     categories = Category.objects.filter(user=request.user, name__icontains=word)
     customers = Customer.objects.filter(user=request.user, full_name__icontains=word)
     products = Product.objects.filter(user=request.user, name__icontains=word)
-    
+
     return render_to_response('home/search_result.html',
-                              {'word': word,
-                               'categories': categories,
-                               'customers': customers,
-                               'products': products,},
-                              context_instance=RequestContext(request))
+            {'word': word,
+             'categories': categories,
+             'customers': customers,
+             'products': products, },
+        context_instance=RequestContext(request))
+
 
 def forgot_password(request):
     """
@@ -268,29 +259,33 @@ def forgot_password(request):
             user = User.objects.get(username=username)
             import random
             import string
+
             new_password = ''.join(random.choice(string.letters + string.digits) for i in xrange(8))
             user.set_password(new_password)
             user.save()
             # send a mail with new password
             from django.template.loader import render_to_string
             from django.core.mail import EmailMessage
+
             email = EmailMessage('Trackpattern: Password reset instructions',
-                                 render_to_string('registration/password_reset_mail.txt',
-                                                  {'password': new_password, 
-                                                   'username': user.username,
-                                                   }),
-                                 from_email='moe@trackpattern.com',
-                                 to=[user.email])
+                render_to_string('registration/password_reset_mail.txt',
+                        {'password': new_password,
+                         'username': user.username,
+                         }),
+                from_email='moe@trackpattern.com',
+                to=[user.email])
             email.send()
             reset = True
         except:
             pass
     return render_to_response('registration/forgot_password.html',
-                              {'reset': reset,},
-                              context_instance=RequestContext(request))
+            {'reset': reset, },
+        context_instance=RequestContext(request))
+
 
 def signup(request):
     from forms import SignupForm
+
     if request.method == 'POST':
         # process signup form and create account
         form = SignupForm(request.POST)
@@ -301,7 +296,7 @@ def signup(request):
             user.email = form.cleaned_data['email']
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            user.is_active=True
+            user.is_active = True
             user.save()
 
             profile = UserProfile(paid_user=False, user=user)
@@ -310,15 +305,18 @@ def signup(request):
             # send a mail with registration details
             from django.template.loader import render_to_string
             from django.core.mail import EmailMessage
+
             email = EmailMessage('Welcome to Trackpattern',
-                                 render_to_string('registration/welcome_mail.txt',
-                                                  {'username': user.username,
-                                                  'first_name':user.first_name}),
-                                 from_email='moe@trackpattern.com',
-                                 to=[user.email])
+                render_to_string('registration/welcome_mail.txt',
+                        {'username': user.username,
+                         'first_name': user.first_name}),
+                from_email='moe@trackpattern.com',
+                to=[user.email])
             email.send()
             #reset = True
-            return redirect('https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (user.id, user.first_name, user.last_name, user.email))
+            return redirect(
+                'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
+                user.id, user.first_name, user.last_name, user.email))
 
             #login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
             #tlogin(request, login_user)
@@ -327,16 +325,17 @@ def signup(request):
     else:
         form = SignupForm()
     return render_to_response('registration/signup.html',
-                       {'form': form,},
-                       context_instance=RequestContext(request))
+            {'form': form, },
+        context_instance=RequestContext(request))
+
 
 def signup_success(request):
     user_id = int(request.GET.get('customer_reference', ''))
     this_user = User.objects.filter(id=user_id).get()
     UserProfile.objects.filter(user=this_user).update(paid_user=True)
     return render_to_response('registration/login.html',
-                        {'first_login':1},
-                       context_instance=RequestContext(request))
+            {'first_login': 1},
+        context_instance=RequestContext(request))
 
 
 @login_required
@@ -355,8 +354,9 @@ def settings(request):
             user.save()
             return HttpResponseRedirect("/home/")
     return render_to_response('home/settings.html',
-                              {'form': PersonalForm(instance=request.user),},
-                              context_instance=RequestContext(request))
+            {'form': PersonalForm(instance=request.user), },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def faq(request):
@@ -364,18 +364,16 @@ def faq(request):
     faq page
     """
     return render_to_response('faq/faq.html',
-                              {},
-                              context_instance=RequestContext(request))
-
+            {},
+        context_instance=RequestContext(request))
 
 
 @csrf_protect
 @never_cache
 def tlogin(request, template_name='registration/login.html',
-          redirect_field_name=REDIRECT_FIELD_NAME,
-          authentication_form=AuthenticationForm,
-          current_app=None, extra_context=None):
-
+           redirect_field_name=REDIRECT_FIELD_NAME,
+           authentication_form=AuthenticationForm,
+           current_app=None, extra_context=None):
     """
     Displays the login form and handles the login action.
     """
@@ -400,14 +398,15 @@ def tlogin(request, template_name='registration/login.html',
             if this_user is not None:
                 profile = UserProfile.objects.filter(user=this_user).get()
                 if not profile.paid_user:
-                    redirect_to = 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (this_user.id, this_user.first_name, this_user.last_name, this_user.email)
+                    redirect_to = 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
+                    this_user.id, this_user.first_name, this_user.last_name, this_user.email)
 
                 else:
                     auth_login(request, this_user)
 
             # If the user is 'None' log in anyway to get error
             else:
-                auth_login(request,this_user)
+                auth_login(request, this_user)
 
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
@@ -424,8 +423,8 @@ def tlogin(request, template_name='registration/login.html',
         redirect_field_name: redirect_to,
         'site': current_site,
         'site_name': current_site.name,
-    }
+        }
     context.update(extra_context or {})
     return render_to_response(template_name, context,
-                              context_instance=RequestContext(request, current_app=current_app))
+        context_instance=RequestContext(request, current_app=current_app))
 

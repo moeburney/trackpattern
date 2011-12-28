@@ -6,6 +6,7 @@ from home.views import tlogin
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 admin.autodiscover()
 urlpatterns = patterns('',
     (r'^static/(?P<path>.*)/$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
@@ -14,12 +15,12 @@ urlpatterns = patterns('',
     (r'^home/', include('tracklist.home.urls')),
     (r'^$', redirect_to, {'url': '/home/'}),
     (r'^core/', include('tracklist.core.urls')),
-    (r'^landing/', direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/index.html'}),
-    (r'^index-2/', direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/index-2.html'}),
-    (r'^about/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/about.html'}),
-    (r'^pricing/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/pricing.html'}),
-    (r'^blog/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/blog.html'}),
-    (r'^contact/',  direct_to_template, {'template':settings.MEDIA_ROOT + '/landing/contact.html'}),
+    (r'^landing/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/index.html'}),
+    (r'^index-2/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/index-2.html'}),
+    (r'^about/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/about.html'}),
+    (r'^pricing/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/pricing.html'}),
+    (r'^blog/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/blog.html'}),
+    (r'^contact/', direct_to_template, {'template': settings.MEDIA_ROOT + '/landing/contact.html'}),
 
     (r'^login/$', tlogin),
     #(r'^login/$', login),

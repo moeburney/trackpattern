@@ -1,11 +1,7 @@
-import os
-import time
-import urllib
 from datetime import datetime
 from django.db import models
-from django.db.models import Sum, Avg, Count
+from django.db.models import Sum, Count
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_str
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
@@ -15,17 +11,19 @@ class UserProfile(models.Model):
     # Other fields here
     paid_user = models.BooleanField()
 
+
 class Group():
     """
     represents a virtual group
     note: no respctive database table
     """
-    
+
 
     def __init__(self, user):
         self.user = user
-        self.GROUP_DEFINITIONS = ({'id':0, 'name':'Prospective Buyers'}, {'id':1, 'name':'First Time Buyers'},{'id':2, 'name':'Repeat Buyers'})
-        
+        self.GROUP_DEFINITIONS = ({'id': 0, 'name': 'Prospective Buyers'}, {'id': 1, 'name': 'First Time Buyers'},
+                                      {'id': 2, 'name': 'Repeat Buyers'})
+
     def get_group(self, id):
         id = int(id)
         if id < 2:
@@ -33,15 +31,17 @@ class Group():
         else:
             customers = Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought__gte=id)
         self.GROUP_DEFINITIONS[id]['customers'] = customers
-        self.GROUP_DEFINITIONS[id]['total_turnover'] = sum([customer.total_turnover_generated() for customer in customers])
+        self.GROUP_DEFINITIONS[id]['total_turnover'] = sum(
+            [customer.total_turnover_generated() for customer in customers])
         return self.GROUP_DEFINITIONS[id]
 
     def get_group_customers_query(self, id):
-        id=int(id)
+        id = int(id)
         if id < 2:
             return Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought=id)
         else:
             return Customer.objects.filter(user=self.user).annotate(bought=Count('sale')).filter(bought__gte=id)
+
 
 class Category(models.Model):
     """
@@ -52,12 +52,12 @@ class Category(models.Model):
         (1, 'Medium'),
         (2, 'Low'),
         )
-    
+
     name = models.CharField(_('name'), max_length=50, blank=False, null=False)
-    characteristics =  models.CharField(_('characteristics'), max_length=200, blank=True, null=True)
+    characteristics = models.CharField(_('characteristics'), max_length=200, blank=True, null=True)
     interests = models.CharField(_('core interests'), max_length=200, blank=True, null=True)
     connection = models.SmallIntegerField(_('connection'), choices=CONNECTION_CHOICES, default=2)
-    
+
     # foreign key mappings goes here
     user = models.ForeignKey(User, blank=False, null=False)
 
@@ -74,17 +74,19 @@ class Category(models.Model):
         """
         turnover = Sale.objects.filter(customer__category=self).aggregate(turnover=Sum('price'))
         return turnover['turnover'] or 0.0
-        
+
 
     def total_sales(self):
         return Sale.objects.filter(customer__category=self).count()
 
     def most_common_path(self):
-        most_bought_products = Product.objects.filter(sale__customer__category=self).annotate(bought=Count('sale__product')).order_by('-bought')
+        most_bought_products = Product.objects.filter(sale__customer__category=self).annotate(
+            bought=Count('sale__product')).order_by('-bought')
         return ' > '.join(product.name for product in most_bought_products)
-    
+
     def get_rank(self):
-        groups_by_revenue = Category.objects.filter(user=self.user).annotate(revenue=Sum('customer__sale__price')).order_by('-revenue')
+        groups_by_revenue = Category.objects.filter(user=self.user).annotate(
+            revenue=Sum('customer__sale__price')).order_by('-revenue')
         counter = 0
         rank = len(categories_by_revenue)
         for each in categories_by_revenue:
@@ -109,7 +111,8 @@ class Category(models.Model):
             return sale.transaction_date
         except IndexError:
             return None
-    
+
+
 class Product(models.Model):
     """
     represents a product
@@ -121,14 +124,15 @@ class Product(models.Model):
         )
     name = models.CharField(_('name'), max_length=50, blank=False, null=False)
     date_released = models.DateField(_('date released'), blank=True, null=True)
-    current_price = models.DecimalField(_('current price'), max_digits=10, decimal_places=2, blank=True, null=False, default=0)
+    current_price = models.DecimalField(_('current price'), max_digits=10, decimal_places=2, blank=True, null=False,
+        default=0)
     importance = models.SmallIntegerField(_('importance'), choices=IMPORTANCE_CHOICES, default=2)
     main_appeal = models.CharField(_('main appeal'), max_length=200, blank=True, null=False)
     surveys_sent = models.PositiveIntegerField(_('surveys sent'), default=0)
-    
+
     # foreign key mappings goes here
     user = models.ForeignKey(User, blank=False, null=False)
-    
+
     class Meta:
         ordering = ['name']
 
@@ -149,13 +153,14 @@ class Product(models.Model):
                 rank = counter
                 break
         return rank
-    
+
     def most_bought_category(self):
         """
         gets the category name that bought most.
         if multiple categories applicable, returns a concatenated string
         """
-        categories = Category.objects.filter(customer__sale__product=self).annotate(bought=Count('customer__sale__product')).order_by('-bought')
+        categories = Category.objects.filter(customer__sale__product=self).annotate(
+            bought=Count('customer__sale__product')).order_by('-bought')
         if categories:
             return groups[0].name
         return ''
@@ -177,7 +182,7 @@ class Product(models.Model):
         result = Sale.objects.filter(product=self, transaction_date__month=str(month)).aggregate(turnover=Sum('price'))
         return result['turnover'] or 0.0
 
-    
+
 class Customer(models.Model):
     """
     represents a customer entity.
@@ -188,17 +193,17 @@ class Customer(models.Model):
         (1, 'Medium'),
         (2, 'Low'),
         )
-    
+
     #first_name = models.CharField(_('first name'), max_length=50, blank=False, null=False)
     #last_name =  models.CharField(_('last name'), max_length=50, blank=False, null=False)
-    full_name =  models.CharField(_('full name'), max_length=50, blank=False, null=False, default="")
-    
+    full_name = models.CharField(_('full name'), max_length=50, blank=False, null=False, default="")
+
     company_name = models.CharField(_('company name'), max_length=100, blank=True, null=False, default="")
     email = models.EmailField(_('email'), max_length=75, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=15, blank=True, null=True)
     street = models.CharField(_('street'), max_length=100, blank=True, null=True)
-    city = models.CharField(_('city'), max_length=100, blank=True, null=True)    
-    state = models.CharField(_('state'), max_length=75, blank=True, null=False)    
+    city = models.CharField(_('city'), max_length=100, blank=True, null=True)
+    state = models.CharField(_('state'), max_length=75, blank=True, null=False)
     country = models.CharField(_('country'), max_length=75, blank=True, null=False)
     zipcode = models.CharField(_('zip'), max_length=10, blank=True, null=True)
 
@@ -207,7 +212,6 @@ class Customer(models.Model):
     gifts_sent = models.PositiveIntegerField(_('gifts sent'), default=0)
     surveys_sent = models.PositiveIntegerField(_('surveys sent'), default=0)
 
-    
     user = models.ForeignKey(User, blank=False, null=False)
     #category = models.ForeignKey(Category, blank=False, null=False)
 
@@ -220,7 +224,7 @@ class Customer(models.Model):
 
     def first_name(self):
         return self.full_name.split(' ')[0]
-    
+
     def last_name(self):
         return self.full_name.split(' ')[len(self.full_name.split(' ')) - 1]
 
@@ -262,7 +266,6 @@ class Customer(models.Model):
         return Sale.objects.filter(customer=self).count()
 
 
-    
 class Campaign(models.Model):
     """
     represents a campaign, i.e. a marketing source
@@ -275,7 +278,7 @@ class Campaign(models.Model):
         ordering = ['campaign_name', 'start_date']
 
     def __unicode__(self):
-        return '%s %s'%(self.campaign_name, self.start_date)
+        return '%s %s' % (self.campaign_name, self.start_date)
 
     def total_sales(self):
         sales = Sale.objects.filter(marketing_source=self).count()
@@ -290,17 +293,18 @@ class Sale(models.Model):
     product = models.ForeignKey(Product, blank=False, null=False)
     transaction_date = models.DateField(_('date'), blank=True, null=True)
     price = models.DecimalField(_('price'), max_digits=10, decimal_places=2, blank=False, null=False, default=0)
-    
+
     shopping_cart_source = models.CharField('shopping cart source', max_length=100, blank=True, null=False)
     #marketing_source = models.CharField('marketing source', max_length=100, blank=True, null=False)
     marketing_source = models.ForeignKey(Campaign, blank=True, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(User, blank=False, null=False)
-    
+
     class Meta:
         ordering = ['transaction_date']
 
     def __unicode__(self):
-        return '%s %s %s'%(self.customer, self.product, self.transaction_date)
+        return '%s %s %s' % (self.customer, self.product, self.transaction_date)
+
 
 class Activity(models.Model):
     """
@@ -309,10 +313,10 @@ class Activity(models.Model):
     activity_date = models.DateTimeField(_('created_at'), blank=False, null=False, default=datetime.now)
     activity_desc = models.CharField('activity', max_length=100, blank=False, null=False)
     user = models.ForeignKey(User, blank=False, null=False)
-    
+
     class Meta:
         ordering = ['activity_date']
 
     def __unicode__(self):
-        return '%s %s %s'%(self.user, self.activity_desc, self.activity_date)
+        return '%s %s %s' % (self.user, self.activity_desc, self.activity_date)
     

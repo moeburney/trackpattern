@@ -1,81 +1,84 @@
 {% extends "core/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript" charset="utf-8">
-$('#tabCustomers').addClass('selected');
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $('#tabCustomers').addClass('selected');
+    </script>
 {% endblock %}
 
 
 {% block content %}
-<h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Customer</h2>
+    <h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Customer</h2>
 
-{% if is_new %}
-<div class='csv-import-add'>
-<p>
-Or <a href="/core/csv/customer/">import</a> your data from a csv file
-</p>
-</div>
-{% endif %}
+    {% if is_new %}
+        <div class='csv-import-add'>
+            <p>
+                Or <a href="/core/csv/customer/">import</a> your data from a csv file
+            </p>
+        </div>
+    {% endif %}
 
-{% if form.errors %}
-<div class='error-panel'>
-<span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
-{% for field in form %}
-{% if field.errors %}
-<span>{{field.label}}: {{field.errors.0}}</span><br>
-{% endif %}
-{% endfor %}
-</div>
-{% endif %}
+    {% if form.errors %}
+        <div class='error-panel'>
+            <span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
+            {% for field in form %}
+                {% if field.errors %}
+                    <span>{{ field.label }}: {{ field.errors.0 }}</span><br>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
-<form action="" method="post" >{% csrf_token %}
-<table class='dataform' width=100%>
+    <form action="" method="post">{% csrf_token %}
+        <table class='dataform' width=100%>
 
-	<tr>
-	<!--
+            <tr>
+                <!--
 	<td><span class='dataform-lable'>{{form.first_name.label}}</span><br>{{form.first_name}}</td>
 	<td><span class='dataform-lable'>{{form.last_name.label}}</span><br>{{form.last_name}}</td>
 	-->
-	<td><span class='dataform-lable'>{{form.full_name.label}}</span><br>{{form.full_name}}</td>
+                <td><span class='dataform-lable'>{{ form.full_name.label }}</span><br>{{ form.full_name }}</td>
 
-	</tr>
+            </tr>
 
-	<tr>
-	<td><span class='dataform-lable'>{{form.company_name.label}}</span><br>{{form.company_name}}</td>
-	<td><span class='dataform-lable'>{{form.email.label}}</span><br>{{form.email}}</td>
-	</tr>
+            <tr>
+                <td><span class='dataform-lable'>{{ form.company_name.label }}</span><br>{{ form.company_name }}</td>
+                <td><span class='dataform-lable'>{{ form.email.label }}</span><br>{{ form.email }}</td>
+            </tr>
 
-	<tr>
-	<td><span class='dataform-lable'>{{form.phone.label}}</span><br>{{form.country}}</td>
-	<td><span class='dataform-lable'>{{form.state.label}}</span><br>{{form.state}}</td>
-	</tr>
-	
-	<tr>
-	<td><span class='dataform-lable'>{{form.city.label}}</span><br>{{form.city}}</td>
-	<td><span class='dataform-lable'>{{form.street.label}}</span><br>{{form.street}}</td>
-	</tr>
-	
-	<tr>
-	<td><span class='dataform-lable'>{{form.country.label}}</span><br>{{form.country}}</td>
-	<td><span class='dataform-lable'>{{form.zipcode.label}}</span><br>{{form.zipcode}}</td>
-	</tr>
+            <tr>
+                <td><span class='dataform-lable'>{{ form.phone.label }}</span><br>{{ form.country }}</td>
+                <td><span class='dataform-lable'>{{ form.state.label }}</span><br>{{ form.state }}</td>
+            </tr>
 
-	<tr>
-	<td><span class='dataform-lable'>{{form.connection.label}}</span><br>{{form.connection}}</td>
-	<td><span class='dataform-lable'>{{form.interests.label}}</span><br>{{form.interests}}</td>
-	</tr>
+            <tr>
+                <td><span class='dataform-lable'>{{ form.city.label }}</span><br>{{ form.city }}</td>
+                <td><span class='dataform-lable'>{{ form.street.label }}</span><br>{{ form.street }}</td>
+            </tr>
 
-	<tr>
-	<td><span class='dataform-lable'>{{form.gifts_sent.label}}</span><br>{{form.gifts_sent}}</td>
-	<td><span class='dataform-lable'>{{form.surveys_sent.label}}</span><br>{{form.surveys_sent}}</td>
-	</tr>
-	
-	<tr><td colspan=2 style='text-align: right;'>
-	<input class='form-button-primary' type="submit" value="Save" />
-	<input class='form-button-secondary' type=button value="Cancel" onclick="JavaScript: window.location.href='/core/customer/'" />
-	</td></tr>
-</table>
-</form>
+            <tr>
+                <td><span class='dataform-lable'>{{ form.country.label }}</span><br>{{ form.country }}</td>
+                <td><span class='dataform-lable'>{{ form.zipcode.label }}</span><br>{{ form.zipcode }}</td>
+            </tr>
+
+            <tr>
+                <td><span class='dataform-lable'>{{ form.connection.label }}</span><br>{{ form.connection }}</td>
+                <td><span class='dataform-lable'>{{ form.interests.label }}</span><br>{{ form.interests }}</td>
+            </tr>
+
+            <tr>
+                <td><span class='dataform-lable'>{{ form.gifts_sent.label }}</span><br>{{ form.gifts_sent }}</td>
+                <td><span class='dataform-lable'>{{ form.surveys_sent.label }}</span><br>{{ form.surveys_sent }}</td>
+            </tr>
+
+            <tr>
+                <td colspan=2 style='text-align: right;'>
+                    <input class='form-button-primary' type="submit" value="Save"/>
+                    <input class='form-button-secondary' type=button value="Cancel"
+                           onclick="JavaScript: window.location.href='/core/customer/'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 
 {% endblock %}

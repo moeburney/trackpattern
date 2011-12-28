@@ -1,53 +1,56 @@
 {% extends "core/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript" charset="utf-8">
-$('#tabSales').addClass('selected');
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $('#tabSales').addClass('selected');
+    </script>
 {% endblock %}
 
 {% block content %}
-<h2>Sale View</h2>
+    <h2>Sale View</h2>
 
-<table class='viewtable' width=100%>
-<tr>
-	<td class='icon-cell'><img src='/static/img/sale.png'></td>
-	<td colspan=4 class='viewrow-title'>Sale#{{sale.pk}}
-	<a class='viewrow-action-link' href='/core/sale/edit/{{sale.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
-	<a class='datarow-action-link' href='/core/sale/delete/{{sale.pk}}/' onclick='return getConfirmed("Sale#{{sale.pk}}");'><img src='/static/img/delete.png'> Delete</a>
-	</td>
-</tr>
+    <table class='viewtable' width=100%>
+        <tr>
+            <td class='icon-cell'><img src='/static/img/sale.png'></td>
+            <td colspan=4 class='viewrow-title'>Sale#{{ sale.pk }}
+                <a class='viewrow-action-link' href='/core/sale/edit/{{sale.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+                <a class='datarow-action-link' href='/core/sale/delete/{{sale.pk}}/'
+                   onclick='return getConfirmed("Sale#{{sale.pk}}");'><img src='/static/img/delete.png'> Delete</a>
+            </td>
+        </tr>
 
-<tr>
+        <tr>
 
- <td></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Product</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'><a href='/core/product/view/{{sale.product.pk}}/'>{{sale.product.name}}</a></span></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Total Price</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'>{{sale.price}}</span></td>
- 
-</tr>
+            <td></td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Product</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'><a
+                    href='/core/product/view/{{sale.product.pk}}/'>{{ sale.product.name }}</a></span></td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Total Price</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'>{{ sale.price }}</span></td>
 
-<tr>
+        </tr>
 
- <td></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Customer</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'><a href='/core/customer/view/{{sale.customer.pk}}/'>{{sale.customer.full_name}}</a></span></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Date</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'>{{sale.transaction_date}}</span></td>
- 
-</tr>
+        <tr>
 
-<tr>
+            <td></td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Customer</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'><a
+                    href='/core/customer/view/{{sale.customer.pk}}/'>{{ sale.customer.full_name }}</a></span></td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Date</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'>{{ sale.transaction_date }}</span></td>
 
- <td></td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Shopping Cart Source</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'>{{sale.shopping_cart_source}}</td>
- <td class='viewrow-lables'><span class='viewrow-item-lable'>Marketing Source</span></td>
- <td class='viewrow-item-value'><span class='viewrow-item-value'>{{sale.marketing_source}}</span></td>
- 
-</tr>
+        </tr>
 
-</table>
+        <tr>
+
+            <td></td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Shopping Cart Source</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'>{{ sale.shopping_cart_source }}</td>
+            <td class='viewrow-lables'><span class='viewrow-item-lable'>Marketing Source</span></td>
+            <td class='viewrow-item-value'><span class='viewrow-item-value'>{{ sale.marketing_source }}</span></td>
+
+        </tr>
+
+    </table>
 
 {% endblock %}

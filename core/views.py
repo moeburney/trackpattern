@@ -12,8 +12,9 @@ from core.models import Customer, Category, Product, Sale, Group, Campaign, Acti
 from core.forms import CustomerForm, CategoryForm, ProductForm, SaleForm, CampaignForm
 
 def add_activity(user, activity_string):
-    a = Activity(activity_desc = activity_string, user = user)
+    a = Activity(activity_desc=activity_string, user=user)
     a.save()
+
 
 @login_required
 def customer_home(request):
@@ -21,9 +22,9 @@ def customer_home(request):
     renders list of customers associated.
     """
     customer_list = Customer.objects.filter(user=request.user)
-    
+
     page = int(request.GET.get('page', '1'))
-    sort = request.GET.get('sort','fname')
+    sort = request.GET.get('sort', 'fname')
     if sort:
         if sort == 'fullname':
             customer_list = customer_list.order_by('full_name')
@@ -35,18 +36,19 @@ def customer_home(request):
             customer_list = customer_list.order_by('company_name')
         elif sort == 'turnover':
             customer_list = customer_list.annotate(turnover=Sum('sale__price')).order_by('-turnover')
-            
+
     try:
         paginator = Paginator(customer_list, settings.DEFAULT_PAGESIZE)
         customers = paginator.page(page)
     except (EmptyPage, InvalidPage):
         # if the supplied page number is beyond the scope, show last page
         customers = paginator.page(paginator.num_pages)
-        
+
     return render_to_response('core/customer.html',
-                              {'customers': customers,
-                               'sort': sort,},
-                              context_instance=RequestContext(request))
+            {'customers': customers,
+             'sort': sort, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def customer_view(request, id):
@@ -60,9 +62,10 @@ def customer_view(request, id):
     #add_activity(request.user, activity_string)
 
     return render_to_response('core/customer_view.html',
-                              {'customer': customer,},
-                              context_instance=RequestContext(request))
-    
+            {'customer': customer, },
+        context_instance=RequestContext(request))
+
+
 @login_required
 def add_customer(request):
     """
@@ -80,8 +83,9 @@ def add_customer(request):
     else:
         form = CustomerForm()
     return render_to_response('core/manage_customer.html',
-                              {'form': form, 'is_new': True},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': True},
+        context_instance=RequestContext(request))
+
 
 def edit_customer(request, id):
     """
@@ -98,8 +102,9 @@ def edit_customer(request, id):
     else:
         form = CustomerForm(instance=customer)
     return render_to_response('core/manage_customer.html',
-                              {'form': form, 'is_new': False},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': False},
+        context_instance=RequestContext(request))
+
 
 def delete_customer(request, id):
     """
@@ -115,7 +120,7 @@ def delete_customer(request, id):
         customer = get_object_or_404(Customer, pk=id, user=request.user)
         customer.sale_set.all().delete()
         customer.delete()
-    
+
     #activity_string = "Deleted Customer " + str(customer.first_name) + " " + str(customer.last_name)
     #add_activity(request.user, activity_string)
     return HttpResponseRedirect('/core/customer/')
@@ -127,8 +132,9 @@ def group_home(request):
     """
     groups = Group(request.user).GROUP_DEFINITIONS
     return render_to_response('core/group.html',
-                              {'groups': groups,},
-                              context_instance=RequestContext(request))
+            {'groups': groups, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def group_view(request, id):
@@ -148,9 +154,11 @@ def group_view(request, id):
         customers = paginator.page(paginator.num_pages)
     print customers.object_list
     return render_to_response('core/group_view.html',
-                              {'group': group,
-                               'customers': customers},
-                              context_instance=RequestContext(request))
+            {'group': group,
+             'customers': customers},
+        context_instance=RequestContext(request))
+
+
 @login_required
 def category_home(request):
     """
@@ -170,10 +178,11 @@ def category_home(request):
         # if the supplied page number is beyond the scope
         # show last page
         categories = paginator.page(paginator.num_pages)
-        
+
     return render_to_response('core/category.html',
-                              {'categories': categories,},
-                              context_instance=RequestContext(request))
+            {'categories': categories, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def category_view(request, id):
@@ -182,8 +191,9 @@ def category_view(request, id):
     """
     category = Category.objects.get(pk=id)
     return render_to_response('core/category_view.html',
-                              {'category': category,},
-                              context_instance=RequestContext(request))
+            {'category': category, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def add_category(request):
@@ -200,8 +210,9 @@ def add_category(request):
     else:
         form = CategoryForm()
     return render_to_response('core/manage_category.html',
-                              {'form': form},
-                              context_instance=RequestContext(request))
+            {'form': form},
+        context_instance=RequestContext(request))
+
 
 def edit_category(request, id):
     """
@@ -216,8 +227,9 @@ def edit_category(request, id):
     else:
         form = CategoryForm(instance=category)
     return render_to_response('core/manage_category.html',
-                              {'form': form},
-                              context_instance=RequestContext(request))
+            {'form': form},
+        context_instance=RequestContext(request))
+
 
 @login_required
 def product_home(request):
@@ -225,9 +237,9 @@ def product_home(request):
     renders list of available products
     """
     product_list = Product.objects.filter(user=request.user)
-    
+
     page = int(request.GET.get('page', '1'))
-    sort = request.GET.get('sort','name')
+    sort = request.GET.get('sort', 'name')
     if sort:
         if sort == 'name':
             product_list = product_list.order_by('name')
@@ -242,11 +254,12 @@ def product_home(request):
         # if the supplied page number is beyond the scope
         # show last page
         products = paginator.page(paginator.num_pages)
-        
+
     return render_to_response('core/product.html',
-                              {'products': products,
-                               'sort': sort,},
-                              context_instance=RequestContext(request))
+            {'products': products,
+             'sort': sort, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def product_view(request, id):
@@ -255,19 +268,20 @@ def product_view(request, id):
     """
     product = get_object_or_404(Product, pk=id, user=request.user)
     sale_list = product.sale_set.order_by('-transaction_date')
-    page = int(request.GET.get('page','1'))
+    page = int(request.GET.get('page', '1'))
     try:
         paginator = Paginator(sale_list, settings.DEFAULT_PAGESIZE)
         sales = paginator.page(page)
     except(EmptyPage, InvalidPage):
         sales = paginator.page(paginator.num_pages)
-    
+
     activity_string = "Viewed Product " + str(product.name)
     add_activity(request.user, activity_string)
     return render_to_response('core/product_view.html',
-                              {'product': product,
-                               'sales': sales},
-                              context_instance=RequestContext(request))
+            {'product': product,
+             'sales': sales},
+        context_instance=RequestContext(request))
+
 
 @login_required
 def add_product(request):
@@ -288,8 +302,9 @@ def add_product(request):
     else:
         form = ProductForm()
     return render_to_response('core/manage_product.html',
-                              {'form': form, 'is_new': True},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': True},
+        context_instance=RequestContext(request))
+
 
 def edit_product(request, id):
     """
@@ -308,8 +323,9 @@ def edit_product(request, id):
     else:
         form = ProductForm(instance=product)
     return render_to_response('core/manage_product.html',
-                              {'form': form, 'is_new': False},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': False},
+        context_instance=RequestContext(request))
+
 
 def delete_product(request, id):
     """
@@ -326,6 +342,7 @@ def delete_product(request, id):
         activity_string = "Deleted Product " + str(product.name)
         add_activity(request.user, activity_string)
     return HttpResponseRedirect('/core/product/')
+
 
 @login_required
 def sale_home(request):
@@ -354,11 +371,12 @@ def sale_home(request):
         # if the supplied page number is beyond the scope
         # show last page
         sales = paginator.page(paginator.num_pages)
-        
+
     return render_to_response('core/sale.html',
-                              {'sales': sales,
-                               'sort': sort,},
-                              context_instance=RequestContext(request))
+            {'sales': sales,
+             'sort': sort, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def sale_view(request, id):
@@ -367,8 +385,9 @@ def sale_view(request, id):
     """
     sale = get_object_or_404(Sale, pk=id, user=request.user)
     return render_to_response('core/sale_view.html',
-                              {'sale': sale,},
-                              context_instance=RequestContext(request))
+            {'sale': sale, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def add_sale(request):
@@ -385,8 +404,9 @@ def add_sale(request):
     else:
         form = SaleForm(user_id=request.user.pk)
     return render_to_response('core/manage_sale.html',
-                              {'form': form, 'is_new': True, 'products': Product.objects.filter(user=request.user)},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': True, 'products': Product.objects.filter(user=request.user)},
+        context_instance=RequestContext(request))
+
 
 def edit_sale(request, id):
     """
@@ -401,8 +421,9 @@ def edit_sale(request, id):
     else:
         form = SaleForm(instance=sale, user_id=request.user.pk)
     return render_to_response('core/manage_sale.html',
-                              {'form': form, 'is_new': False},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': False},
+        context_instance=RequestContext(request))
+
 
 def delete_sale(request, id):
     """
@@ -414,7 +435,6 @@ def delete_sale(request, id):
         sale = get_object_or_404(Sale, pk=id, user=request.user)
         sale.delete()
     return HttpResponseRedirect('/core/sale/')
-
 
 
 @login_required
@@ -438,11 +458,12 @@ def campaign_home(request):
         # if the supplied page number is beyond the scope
         # show last page
         campaigns = paginator.page(paginator.num_pages)
-        
+
     return render_to_response('core/campaign.html',
-                              {'campaigns': campaigns,
-                               'sort': sort,},
-                              context_instance=RequestContext(request))
+            {'campaigns': campaigns,
+             'sort': sort, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def campaign_view(request, id):
@@ -451,8 +472,9 @@ def campaign_view(request, id):
     """
     campaign = get_object_or_404(Campaign, pk=id, user=request.user)
     return render_to_response('core/campaign_view.html',
-                              {'campaign': campaign,},
-                              context_instance=RequestContext(request))
+            {'campaign': campaign, },
+        context_instance=RequestContext(request))
+
 
 @login_required
 def add_campaign(request):
@@ -469,8 +491,9 @@ def add_campaign(request):
     else:
         form = CampaignForm()
     return render_to_response('core/manage_campaign.html',
-                              {'form': form, 'is_new': True,},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': True, },
+        context_instance=RequestContext(request))
+
 
 def edit_campaign(request, id):
     """
@@ -485,8 +508,9 @@ def edit_campaign(request, id):
     else:
         form = CampaignForm(instance=campaign)
     return render_to_response('core/manage_campaign.html',
-                              {'form': form, 'is_new': False},
-                              context_instance=RequestContext(request))
+            {'form': form, 'is_new': False},
+        context_instance=RequestContext(request))
+
 
 def delete_campaign(request, id):
     """

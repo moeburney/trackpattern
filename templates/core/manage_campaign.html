@@ -1,58 +1,61 @@
 {% extends "core/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript" charset="utf-8">
-$('#tabCampaigns').addClass('selected');
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $('#tabCampaigns').addClass('selected');
+    </script>
 {% endblock %}
 
 
 {% block content %}
-<h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Campaign</h2>
+    <h2>{% if is_new %}Add a new{% else %}Edit{% endif %} Campaign</h2>
 
-{% if is_new %}
-<div class='csv-import-add'>
-</div>
-{% endif %}
-
-
-{% if form.errors %}
-<div class='error-panel'>
-<span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
-{% for field in form %}
-{% if field.errors %}
-<span>{{field.label}}: {{field.errors.0}}</span><br>
-{% endif %}
-{% endfor %}
-</div>
-{% endif %}
+    {% if is_new %}
+        <div class='csv-import-add'>
+        </div>
+    {% endif %}
 
 
-<form action="" method="post" >{% csrf_token %}
-<table class='dataform' width=100%>
-	<tr>
-	<td><span class='dataform-lable'>{{form.campaign_name.label}}</span><br>{{form.campaign_name}}</td>
-	<td><span class='dataform-lable'>{{form.start_date.label}}</span><br>{{form.start_date}}</td>
-	</tr>
+    {% if form.errors %}
+        <div class='error-panel'>
+            <span style='font-weight: bold;'><img height=24px align=absmiddle width=24px src='/static/img/error.png'> Oops..errors occured!</span><br><br>
+            {% for field in form %}
+                {% if field.errors %}
+                    <span>{{ field.label }}: {{ field.errors.0 }}</span><br>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
-	<tr><td colspan=2 style='text-align: right;'>
-	<input class='form-button-primary' type="submit" value="Save" />
-	<input class='form-button-secondary' type=button value="Cancel" onclick="JavaScript: window.location.href='/core/campaign/'" />
-	</td></tr>
-</table>
-</form>
+    <form action="" method="post">{% csrf_token %}
+        <table class='dataform' width=100%>
+            <tr>
+                <td><span class='dataform-lable'>{{ form.campaign_name.label }}</span><br>{{ form.campaign_name }}</td>
+                <td><span class='dataform-lable'>{{ form.start_date.label }}</span><br>{{ form.start_date }}</td>
+            </tr>
 
 
-<script>
-	
+            <tr>
+                <td colspan=2 style='text-align: right;'>
+                    <input class='form-button-primary' type="submit" value="Save"/>
+                    <input class='form-button-secondary' type=button value="Cancel"
+                           onclick="JavaScript: window.location.href='/core/campaign/'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 
-	$(document).ready(function() {
-		$( "#id_start_date" ).datepicker();
-		// register a listener with JQ to intimate when Product selection change
-	});
-	
-</script>
+
+    <script>
+
+
+        $(document).ready(function () {
+            $("#id_start_date").datepicker();
+            // register a listener with JQ to intimate when Product selection change
+        });
+
+    </script>
 
 
 {% endblock %}

@@ -1,82 +1,88 @@
 {% extends "core/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript" charset="utf-8">
-$('#tabProducts').addClass('selected');
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $('#tabProducts').addClass('selected');
+    </script>
 {% endblock %}
 
 {% block content %}
-<form action='/home/search/' method='POST'>{% csrf_token %}
-<input class='content-searchbar' type=text name='word'/>
-<input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search" ></input>
-</form>
-<h2 class='pad20'>Product List</h2>
+    <form action='/home/search/' method='POST'>{% csrf_token %}
+        <input class='content-searchbar' type=text name='word'/>
+        <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
+    </form>
+    <h2 class='pad20'>Product List</h2>
 
-<table width=100% class='datatable'>
+    <table width=100% class='datatable'>
 
-	<tr class='datarow pager'>
+        <tr class='datarow pager'>
 
-		<td colspan=4>
-			<span style='text-align:left'><button id='remove_all_products'>Remove All</button></span>
+            <td colspan=4>
+                <span style='text-align:left'><button id='remove_all_products'>Remove All</button></span>
 			<span style='float:right'>
 			Sort by &nbsp;
 			<select name="sort" id="sort" style='width:150px; height:30px;'>
-				<option value="name" {% ifequal sort 'name' %}selected="selected"{% endifequal %}">Name</option>
-				<option value="date" {% ifequal sort 'date' %}selected="selected"{% endifequal %}">Date</option>
-				<option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}">Turnover</option>
-			</select>&nbsp;&nbsp;
-		
-			{% if products.has_previous %}
-				<a href="?page={{ products.previous_page_number }}">previous</a>&nbsp;
-			{% endif %}
-			Page {{ products.number }} of {{ products.paginator.num_pages }}.&nbsp;
-			{% if products.has_next %}
-				<a href="?page={{ products.next_page_number }}">next</a>
-			{% endif %}
+                <option value="name" {% ifequal sort 'name' %}selected="selected"{% endifequal %}
+                ">Name</option>
+                <option value="date" {% ifequal sort 'date' %}selected="selected"{% endifequal %}
+                ">Date</option>
+                <option value="turnover" {% ifequal sort 'turnover' %}selected="selected"{% endifequal %}
+                ">Turnover</option>
+            </select>&nbsp;&nbsp;
+
+                {% if products.has_previous %}
+                    <a href="?page={{ products.previous_page_number }}">previous</a>&nbsp;
+                {% endif %}
+                Page {{ products.number }} of {{ products.paginator.num_pages }}.&nbsp;
+                {% if products.has_next %}
+                    <a href="?page={{ products.next_page_number }}">next</a>
+                {% endif %}
 			</span>
-		</td>
-	</tr>
-	
-{% for product in products.object_list %}
-	<tr class='datarow'>
-		<td class='icon-cell'><img src='/static/img/product.png'></td>
-		<td class='datarow-prime'>
-			<a class='datarow-title' href='/core/product/view/{{product.pk}}/'>{{product.name}}</a>
-			<br>
-			<a class='datarow-action-link' href='/core/product/edit/{{product.pk}}/'><img src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
-			<a class='datarow-action-link' href='/core/product/delete/{{product.pk}}/' onclick='return getConfirmed("{{product.name}}");'><img src='/static/img/delete.png'> Delete</a>
-		</td>
-		<td class='datarow-lables'>
-			<span class='datarow-item-lable'>Total Turnover</span><br>
-			<span class='datarow-item-lable'>Date Released</span>
-		</td>
-		<td class='datarow-items'>
-			<span class='datarow-item-value'>{{product.total_turnover_generated}}</span><br>
-			<span class='datarow-item-value'>{{product.date_released}}</span>
-		</td>
-	</tr>
-{% endfor %}
+            </td>
+        </tr>
 
-</table>
+        {% for product in products.object_list %}
+            <tr class='datarow'>
+                <td class='icon-cell'><img src='/static/img/product.png'></td>
+                <td class='datarow-prime'>
+                    <a class='datarow-title' href='/core/product/view/{{product.pk}}/'>{{ product.name }}</a>
+                    <br>
+                    <a class='datarow-action-link' href='/core/product/edit/{{product.pk}}/'><img
+                            src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+                    <a class='datarow-action-link' href='/core/product/delete/{{product.pk}}/'
+                       onclick='return getConfirmed("{{product.name}}");'><img src='/static/img/delete.png'> Delete</a>
+                </td>
+                <td class='datarow-lables'>
+                    <span class='datarow-item-lable'>Total Turnover</span><br>
+                    <span class='datarow-item-lable'>Date Released</span>
+                </td>
+                <td class='datarow-items'>
+                    <span class='datarow-item-value'>{{ product.total_turnover_generated }}</span><br>
+                    <span class='datarow-item-value'>{{ product.date_released }}</span>
+                </td>
+            </tr>
+        {% endfor %}
 
-<script>
-	
-	$(document).ready(function() {
-		// register a listener with JQ to intimate when sort order changed
-		$( "#sort" ).change(function(a){
-			// findout selected sort order
-			// and navigate to ... with details
-			window.location.href = '/core/product/?sort=' + $(this).val();
-		});
-	});
+    </table>
 
-	$( "#remove_all_products").click(function(){
-		// alert the user. because it is irreversible action
-		result = confirm("Are sure want to remove all products and related sales data?");
-		if (result){
-			window.location.href = '/core/product/delete/0/'; }
-	});	
-</script>
+    <script>
+
+        $(document).ready(function () {
+            // register a listener with JQ to intimate when sort order changed
+            $("#sort").change(function (a) {
+                // findout selected sort order
+                // and navigate to ... with details
+                window.location.href = '/core/product/?sort=' + $(this).val();
+            });
+        });
+
+        $("#remove_all_products").click(function () {
+            // alert the user. because it is irreversible action
+            result = confirm("Are sure want to remove all products and related sales data?");
+            if (result) {
+                window.location.href = '/core/product/delete/0/';
+            }
+        });
+    </script>
 
 {% endblock %}

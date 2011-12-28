@@ -2,16 +2,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from django.views.generic.list_detail import object_list, object_detail
 from django.contrib import messages
-from core.models import Customer, Product, Sale
 
 from tracklist.csvimporter.models import CSV
 from tracklist.csvimporter.forms import CSVForm, CSVAssociateForm
-
-from django.http import HttpResponse
 
 # TODO: Make this view class based
 def prepare_view(request, kwargs):
@@ -55,7 +51,8 @@ def associate(request, object_id, modelname="", **kwargs):
     if not kwargs.get("form_class"):
         kwargs["form_class"] = CSVAssociateForm
     if not modelname:
-        raise ValueError("A model wasn't specified. This is our fault. Please let us know this happened so we can fix it, thanks.")
+        raise ValueError(
+            "A model wasn't specified. This is our fault. Please let us know this happened so we can fix it, thanks.")
     else:
         kwargs["model"] = eval(modelname)
 
@@ -89,12 +86,12 @@ def new(request, **kwargs):
     kwargs = prepare_view(request, kwargs)
     if request.method == 'POST':
         form = kwargs["form_class"](kwargs["model"],
-                                    request.POST, request.FILES)
+            request.POST, request.FILES)
         if form.is_valid():
             modelname = kwargs["model"].__name__
             instance = form.save()
             return HttpResponseRedirect(
-                        reverse('associate-csv', args=[instance.id, modelname]))
+                reverse('associate-csv', args=[instance.id, modelname]))
     else:
         form = kwargs["form_class"](kwargs["model"])
     kwargs["extra_context"].update({"form": form})

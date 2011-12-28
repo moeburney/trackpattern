@@ -1,30 +1,30 @@
 # Django settings for tracklist project.
 
 DEFAULT_FROM_EMAIL = 'Trackpattern <trackpattern-noreply@trackpattern.com>'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'localhost'
 EMAIL_HOST_USER = 'trackpattern-noreply@trackpattern.com'
 EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 25 
+EMAIL_PORT = 25
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+# ('Your Name', 'your_email@domain.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql',             # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'tracklistdb', # Or path to database file if using sqlite3.
-        'USER': 'fetch',                      # Not used with sqlite3.
-        'PASSWORD': 'fetch2119',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'USER': 'fetch', # Not used with sqlite3.
+        'PASSWORD': 'fetch2119', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -73,9 +73,8 @@ SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
+    #     'django.template.loaders.eggs.Loader',
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -85,15 +84,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'tracklist.middleware.SubdomainMiddleware',
     #'django.contrib.messages.middleware.MessageMiddleware',
-)
+    )
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/' 
+LOGIN_REDIRECT_URL = '/home/'
 ROOT_URLCONF = 'tracklist.urls'
 AUTH_PROFILE_MODULE = 'core.UserProfile'
 AUTHENTICATION_BACKENDS = (
     'tracklist.backends.TracklistAuthBackend',
-)
+    )
 
 # Paging settings
 DEFAULT_PAGESIZE = 10
@@ -105,15 +104,14 @@ TEMPLATE_DIRS = (
     '/home/tracklist/templates',
     '/home/tracklist/csvimporter/templates',
     '/home/tracklist/static/landing',
-)
-
+    )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-#    'django.contrib.messages',
+    #    'django.contrib.messages',
     'tracklist.home',
     'tracklist.core',
     'tracklist.csvimporter',
