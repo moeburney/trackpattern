@@ -24,7 +24,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from django.contrib.sites.models import get_current_site
 import urlparse
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("applog")
 @login_required
 def home(request):
     """
@@ -255,7 +255,7 @@ def top_20_customers(user,by):
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
-        logger.debug("revenue \n\n")
+        logger.debug("\n\n $$$ revenue \n\n")
         logger.debug(stat)
     if by in "purchases":
         cust_one_month = Customer.objects.filter(sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
@@ -264,7 +264,7 @@ def top_20_customers(user,by):
         stat['cust_one_month'] = cust_one_month
         stat['cust_three_month'] = cust_three_month
         stat['cust_one_year'] = cust_one_year
-        logger.debug("purchase \n\n")
+        logger.debug("\n\n $$$ purchase \n\n")
         logger.debug(stat)
     return stat
 def forgot_password(request):

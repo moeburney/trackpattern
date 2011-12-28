@@ -132,7 +132,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/home/tracklist/logs/mylog.log',
+            'filename': '/home/tracklist/logs/default.log',
             'maxBytes': 1024*1024*20, # 5 MB
             'backupCount': 10,
             'formatter':'standard',
@@ -145,11 +145,24 @@ LOGGING = {
             'backupCount': 5,
             'formatter':'standard',
             },
+        'app': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/home/tracklist/logs/app.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter':'standard',
+            }
         },
     'loggers': {
 
         '': {
             'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'applog': {
+            'handlers': ['app'],
             'level': 'DEBUG',
             'propagate': True
         },
