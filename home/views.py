@@ -2,6 +2,7 @@ import logging
 import operator
 
 import datetime
+from django.db.models.aggregates import Sum
 
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
@@ -37,6 +38,12 @@ def home(request):
              'stats': calculate_stats(request.user)},
         context_instance=RequestContext(request))
 
+@login_required
+def reports(request):
+    return render_to_response('home/reports.html',
+    {'stats_rev':top_20_customers(request.user,"revenue"),
+     'stats_pur':top_20_customers(request.user,"purchases")},
+     context_instance=RequestContext(request))
 
 #for chart calculations
 def calculate_charts(user):
@@ -236,16 +243,26 @@ def search(request):
         context_instance=RequestContext(request))
 
 def top_20_customers(user,by):
-    stats = {}
-    customers_by_revenue = sorted(Customer.objects.all(), key=lambda a: a.total_turnover_generated(), reverse=True)
-    if total_customers.count(): # avoid divide by 0 error
-        customers_top_20_percent = int(total_customers.count() * 0.20)
-
-    else:
-        customers_top_20_percent = 0
-    stats['top_20_customers_by_revenue'] = customers_by_revenue[0:customers_top_20_percent]
-    logging.getLogger("django.request").debug("top 20 ROHANN\n\n%s"%stats['top_20_customers_by_revenue'])
-
+    stat = {}
+    today = datetime.date.today()
+    back_one_month = today - datetime.timedelta(days=31)
+    back_three_months = today - datetime.timedelta(days=91)
+    back_one_year = today - datetime.timedelta(days=365)
+    if by in "revenue":
+        cust_one_month = Customer.objects.filter(sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_three_month = Customer.objects.filter(sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        cust_one_year = Customer.objects.filter(sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( 'tot_rev' )
+        stat['cust_one_month'] = cust_one_month
+        stat['cust_three_month'] = cust_three_month
+        stat['cust_one_year'] = cust_one_year
+    if by in "purchases":
+        cust_one_month = Customer.objects.filter(sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_three_month = Customer.objects.filter(sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        cust_one_year = Customer.objects.filter(sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( 'tot_purchase' )
+        stat['cust_one_month'] = cust_one_month
+        stat['cust_three_month'] = cust_three_month
+        stat['cust_one_year'] = cust_one_year
+    return stat
 def forgot_password(request):
     """
     resets user password and sends mail with new password

@@ -10,4 +10,5 @@ urlpatterns = patterns('tracklist.home.views',
     (r'^settings/$', 'settings'),
     (r'^search/$', 'search'),
     (r'^faq/$', 'faq'),
+    (r'^reports/$', 'reports')
 )
