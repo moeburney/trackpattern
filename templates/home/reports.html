@@ -1,8 +1,3 @@
 
-    {% for item in stats_rev %}
-        <br/> {{item.full_name}}
-    {% endfor %}
-    <hr><hr>
-    {% for item in stats_pur %}
-        {{item.full_name}}
-    {% endfor %}
+    {% stats_rev.count %}
+    {% stats_pur.count %}
