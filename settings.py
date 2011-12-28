@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'tracklistdb', # Or path to database file if using sqlite3.
         'USER': 'fetch', # Not used with sqlite3.
         'PASSWORD': 'fetch2119', # Not used with sqlite3.
@@ -53,7 +53,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/tracklist_git/static/'
+MEDIA_ROOT = '/home/tracklist/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,7 +64,7 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-ADMIN_MEDIA_ROOT = '/home/tracklist_git/static/admin/'
+ADMIN_MEDIA_ROOT = '/home/tracklist/static/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
