@@ -53,7 +53,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/tracklist/static/'
+MEDIA_ROOT = '/home/tracklist_git/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,7 +64,7 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/'
-ADMIN_MEDIA_ROOT = '/home/tracklist/'
+ADMIN_MEDIA_ROOT = '/home/tracklist_git/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
@@ -82,8 +82,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     #'django.middleware.csrf.CsrfResponseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'tracklist.middleware.SubdomainMiddleware',
     #'django.contrib.messages.middleware.MessageMiddleware',
+    "tracklist.middleware.SubdomainMiddleware"
     )
 
 LOGIN_URL = '/login/'
