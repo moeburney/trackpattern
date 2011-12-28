@@ -290,7 +290,7 @@ def no_purchase_x_months(user,x):
     back_3_months = today - datetime.timedelta(days=x*30)
     cust = Customer.objects.filter(user=user).exclude(sale__transaction_date__range=(back_3_months,today))
     stat['no_purchase_x_months'] = cust
-    logger.info("\n\nNO PURCHASE %%%% \n")
+    logger.info("\n\nNO PURCHASE %d months %%%% \n" %x)
     logger.info(cust)
     return stat
 
