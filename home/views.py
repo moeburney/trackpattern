@@ -25,6 +25,20 @@ from django.contrib.sites.models import get_current_site
 import urlparse
 
 logger = logging.getLogger("applog")
+month_translate = {1: 'jan',
+                   2: 'feb',
+                   3: 'mar',
+                   4: 'apr',
+                   5: 'may',
+                   6: 'jun',
+                   7: 'jul',
+                   8: 'aug',
+                   9: 'sep',
+                   10: 'oct',
+                   11: 'nov',
+                   12: 'dec',
+                   }
+
 @login_required
 def home(request):
     """
@@ -45,6 +59,7 @@ def reports(request):
      'stats_pur':top_20_customers(request.user,"purchases"),
     'stats_bottom_30':bottom_30_customers(request.user,"revenue"),
      'stats_no_purchase_3_months':no_purchase_x_months(request.user,3),
+     'stats_monthly_growth' : monthly_growth(request.user)
      },
      context_instance=RequestContext(request))
 
@@ -52,19 +67,6 @@ def reports(request):
 def calculate_charts(user):
     # sales per campaign
 
-    month_translate = {1: 'jan',
-                       2: 'feb',
-                       3: 'mar',
-                       4: 'apr',
-                       5: 'may',
-                       6: 'jun',
-                       7: 'jul',
-                       8: 'aug',
-                       9: 'sep',
-                       10: 'oct',
-                       11: 'nov',
-                       12: 'dec',
-                       }
 
     total_profit_monthly_names = []
     total_profit_monthly_values = []
@@ -226,6 +228,30 @@ def calculate_stats(user):
         stats['repeat_customer_percent'] = 0
     return stats
 
+def monthly_growth(user):
+    charts = {}
+    total_growth_monthly_names = []
+    total_growth_monthly_values = []
+    month = datetime.datetime.now().month
+    year = datetime.datetime.now().year
+    i = 0
+    total_customer_count = Customer.objects.filter(user=user).count()
+    while i < 12:
+        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(year), sale__transaction_date__month=str(month)).annotate(bought=Count('sale')).filter(bought__gt=0)
+
+        total_growth_monthly_names.append(month_translate[month])
+        growth = sales.count()/total_customer_count
+        total_growth_monthly_values.append(growth)
+        i += 1
+        if month != 1:
+            month -= 1
+        else:
+            year -= 1
+            month = 12
+    charts['total_growth_monthly_values'] = SafeString(total_growth_monthly_values)
+    charts['total_growth_monthly_names'] = SafeString(total_growth_monthly_names)
+    logger.info(charts)
+    return charts
 
 @login_required
 def search(request):
@@ -257,18 +283,18 @@ def top_20_customers(user,by):
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
-        stat['cust_one_month'] = cust_one_month #[:twenty_percent]
-        stat['cust_three_month'] = cust_three_month #[:twenty_percent]
-        stat['cust_one_year'] = cust_one_year #[:twenty_percent]
+        stat['cust_one_month'] = cust_one_month[:int(cust_one_month.count()*0.20)]
+        stat['cust_three_month'] = cust_three_month[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
+        stat['cust_one_year'] = cust_one_year[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
         logger.debug("\n\n $$$ revenue \n\n")
         logger.debug(stat)
     if by in "purchases":
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
-        stat['cust_one_month'] = cust_one_month #[:twenty_percent]
-        stat['cust_three_month'] = cust_three_month #[:twenty_percent]
-        stat['cust_one_year'] = cust_one_year #[:twenty_percent]
+        stat['cust_one_month'] = cust_one_month[:int(cust_one_month.count()*0.20)]
+        stat['cust_three_month'] = cust_three_month[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
+        stat['cust_one_year'] = cust_one_year[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
         logger.debug("\n\n $$$ purchase \n\n")
         logger.debug(stat)
     return stat
