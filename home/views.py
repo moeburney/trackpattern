@@ -283,18 +283,18 @@ def top_20_customers(user,by):
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
-        stat['cust_one_month'] = cust_one_month[:int(cust_one_month.count()*0.20)]
-        stat['cust_three_month'] = cust_three_month[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
-        stat['cust_one_year'] = cust_one_year[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
+        stat['cust_one_month'] = cust_one_month[:int(len(cust_one_month)*0.20)]
+        stat['cust_three_month'] = cust_three_month[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
+        stat['cust_one_year'] = cust_one_year[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
         logger.debug("\n\n $$$ revenue \n\n")
         logger.debug(stat)
     if by in "purchases":
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
-        stat['cust_one_month'] = cust_one_month[:int(cust_one_month.count()*0.20)]
-        stat['cust_three_month'] = cust_three_month[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
-        stat['cust_one_year'] = cust_one_year[:int(cust_three_month.count()*0.20)] #[:twenty_percent]
+        stat['cust_one_month'] = cust_one_month[:int(len(cust_one_month)*0.20)]
+        stat['cust_three_month'] = cust_three_month[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
+        stat['cust_one_year'] = cust_one_year[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
         logger.debug("\n\n $$$ purchase \n\n")
         logger.debug(stat)
     return stat
