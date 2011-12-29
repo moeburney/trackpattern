@@ -237,7 +237,7 @@ def monthly_growth(user):
     i = 0
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
-        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(year), sale__transaction_date__month=str(month)).annotate(bought=Count('sale')).filter(bought__gt=0)
+        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(year), sale__transaction_date__month=str(month)).annotate(bought=Count('sale')).filter(bought__gte=1)
 
         total_growth_monthly_names.append(month_translate[month])
         growth = float(sales.count()/total_customer_count)
@@ -283,6 +283,10 @@ def top_20_customers(user,by):
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_rev=Sum('sale__price')).order_by( '-tot_rev' )
+        logger.info("\n\n $$$ raw-revenue \n\n")
+        logger.info(cust_one_month)
+        logger.info(cust_three_month)
+        logger.info(cust_one_year)
         stat['cust_one_month'] = cust_one_month[:int(len(cust_one_month)*0.20)]
         stat['cust_three_month'] = cust_three_month[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
         stat['cust_one_year'] = cust_one_year[:int(len(cust_one_year)*0.20)] #[:twenty_percent]
@@ -292,6 +296,10 @@ def top_20_customers(user,by):
         cust_one_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_month,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_three_month = Customer.objects.filter(user=user,sale__transaction_date__range=(back_three_months,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
         cust_one_year = Customer.objects.filter(user=user,sale__transaction_date__range=(back_one_year,today)).annotate(tot_purchase=Count('sale')).order_by( '-tot_purchase' )
+        logger.info("\n\n $$$ raw-purchase \n\n")
+        logger.info(cust_one_month)
+        logger.info(cust_three_month)
+        logger.info(cust_one_year)
         stat['cust_one_month'] = cust_one_month[:int(len(cust_one_month)*0.20)]
         stat['cust_three_month'] = cust_three_month[:int(len(cust_three_month)*0.20)] #[:twenty_percent]
         stat['cust_one_year'] = cust_one_year[:int(len(cust_one_year)*0.20)] #[:twenty_percent]
