@@ -238,7 +238,8 @@ def monthly_growth(user):
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
         sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(year), sale__transaction_date__month=str(month)).annotate(bought=Count('sale')).filter(bought__gte=1)
-
+        logger.info("\n #### monthly \n")
+        logger.info(sales)
         total_growth_monthly_names.append(month_translate[month])
         growth = float(sales.count()/total_customer_count)
         total_growth_monthly_values.append(growth)
