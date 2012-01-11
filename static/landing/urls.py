@@ -5,7 +5,7 @@ from django.conf.urls.defaults import *
 #admin.autodiscover()
 
 
-urlpatterns = patterns('tracklist.landing.views',
+urlpatterns = patterns('landing.views',
     (r'^$', 'landing'),
     (r'^stylesheets/(?P<path>.*)$', 'django.views.static.serve',
          {'document_root': '/landing/stylesheets'}),
