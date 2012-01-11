@@ -132,7 +132,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/root/tracklist/logs/default.log',
+            'filename': '/root/tracklist-logs/logs/default.log',
             'maxBytes': 1024*1024*20, # 5 MB
             'backupCount': 10,
             'formatter':'standard',
@@ -140,7 +140,7 @@ LOGGING = {
         'request_handler': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/root/tracklist/logs/django_request.log',
+            'filename': '/root/tracklist-logs/logs/django_request.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
@@ -148,7 +148,7 @@ LOGGING = {
         'app': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/root/tracklist/logs/app.log',
+            'filename': '/root/tracklist-logs/logs/app.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
