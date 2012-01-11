@@ -5,7 +5,7 @@ from django.conf.urls.defaults import *
 #admin.autodiscover()
 
 
-urlpatterns = patterns('tracklist.home.views',
+urlpatterns = patterns('home.views',
     (r'^$', 'home'),
     (r'^settings/$', 'settings'),
     (r'^search/$', 'search'),

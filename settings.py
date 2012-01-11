@@ -21,8 +21,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'tracklistdb', # Or path to database file if using sqlite3.
-        'USER': 'fetch', # Not used with sqlite3.
-        'PASSWORD': 'fetch2119', # Not used with sqlite3.
+        'USER': 'tracklist', # Not used with sqlite3.
+        'PASSWORD': 'tr4cklist', # Not used with sqlite3.
         'HOST': 'trackpattern.com', # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }

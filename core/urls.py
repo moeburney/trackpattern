@@ -4,7 +4,7 @@ from django.conf.urls.defaults import *
 #from django.contrib import admin
 #admin.autodiscover()
 
-urlpatterns = patterns('tracklist.core.views',
+urlpatterns = patterns('core.views',
     (r'^customer/$', 'customer_home'),
     (r'^customer/view/(?P<id>.*)/$', 'customer_view'),
     (r'^customer/add/$', 'add_customer'),
@@ -36,6 +36,6 @@ urlpatterns = patterns('tracklist.core.views',
 
     (r'^group/$', 'group_home'),
     (r'^group/view/(?P<id>.*)/$', 'group_view'),
-    (r'^csv/', include('tracklist.csvimporter.urls')),
+    (r'^csv/', include('csvimporter.urls')),
 
 )
