@@ -451,7 +451,7 @@ def faq(request):
 
 @csrf_protect
 @never_cache
-def tlogin(request, template_name='/templates/registration/login.html',
+def tlogin(request, template_name='/registration/login.html',
            redirect_field_name=REDIRECT_FIELD_NAME,
            authentication_form=AuthenticationForm,
            current_app=None, extra_context=None):
