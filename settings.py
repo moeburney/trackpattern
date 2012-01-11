@@ -53,7 +53,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/tracklist/static/'
+MEDIA_ROOT = '/root/tracklist/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,7 +64,7 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-ADMIN_MEDIA_ROOT = '/home/tracklist/static/admin/'
+ADMIN_MEDIA_ROOT = '/root/tracklist/static/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
@@ -101,9 +101,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/tracklist/templates',
-    '/home/tracklist/csvimporter/templates',
-    '/home/tracklist/static/landing',
+    '/root/tracklist/templates',
+    '/root/tracklist/csvimporter/templates',
+    '/root/tracklist/static/landing',
     )
 
 INSTALLED_APPS = (
@@ -132,7 +132,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/home/tracklist/logs/default.log',
+            'filename': '/root/tracklist/logs/default.log',
             'maxBytes': 1024*1024*20, # 5 MB
             'backupCount': 10,
             'formatter':'standard',
@@ -140,7 +140,7 @@ LOGGING = {
         'request_handler': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/home/tracklist/logs/django_request.log',
+            'filename': '/root/tracklist/logs/django_request.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
@@ -148,7 +148,7 @@ LOGGING = {
         'app': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/home/tracklist/logs/app.log',
+            'filename': '/root/tracklist/logs/app.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
