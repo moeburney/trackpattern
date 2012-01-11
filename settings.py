@@ -83,15 +83,15 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.csrf.CsrfResponseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django.contrib.messages.middleware.MessageMiddleware',
-    "tracklist.middleware.SubdomainMiddleware"
+    "middleware.SubdomainMiddleware"
     )
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
-ROOT_URLCONF = 'tracklist.urls'
+ROOT_URLCONF = 'urls'
 AUTH_PROFILE_MODULE = 'core.UserProfile'
 AUTHENTICATION_BACKENDS = (
-    'tracklist.backends.TracklistAuthBackend',
+    'backends.TracklistAuthBackend',
     )
 
 # Paging settings
@@ -112,9 +112,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     #    'django.contrib.messages',
-    'tracklist.home',
-    'tracklist.core',
-    'tracklist.csvimporter',
+    'home',
+    'core',
+    'csvimporter',
 
     # Uncomment the next line to enable the admin:
     'django.contrib.admin'
