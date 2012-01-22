@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Permission
+from core.models import UserProfile
 
 class TracklistAuthBackend(object):
     """
@@ -59,7 +60,10 @@ class TracklistAuthBackend(object):
 
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id)
+            u=User.objects.get(pk=user_id)
+            zm, created = UserProfile.objects.get_or_create(user = u)
+            return u
+
         except User.DoesNotExist:
             return None
 
