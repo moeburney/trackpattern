@@ -478,6 +478,9 @@ def tlogin(request, template_name='registration/login.html',
             this_user = form.get_user()
             if this_user is not None:
                 profile = UserProfile.objects.filter(user=this_user).get()
+                if not profile:
+                    signup(request)
+                    profile = UserProfile.objects.filter(user=this_user).get()
                 if not profile.paid_user:
                     redirect_to = 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
                     this_user.id, this_user.first_name, this_user.last_name, this_user.email)
