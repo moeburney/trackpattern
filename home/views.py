@@ -475,7 +475,7 @@ def tlogin(request, template_name='registration/login.html',
                 redirect_to = '/home'
 
             # redirect to payment form if user is not paid user
-            this_user = form.get_user(form.cleaned_data['username'])
+            this_user = form.get_user()
             if this_user is not None:
                 profile = this_user.get_profile()
                 if not profile.paid_user:
