@@ -10,7 +10,7 @@ class UserProfile(models.Model):
 
     # Other fields here
     paid_user = models.BooleanField()
-    User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u,paid_user=False)[0])
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u,paid_user=False)[0])
 
 class Group():
     """
