@@ -55,13 +55,13 @@ def home(request):
 @login_required
 def reports(request):
     return render_to_response('home/reports.html',
-    {'stats_rev':top_20_customers(request.user,"revenue"),
-     'stats_pur':top_20_customers(request.user,"purchases"),
-    'stats_bottom_30':bottom_30_customers(request.user,"revenue"),
-     'stats_no_purchase_3_months':no_purchase_x_months(request.user,3),
-     'stats_monthly_growth' : monthly_growth(request.user)
-     },
-     context_instance=RequestContext(request))
+            {'stats_rev':top_20_customers(request.user,"revenue"),
+             'stats_pur':top_20_customers(request.user,"purchases"),
+             'stats_bottom_30':bottom_30_customers(request.user,"revenue"),
+             'stats_no_purchase_3_months':no_purchase_x_months(request.user,3),
+             'stats_monthly_growth' : monthly_growth(request.user)
+        },
+        context_instance=RequestContext(request))
 
 #for chart calculations
 def calculate_charts(user):
@@ -215,8 +215,8 @@ def calculate_stats(user):
             product_sale_pattern[pattern] = 1
         else:
             product_sale_pattern[pattern] = product_sale_pattern[pattern] + 1
-        # now we have sale patterns & no of occurances of those pattern
-    # { 'x,y': 1, 'y,x': 4, 'x,z': 2 }
+            # now we have sale patterns & no of occurances of those pattern
+        # { 'x,y': 1, 'y,x': 4, 'x,z': 2 }
     # let's sort them on pattern frequency, and identify top one. multiple also possible
     sorted_patterns_by_freq = sorted(product_sale_pattern.iteritems(), reverse=True, key=operator.itemgetter(1))
     stats = {}
@@ -274,8 +274,8 @@ def search(request):
 
 def top_20_customers(user,by):
     stat = {}
-#    total_customer_count = Customer.objects.filter(user=user).count()
-#    twenty_percent = int(total_customer_count*0.20)
+    #    total_customer_count = Customer.objects.filter(user=user).count()
+    #    twenty_percent = int(total_customer_count*0.20)
     today = datetime.date.today()
     back_one_month = today - datetime.timedelta(days=31)
     back_three_months = today - datetime.timedelta(days=91)
@@ -397,7 +397,7 @@ def signup(request):
             #reset = True
             return redirect(
                 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
-                user.id, user.first_name, user.last_name, user.email))
+                    user.id, user.first_name, user.last_name, user.email))
 
             #login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
             #tlogin(request, login_user)
@@ -480,15 +480,14 @@ def tlogin(request, template_name='registration/login.html',
                 profile = this_user.get_profile()
                 if not profile.paid_user:
                     redirect_to = 'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
-                    this_user.id, this_user.first_name, this_user.last_name, this_user.email)
+                        this_user.id, this_user.first_name, this_user.last_name, this_user.email)
 
                 else:
                     auth_login(request, this_user)
 
             # If the user is 'None' log in anyway to get error
             else:
-                pass
-                #auth_login(request, this_user)
+                auth_login(request, this_user)
 
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
