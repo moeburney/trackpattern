@@ -7,7 +7,7 @@ from django.db.models.aggregates import Sum
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, get_user
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.conf import settings
@@ -475,7 +475,7 @@ def tlogin(request, template_name='registration/login.html',
                 redirect_to = '/home'
 
             # redirect to payment form if user is not paid user
-            this_user = form.get_user()
+            this_user = form.get_user(form.username)
             if this_user is not None:
                 profile = this_user.get_profile()
                 if not profile.paid_user:
