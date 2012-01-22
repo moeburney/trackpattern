@@ -60,11 +60,7 @@ class TracklistAuthBackend(object):
 
     def get_user(self, user_id):
         try:
-            u=User.objects.get(pk=user_id)
-            zm, created = UserProfile.objects.get_or_create(paid_user=False,user = u)
-
-            return u
-
+            return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
 
