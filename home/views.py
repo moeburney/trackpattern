@@ -111,7 +111,7 @@ def calculate_charts(user):
     campaign_names = []
 
     for sale in salez:
-        campaign_values.append(sale.marketing_source_count)
+        campaign_values.append(sale.marketing_source.total_sales())
         campaign_names.append("%% " + str(sale.marketing_source.campaign_name))
 
 
