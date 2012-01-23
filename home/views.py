@@ -262,7 +262,7 @@ def monthly_growth(user):
     i = 0
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
-        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(year), sale__transaction_date__month=str(month)).annotate(bought=Count('sale')).filter(bought__gte=1)
+        sales = Customer.objects.filter(user=user).annotate(bought=Count('sale')).filter(bought__gte=1)
         logger.info("\n #### monthly \n")
         logger.info(sales)
         total_growth_monthly_names.append(month_translate[month])
@@ -341,7 +341,7 @@ def bottom_30_customers(user,by):
         c_list = []
         customers = Customer.objects.filter(user=user).annotate(tot_rev=Sum('sale__price')).order_by('tot_rev')
         for item in customers:
-            if item.total_turnover_generated() >=0.0:
+            if item.total_turnover_generated() >0.0:
                 c_list.append(item)
         bottom_30_count = int(len(c_list) * 0.30)
         stat['bottom_30_cust'] = c_list[:bottom_30_count]
