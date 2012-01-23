@@ -71,7 +71,7 @@ def stats_bottom_30(request):
     temp = bottom_30_customers(request.user,"revenue")
     page = int(request.GET.get('page', '1'))
     try:
-        paginator = Paginator([1,2], settings.DEFAULT_PAGESIZE)
+        paginator = Paginator(temp, settings.DEFAULT_PAGESIZE)
         data = paginator.page(page)
     except (EmptyPage, InvalidPage):
     # if the supplied page number is beyond the scope
@@ -474,7 +474,7 @@ def signup_success(request):
 
 
 @login_required
-def settings(request):
+def settingss(request):
     """
     User settings page
     """

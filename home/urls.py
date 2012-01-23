@@ -7,7 +7,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('home.views',
     (r'^$', 'home'),
-    (r'^settings/$', 'settings'),
+    (r'^settings/$', 'settingss'),
     (r'^search/$', 'search'),
     (r'^faq/$', 'faq'),
     (r'^stats_rev/$', 'stats_rev'),
