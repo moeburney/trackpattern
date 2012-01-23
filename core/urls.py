@@ -25,6 +25,7 @@ urlpatterns = patterns('core.views',
     (r'^sale/$', 'sale_home'),
     (r'^sale/view/(?P<id>.*)/$', 'sale_view'),
     (r'^sale/add/$', 'add_sale'),
+    (r'^sale/random/$', 'add_random_sales'),
     (r'^sale/edit/(?P<id>.*)/$', 'edit_sale'),
     (r'^sale/delete/(?P<id>.*)/$', 'delete_sale'),
 

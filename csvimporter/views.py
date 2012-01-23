@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic.list_detail import object_list, object_detail
 from django.contrib import messages
-from core.models import Customer
+from core.models import Customer, Product, Sale
 from csvimporter.models import CSV
 from csvimporter.forms import CSVForm, CSVAssociateForm
 
