@@ -338,7 +338,7 @@ def bottom_30_customers(user,by):
     stat={}
     total_customer_count = Customer.objects.filter(user=user).count()
     if by in "revenue":
-        customers = Customer.objects.filter(user=user).annotate(tot_rev=Sum('sale__price')).order_by('tot_rev')
+        customers = Customer.objects.filter(user=user,total_turnover_generated__gt=0.0).annotate(tot_rev=Sum('sale__price')).order_by('tot_rev')
         bottom_30_count = int(total_customer_count * 0.30)
         stat['bottom_30_cust'] = customers[:bottom_30_count]
         logger.info("\n\nbottom 30 %%%%%\n")
