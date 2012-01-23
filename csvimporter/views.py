@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic.list_detail import object_list, object_detail
 from django.contrib import messages
 
-from tracklist.csvimporter.models import CSV
-from tracklist.csvimporter.forms import CSVForm, CSVAssociateForm
+from csvimporter.models import CSV
+from csvimporter.forms import CSVForm, CSVAssociateForm
 
 # TODO: Make this view class based
 def prepare_view(request, kwargs):
