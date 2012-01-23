@@ -2,6 +2,7 @@ import logging
 import operator
 
 import datetime
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models.aggregates import Sum
 
 from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
@@ -67,16 +68,38 @@ def stats_pur(request):
         context_instance=RequestContext(request))
 @login_required
 def stats_bottom_30(request):
+    temp = bottom_30_customers(request.user,"revenue")
+    page = int(request.GET.get('page', '1'))
+    try:
+        paginator = Paginator(temp, settings.DEFAULT_PAGESIZE)
+        data = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+    # if the supplied page number is beyond the scope
+    # show last page
+        data = paginator.page(paginator.num_pages)
+
+
     return render_to_response('home/stats_bottom_30.html',
             {
-             'stats_bottom_30':bottom_30_customers(request.user,"revenue")
+             'stats_bottom_30':data
         },
         context_instance=RequestContext(request))
 @login_required
 def stats_no_purchase_3_months(request):
+    temp = no_purchase_x_months(request.user,3)
+    page = int(request.GET.get('page', '1'))
+    try:
+        paginator = Paginator(temp, settings.DEFAULT_PAGESIZE)
+        data = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+    # if the supplied page number is beyond the scope
+    # show last page
+        data = paginator.page(paginator.num_pages)
+
+
     return render_to_response('home/stats_no_purchase_3_months.html',
             {
-             'stats_no_purchase_3_months':no_purchase_x_months(request.user,3)
+             'stats_no_purchase_3_months':data
         },
         context_instance=RequestContext(request))
 @login_required
@@ -348,7 +371,7 @@ def bottom_30_customers(user,by):
         stat['bottom_30_cust'] = c_list[:bottom_30_count]
         logger.info("\n\nbottom 30 %%%%%\n")
         logger.info(c_list)
-    return stat
+    return stat['bottom_30_cust']
 
 
 def no_purchase_x_months(user,x):
@@ -359,7 +382,7 @@ def no_purchase_x_months(user,x):
     stat['no_purchase_x_months'] = cust
     logger.info("\n\nNO PURCHASE %d months %%%% \n" %x)
     logger.info(cust)
-    return stat
+    return stat['no_purchase_x_months']
 
 def forgot_password(request):
     """

@@ -1,82 +1,82 @@
-{% extends "home/base.html" %}
 
-{% block content %}
-    <form action='/home/search/' method='POST'>{% csrf_token %}
-        <input class='content-searchbar' type=text name='word'/>
-        <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
-    </form>
+            {% extends "core/base.html" %}
 
-    <!-- <h2 class='pad20'>Dashboard</h2> -->
-    <p class='pad20'></p>
+            {% block scripts %}
+                <script type="text/javascript" charset="utf-8">
+                    $('#tabCustomers').addClass('selected');
+                </script>
+            {% endblock %}
 
-    <table width=100%>
-        <tr>
-            <td width=30% style="vertical-align: top;" class='sidetable'>
+            {% block content %}
+                <form action='/home/search/' method='POST'>{% csrf_token %}
+                    <input class='content-searchbar' type=text name='word'/>
+                    <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
+                </form>
 
+                <h2 class='pad20'>Bottom 30% Customers by revenue</h2>
+                <table width=100% class='datatable'>
 
-            </td>
+                    <tr class='datarow pager'>
 
-            <td width=5%>
-            </td>
+                        <td colspan=4>
+			<span style='float:right'>
+		    &nbsp;&nbsp;
 
-            <td width=60% style="vertical-align: top;" class="sidetable">
-
-
-                <table width=100% class="datatable" style="border solid 1px;">
-                    <thead>
-                    <th style="background-color: #fff">
-                        <img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-                        <span style="line-height:2em; font-size:16px;"><div>Bottom 30% Customers
-                        </div></span>
-
-
-                    </th>
-                    </thead>
-
-                    <tr class="datarow">
-                        <td class="datarow-prime" id="chartrow">
-                            <div id="chartdiv">By Revenue
-                                <br>
-                                {% for item in stats_bottom_30.bottom_30_cust %}
-                                    <b>{{ item.full_name }} : {{ item.total_turnover_generated }}</b><br>
-                                {% endfor %}
-
-                            </div>
+                {% if stats_bottom_30.has_previous %}
+                    <a href="?sort={{sort}}&page={{ stats_bottom_30.previous_page_number }}">previous</a>&nbsp;
+                {% endif %}
+                Page {{ stats_bottom_30.number }} of {{ stats_bottom_30.paginator.num_pages }}.&nbsp;
+                {% if stats_bottom_30.has_next %}
+                    <a href="?sort={{sort}}&page={{ stats_bottom_30.next_page_number }}">next</a>
+                {% endif %}
+			</span>
                         </td>
                     </tr>
+
+                    {% for item in stats_bottom_30 %}
+                        <tr class='datarow'>
+                            <td class='icon-cell'><img src='/static/img/person.png'></td>
+                            <td class='datarow-prime'>
+                                <a class='datarow-title' href='/core/customer/view/{{item.pk}}/'>{{ item.full_name }}</a>
+                                {% if item.company_name != "" %}
+                                    <br>
+                                    <span style="font-style: italic; font-size: 12px;">{{ item.company_name }}</span>
+                                {% endif %}
+                                <br>
+                                <a class='datarow-action-link' href='/core/customer/edit/{{item.pk}}/'><img
+                                        src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+                                <a class='datarow-action-link' href='/core/customer/delete/{{item.pk}}/'
+                                   onclick='return getConfirmed("{{item.full_name}}");'><img src='/static/img/delete.png'>
+                                    Delete</a>
+                            </td>
+                            <td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span
+                                    class='datarow-item-lable'>Turnover</span></td>
+                            <td class='datarow-items'><span class='datarow-item-value'>{{ item.group.name }}</span><br><span
+                                    class='datarow-item-value'>{{ item.total_turnover_generated }}</span></td>
+                        </tr>
+                    {% endfor %}
+
                 </table>
 
+                <script>
 
-            </td>
+                    $(document).ready(function () {
+                        // register a listener with JQ to intimate when sort order changed
+                        $("#sort").change(function (a) {
+                            // findout selected sort order
+                            // and navigate to ... with details
+                            window.location.href = '/core/customer/?sort=' + $(this).val();
+                        });
 
-            <td width=5%>
-            </td>
+                        $("#remove_all_customers").click(function () {
+                            // alert the user. because it is irreversible action
+                            result = confirm("Are sure want to remove all customers and related sales data?");
+                            if (result) {
+                                window.location.href = '/core/customer/delete/0/';
+                            }
+                        });
+                    });
 
-            <!--
-<td width=30% style="vertical-align: top;" class="sidetable">
+                </script>
 
-
-<table width=100% class="datatable">
-<thead>
-<th style="background-color: #fff">
-<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-<span style="line-height:2em; font-size:16px;">Recent Activity</span>
-</th>
-</thead>
-
-	{% for activity in activities %}
-	<tr class="datarow"> <td><span class='datarow-item-value' style="white-space: wrap;"> {{activity.activity_desc}}  </span></td></tr>
-	{% endfor %}
-
-</table>
-
-
-</td>
--->
-
-        </tr>
-    </table>
-
-
-
-{% endblock %}
+            {% endblock %}
