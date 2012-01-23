@@ -388,6 +388,7 @@ def sale_view(request, id):
     return render_to_response('core/sale_view.html',
             {'sale': sale, },
         context_instance=RequestContext(request))
+import datetime
 
 @login_required
 def add_random_sales(request):
@@ -395,7 +396,7 @@ def add_random_sales(request):
     if curr_user.username == "moe":
         products = Product.objects.filter(user=curr_user)
         customers = Customer.objects.filter(user=curr_user)
-        date_now =datetime.date.today()
+        date_now = datetime.date.today()
         add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now)
         add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=5))
         for i in range(1,12):
