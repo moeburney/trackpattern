@@ -415,6 +415,7 @@ def add_a_sale(product,customer,curr_user,date):
     a_sale.price = product.current_price
     a_sale.transaction_date = date
     a_sale.user = curr_user
+    a_sale.marketing_source = None
     a_sale.save()
 def get_random_item(dataset):
     count = dataset.count() -1
