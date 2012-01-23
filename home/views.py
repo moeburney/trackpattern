@@ -105,15 +105,15 @@ def calculate_charts(user):
         else:
             year = year - 1
             month = 12
+    campaignz = Campaign.objects.filter(user=user)
+
+    campaign_values = []
+    campaign_names = []
 
     for sale in salez:
         campaign_values.append(sale.campaign_count)
         campaign_names.append("%% " + str(sale.marketing_source.campaign_name))
 
-    campaignz = Campaign.objects.filter(user=user)
-
-    campaign_values = []
-    campaign_names = []
 
     for campaign in campaignz:
         campaign_values.append(campaign.total_sales())
