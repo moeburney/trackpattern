@@ -37,7 +37,7 @@
                         <td class="datarow-prime" id="chartrow">
                             <div id="chartdiv">By Revenue
                                 <br>
-                                {% for item in stats_pur.bottom_30_cust %}
+                                {% for item in stats_bottom_30.bottom_30_cust %}
                                     <b>{{ item.full_name }} : {{ item.total_turnover_generated }}</b><br>
                                 {% endfor %}
 
