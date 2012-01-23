@@ -256,6 +256,7 @@ def monthly_growth(user):
     charts = {}
     total_growth_monthly_names = []
     total_growth_monthly_values = []
+    total_map = dict()
     month = datetime.datetime.now().month
     year = datetime.datetime.now().year
     i = 0
@@ -267,6 +268,7 @@ def monthly_growth(user):
         total_growth_monthly_names.append(month_translate[month])
         growth = float(sales.count()/total_customer_count)
         total_growth_monthly_values.append(growth)
+        total_map[month_translate[month]] = growth
         i += 1
         if month != 1:
             month -= 1
@@ -275,6 +277,7 @@ def monthly_growth(user):
             month = 12
     charts['total_growth_monthly_values'] = SafeString(total_growth_monthly_values)
     charts['total_growth_monthly_names'] = SafeString(total_growth_monthly_names)
+    charts['total_growth_map'] = total_map
     logger.info(charts)
     return charts
 
