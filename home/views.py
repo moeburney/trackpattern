@@ -282,6 +282,7 @@ def monthly_growth(user):
     total_map = dict()
     month = datetime.datetime.now().month
     year = datetime.datetime.now().year
+    # try using timedelta and excludes on dates below.
     i = 0
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
