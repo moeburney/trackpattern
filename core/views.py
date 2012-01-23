@@ -404,7 +404,7 @@ def add_random_sales(request):
             add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=1))
             add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=2))
             add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=3))
-    return "done"
+    return HttpResponse("done")
 
 
 
