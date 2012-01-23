@@ -396,26 +396,27 @@ def add_random_sales(request):
     if curr_user.username == "moe":
         products = Product.objects.filter(user=curr_user)
         customers = Customer.objects.filter(user=curr_user)
+        marketing_sources = Campaign.objects.filter(user=curr_user)
         date_now = datetime.date.today()
-        add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now)
-        add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=5))
+        add_a_sale(get_random_item(products),get_random_item(customers),get_random_item(marketing_sources),curr_user,date_now)
+        add_a_sale(get_random_item(products),get_random_item(customers),get_random_item(marketing_sources),curr_user,date_now - datetime.timedelta(days=5))
         for i in range(1,12):
             date_now = date_now - datetime.timedelta(days=30)
-            add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=1))
-            add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=2))
-            add_a_sale(get_random_item(products),get_random_item(customers),curr_user,date_now - datetime.timedelta(days=3))
+            add_a_sale(get_random_item(products),get_random_item(customers),get_random_item(marketing_sources),curr_user,date_now - datetime.timedelta(days=1))
+            add_a_sale(get_random_item(products),get_random_item(customers),get_random_item(marketing_sources),curr_user,date_now - datetime.timedelta(days=2))
+            add_a_sale(get_random_item(products),get_random_item(customers),get_random_item(marketing_sources),curr_user,date_now - datetime.timedelta(days=3))
     return HttpResponse("done")
 
 
 
-def add_a_sale(product,customer,curr_user,date):
+def add_a_sale(product,customer,marketing_source,curr_user,date):
     a_sale = Sale()
     a_sale.customer = customer
     a_sale.product = product
     a_sale.price = product.current_price
     a_sale.transaction_date = date
     a_sale.user = curr_user
-    a_sale.marketing_source = None
+    a_sale.marketing_source = marketing_source
     a_sale.save()
 def get_random_item(dataset):
     count = dataset.count() -1
