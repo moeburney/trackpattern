@@ -10,5 +10,9 @@ urlpatterns = patterns('home.views',
     (r'^settings/$', 'settings'),
     (r'^search/$', 'search'),
     (r'^faq/$', 'faq'),
-    (r'^reports/$', 'reports')
+    (r'^stats_rev/$', 'reports')
+    (r'^stats_pur/$', 'reports')
+    (r'^stats_bottom_30/$', 'reports')
+    (r'^stats_no_purchase_3_months/$', 'reports')
+    (r'^stats_monthly_growth/$', 'reports')
 )

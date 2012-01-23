@@ -53,12 +53,36 @@ def home(request):
         context_instance=RequestContext(request))
 
 @login_required
-def reports(request):
-    return render_to_response('home/reports.html',
-            {'stats_rev':top_20_customers(request.user,"revenue"),
-             'stats_pur':top_20_customers(request.user,"purchases"),
-             'stats_bottom_30':bottom_30_customers(request.user,"revenue"),
-             'stats_no_purchase_3_months':no_purchase_x_months(request.user,3),
+def stats_rev(request):
+    return render_to_response('home/stats_rev.html',
+            {'stats_rev':top_20_customers(request.user,"revenue")
+        },
+        context_instance=RequestContext(request))
+@login_required
+def stats_pur(request):
+    return render_to_response('home/stats_pur.html',
+            {
+             'stats_pur':top_20_customers(request.user,"purchases")
+        },
+        context_instance=RequestContext(request))
+@login_required
+def stats_bottom_30(request):
+    return render_to_response('home/stats_bottom_30.html',
+            {
+             'stats_bottom_30':bottom_30_customers(request.user,"revenue")
+        },
+        context_instance=RequestContext(request))
+@login_required
+def stats_no_purchase_3_months(request):
+    return render_to_response('home/stats_no_purchase_3_months.html',
+            {
+             'stats_no_purchase_3_months':no_purchase_x_months(request.user,3)
+        },
+        context_instance=RequestContext(request))
+@login_required
+def stats_monthly_growth(request):
+    return render_to_response('home/stats_monthly_growth.html',
+            {
              'stats_monthly_growth' : monthly_growth(request.user)
         },
         context_instance=RequestContext(request))

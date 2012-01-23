@@ -1,0 +1,76 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+    <form action='/home/search/' method='POST'>{% csrf_token %}
+        <input class='content-searchbar' type=text name='word'/>
+        <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
+    </form>
+
+    <!-- <h2 class='pad20'>Dashboard</h2> -->
+    <p class='pad20'></p>
+
+    <table width=100%>
+        <tr>
+            <td width=30% style="vertical-align: top;" class='sidetable'>
+
+
+            </td>
+
+            <td width=5%>
+            </td>
+
+            <td width=60% style="vertical-align: top;" class="sidetable">
+
+
+                <table width=100% class="datatable" style="border solid 1px;">
+                    <thead>
+                    <th style="background-color: #fff">
+                        <img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
+                        <span style="line-height:2em; font-size:16px;"><div>Top 20% Customers
+                        </div></span>
+
+
+                    </th>
+                    </thead>
+
+                    <tr class="datarow">
+                        <td class="datarow-prime" id="chartrow">
+                            <div id="chartdiv">data here</div>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </td>
+
+            <td width=5%>
+            </td>
+
+            <!--
+<td width=30% style="vertical-align: top;" class="sidetable">
+
+
+<table width=100% class="datatable">
+<thead>
+<th style="background-color: #fff">
+<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
+<span style="line-height:2em; font-size:16px;">Recent Activity</span>
+</th>
+</thead>
+
+	{% for activity in activities %}
+	<tr class="datarow"> <td><span class='datarow-item-value' style="white-space: wrap;"> {{activity.activity_desc}}  </span></td></tr>
+	{% endfor %}
+
+</table>
+
+
+</td>
+-->
+
+        </tr>
+    </table>
+
+
+
+{% endblock %}
