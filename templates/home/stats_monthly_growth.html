@@ -37,9 +37,7 @@
                         <td class="datarow-prime" id="chartrow">
                             <div id="chartdiv"># of Sales/Total Customers Each Month
                                 <br>
-                                {% for month,growth in stats_monthly_growth.total_growth_map %}
-                                    <b>{{ month }} : {{ growth }}</b><br>
-                                {% endfor %}
+                              {{ stats_monthly_growth.total_growth_map }}
 
                             </div>
                         </td>
