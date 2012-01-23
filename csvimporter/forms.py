@@ -10,8 +10,8 @@ from django.db import IntegrityError
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 
-from tracklist.csvimporter.models import CSV
-from tracklist.csvimporter.utils import create_csv_reader
+from csvimporter.models import CSV
+from csvimporter.utils import create_csv_reader
 
 from core.models import Customer, Product, Campaign
 
