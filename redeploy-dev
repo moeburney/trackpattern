@@ -1,0 +1,8 @@
+#!/bin/bash
+
+git checkout dev
+git pull
+unalias cp
+cp -Rfu /srv/tracklist/* /srv/vrt/tracklist-dev/*
+/etc/rc.d/uwsgi-dev restart
+##/etc/rc.d/nginx restart
