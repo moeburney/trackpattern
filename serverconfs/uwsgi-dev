@@ -10,7 +10,7 @@ bin="/usr/bin/uwsgi"
 
 . /etc/rc.conf
 . /etc/rc.d/functions
-. /etc/conf.d/$daemon_name
+. /etc/conf.d/uwsgi
 
 daemon_user=http
 daemon_options="-s 127.0.0.1:8002 -M 4 -t 30 -A 4 -p 4 -d /var/log/$daemon_name.log --pidfile /var/run/$daemon_name.pid -H /srv/vrt/tracklist-dev --module $MODULE"
