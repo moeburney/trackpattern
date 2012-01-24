@@ -229,7 +229,40 @@ def calculate_charts(user):
     charts['monthly_sales_product_one'] = SafeString(monthly_sales_of_product[0])
     charts['monthly_sales_product_two'] = SafeString(monthly_sales_of_product[1])
     charts['monthly_sales_product_three'] = SafeString(monthly_sales_of_product[2])
+    total_growth_monthly_names = []
+    total_growth_monthly_values = []
+    total_map = dict()
+    monthh = datetime.datetime.now().month
+    yearr = datetime.datetime.now().year
+    # try using timedelta and excludes on dates below.  ## TODO try to figure out the django ORM way to do below sales query
+    i = 0
+    total_customer_count = Customer.objects.filter(user=user).count()
+    while i < 12:
 
+        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(yearr), sale__transaction_date__month=str(monthh)).annotate(bought=Count('sale')).filter(bought__gte=1)
+        #sales = Customer.objects.raw('Select * from ')
+        logger.info("\n #### monthly %s %d\n" %(month_translate[monthh],yearr))
+        logger.info(sales)
+        total_growth_monthly_names.append(month_translate[monthh])
+        growth = float(sales.count()/total_customer_count)
+        if growth<1.0:
+            total_growth_monthly_values.append(sales.count())
+            total_map[month_translate[monthh]] = (sales.count(),False)
+
+        if growth>1.0:
+            total_growth_monthly_values.append(growth)
+            total_map[month_translate[monthh]] = (growth,True)
+
+        i += 1
+        if monthh != 1:
+            monthh -= 1
+        else:
+            yearr -= 1
+            monthh = 12
+    charts['total_growth_monthly_values'] = SafeString(total_growth_monthly_values)
+    charts['total_growth_monthly_names'] = SafeString(total_growth_monthly_names)
+    charts['total_growth_map'] = total_map
+    logger.info(charts)
     return charts
 
 

@@ -93,12 +93,16 @@
                     </tr>
                     <tr class='datarow'>
                         <td class='datarow-lables'>
-                            <a href="stats_rev"><span class='datarow-item-lable' style='white-space:normal;'>stats_rev</span></a><br><br>
-                            <a href="stats_pur"><span class='datarow-item-lable' style='white-space:normal;'>stats_pur</span></a><br><br>
+                            <a href="stats_rev"><span class='datarow-item-lable'
+                                                      style='white-space:normal;'>stats_rev</span></a><br><br>
+                            <a href="stats_pur"><span class='datarow-item-lable'
+                                                      style='white-space:normal;'>stats_pur</span></a><br><br>
                             <a href="stats_bottom_30"><span class='datarow-item-lable' style='white-space:normal;'>stats_bottom_30</span></a><br><br>
-                            <a href="stats_no_purchase_3_months"><span class='datarow-item-lable' style='white-space:normal;'>stats_no_purchase_3_months</span></a><br><br>
+                            <a href="stats_no_purchase_3_months"><span class='datarow-item-lable'
+                                                                       style='white-space:normal;'>stats_no_purchase_3_months</span></a><br><br>
                             <a href="stats_monthly_growth"><span class='datarow-item-lable' style='white-space:normal;'>stats_monthly_growth[not working]</span></a><br><br>
-                        </td>                    </tr>
+                        </td>
+                    </tr>
                 </table>
 
             </td>
@@ -127,9 +131,9 @@
                                 </li>
                                 <li><a id="revenue_by_product_over_time" class="profit_chart" href="#">Revenue by
                                     Product Over Time</a></li>
+                                <li><a id="monthly_sales_growth" class="profit_chart" href="#">Monthly Sales Growth</a></li>
                             </ul>
-                            </li>
-                            </ul>
+
                     </th>
                     </thead>
 
@@ -244,7 +248,17 @@
             {% endif %}
         }
 
+        var monthly_sales_growth = function () {
+            $("#chart_title").html("Monthly Sales Growth");
 
+            $("#chartrow").html("<div id='chartlegend' style='font-size:11px; font-weight:bold;background-color:#fff'><span style='color: #990000;'>Sales/TotalCustomers</span><br></div><div id='chartdiv'></div>");
+
+            {% if charts.total_growth_monthly_values == 0 %}
+                $("#chartrow").html("<div id='chartdiv'><span class='datarow-item-lable'> Not enough data to generate this chart.</span></div>")
+            {% else %}
+                new Ico.LineGraph(getid('chartdiv'), { one: {{charts.total_growth_monthly_values}}}, {  markers:'circle', colours:{ one:'#990000'}, labels: {{charts.total_growth_monthly_names}}, meanline:false, grid:true});
+            {% endif %}
+        }
         var timeout = 500;
         var closetimer = 0;
         var ddmenuitem = 0;
@@ -286,6 +300,9 @@
             }
             else if (the_id == "revenue_by_product_over_time") {
                 revenue_by_product_over_time();
+            }
+            else if (the_id == "monthly_sales_growth") {
+                monthly_sales_growth();
             }
 
 
