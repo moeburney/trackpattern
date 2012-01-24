@@ -1,0 +1,4 @@
+#!/bin/bash
+git pull
+/etc/rc.d/uwsgi restart
+##/etc/rc.d/nginx restart
