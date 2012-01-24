@@ -121,6 +121,7 @@ body {
     padding: 0px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+    line-height: 2em;
 }
 
 .quicklinks li {
