@@ -282,12 +282,13 @@ def monthly_growth(user):
     total_map = dict()
     month = datetime.datetime.now().month
     year = datetime.datetime.now().year
-    # try using timedelta and excludes on dates below.
+    # try using timedelta and excludes on dates below.  ## TODO try to figure out the django ORM way to do below sales query
     i = 0
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
 
-        sales = Customer.objects.filter(user=user, sale__transaction_date__year=year, sale__transaction_date__month=month).annotate(bought=Count('sale')).filter(bought__gte=1)
+        sales = Customer.objects.filter(user=user, sale__transaction_date__year=year, sale__transaction_date__month=month).annotate(bought=Count('sale'))
+        #sales = Customer.objects.raw('Select * from ')
         logger.info("\n #### monthly %s %d\n" %(month_translate[month],year))
         logger.info(sales)
         total_growth_monthly_names.append(month_translate[month])
