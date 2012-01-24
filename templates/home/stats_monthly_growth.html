@@ -38,6 +38,16 @@
                             <div id="chartdiv"># of Sales/Total Customers Each Month
                                 <br>
                               {{ stats_monthly_growth.total_growth_map }}
+                                {% for key, value in stats_monthly_growth.total_growth_map.items %}
+                                    <hr>
+                                    {{ key }}   : {{ value.0 }}
+                                    {% if not value.1 %}
+                                        <br>
+                                        <p>Actual Sales count [growth rate was less than 0]</p>
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
+
 
                             </div>
                         </td>
