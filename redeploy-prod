@@ -2,6 +2,7 @@
 
 git checkout master
 git pull
-cp -Rfu /srv/tracklist/* /srv/vrt/tracklist-prod/*
+cp -Rfu /srv/tracklist/* /srv/vrt/tracklist-prod/
+chown -R http:users /srv/vrt/tracklist*
 /etc/rc.d/uwsgi-prod restart
 ##/etc/rc.d/nginx restart
