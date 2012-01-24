@@ -287,12 +287,12 @@ def monthly_growth(user):
     total_customer_count = Customer.objects.filter(user=user).count()
     while i < 12:
 
-        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(yearr), sale__transaction_date__month=str(monthh)).annotate(bought=Count(sale))
+        sales = Customer.objects.filter(user=user, sale__transaction_date__year=str(yearr), sale__transaction_date__month=str(monthh)).annotate(bought=Count('sale'))
         #sales = Customer.objects.raw('Select * from ')
         logger.info("\n #### monthly %s %d\n" %(month_translate[monthh],yearr))
         logger.info(sales)
         total_growth_monthly_names.append(month_translate[monthh])
-        growth = float(sales.count()/total_customer_count)
+        growth = float(sales.count())
         total_growth_monthly_values.append(growth)
         total_map[month_translate[monthh]] = growth
         i += 1
