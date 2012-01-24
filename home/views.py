@@ -104,9 +104,20 @@ def stats_no_purchase_3_months(request):
         context_instance=RequestContext(request))
 @login_required
 def stats_monthly_growth(request):
+    temp = monthly_growth(request.user)
+    page = int(request.GET.get('page', '1'))
+    try:
+        paginator = Paginator(temp, settings.DEFAULT_PAGESIZE)
+        data = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+    # if the supplied page number is beyond the scope
+    # show last page
+        data = paginator.page(paginator.num_pages)
+
+
     return render_to_response('home/stats_monthly_growth.html',
             {
-             'stats_monthly_growth' : monthly_growth(request.user)
+             'stats_monthly_growth' : data
         },
         context_instance=RequestContext(request))
 
@@ -311,7 +322,7 @@ def monthly_growth(user):
     charts['total_growth_monthly_names'] = SafeString(total_growth_monthly_names)
     charts['total_growth_map'] = total_map
     logger.info(charts)
-    return charts
+    return charts['total_growth_map'].items()
 
 @login_required
 def search(request):

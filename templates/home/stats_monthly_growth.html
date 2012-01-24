@@ -1,4 +1,10 @@
-{% extends "home/base.html" %}
+{% extends "core/base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript" charset="utf-8">
+        $('#tabCustomers').addClass('selected');
+    </script>
+{% endblock %}
 
 {% block content %}
     <form action='/home/search/' method='POST'>{% csrf_token %}
@@ -6,84 +12,62 @@
         <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
     </form>
 
-    <!-- <h2 class='pad20'>Dashboard</h2> -->
-    <p class='pad20'></p>
+    <h2 class='pad20'>Bottom 30% Customers by revenue</h2>
+    <table width=100% class='datatable'>
 
-    <table width=100%>
-        <tr>
-            <td width=30% style="vertical-align: top;" class='sidetable'>
+        <tr class='datarow pager'>
 
+            <td colspan=4>
+			<span style='float:right'>
+		    &nbsp;&nbsp;
 
+                {% if stats_monthly_growth.has_previous %}
+                    <a href="?sort={{sort}}&page={{ stats_monthly_growth.previous_page_number }}">previous</a>&nbsp;
+                {% endif %}
+                Page {{ stats_monthly_growth.number }} of {{ stats_monthly_growth.paginator.num_pages }}.&nbsp;
+                {% if stats_monthly_growth.has_next %}
+                    <a href="?sort={{sort}}&page={{ stats_monthly_growth.next_page_number }}">next</a>
+                {% endif %}
+			</span>
             </td>
-
-            <td width=5%>
-            </td>
-
-            <td width=60% style="vertical-align: top;" class="sidetable">
-
-
-                <table width=100% class="datatable" style="border solid 1px;">
-                    <thead>
-                    <th style="background-color: #fff">
-                        <img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-                        <span style="line-height:2em; font-size:16px;"><div>Monthly Growth
-                        </div></span>
-
-
-                    </th>
-                    </thead>
-
-                    <tr class="datarow">
-                        <td class="datarow-prime" id="chartrow">
-                            <div id="chartdiv"># of Sales/Total Customers Each Month
-                                <br>
-                                {% for key, value in stats_monthly_growth.total_growth_map.items %}
-                                    <hr>
-                                    {{ key }}   : {{ value.0 }}
-                                    {% if not value.1 %}
-                                        <br>
-                                        <p>Actual Sales count [growth rate was less than 0]</p>
-                                    {% endif %}
-                                    <br>
-                                {% endfor %}
-
-
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </td>
-
-            <td width=5%>
-            </td>
-
-            <!--
-<td width=30% style="vertical-align: top;" class="sidetable">
-
-
-<table width=100% class="datatable">
-<thead>
-<th style="background-color: #fff">
-<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-<span style="line-height:2em; font-size:16px;">Recent Activity</span>
-</th>
-</thead>
-
-	{% for activity in activities %}
-	<tr class="datarow"> <td><span class='datarow-item-value' style="white-space: wrap;"> {{activity.activity_desc}}  </span></td></tr>
-	{% endfor %}
-
-</table>
-
-
-</td>
--->
-
         </tr>
+
+        {% for key,value in stats_monthly_growth.object_list %}
+            <tr class='datarow'>
+                <td class='datarow-prime'>
+                    <p>{{ key }}</p> : <p>{{ value.0 }}</p>
+                    {% if not item.1 %}
+                        <br>
+                        <span style="font-style: italic; font-size: 12px;">Actual Sales count [growth less than 1]</span>
+                    {% endif %}
+                    <br>
+
+                </td>
+
+            </tr>
+        {% endfor %}
+
     </table>
 
+    <script>
 
+        $(document).ready(function () {
+            // register a listener with JQ to intimate when sort order changed
+            $("#sort").change(function (a) {
+                // findout selected sort order
+                // and navigate to ... with details
+                window.location.href = '/core/customer/?sort=' + $(this).val();
+            });
+
+            $("#remove_all_customers").click(function () {
+                // alert the user. because it is irreversible action
+                result = confirm("Are sure want to remove all customers and related sales data?");
+                if (result) {
+                    window.location.href = '/core/customer/delete/0/';
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}
