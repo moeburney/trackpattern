@@ -55,15 +55,74 @@ def home(request):
 
 @login_required
 def stats_rev(request):
+    temp = top_20_customers(request.user,"revenue")
+    page = int(request.GET.get('page', '1'))
+    duration = str(request.GET.get('dur','none'))
+    if duration=='none' or duration == 'l1m':
+        try:
+            paginator = Paginator(temp['cust_one_month'], settings.DEFAULT_PAGESIZE)
+            data = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+            data = paginator.page(paginator.num_pages)
+    if duration=='l3m':
+            try:
+                paginator = Paginator(temp['cust_three_month'], settings.DEFAULT_PAGESIZE)
+                data = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+            # if the supplied page number is beyond the scope
+            # show last page
+                data = paginator.page(paginator.num_pages)
+    if duration=='l12m':
+            try:
+                paginator = Paginator(temp['cust_one_year'], settings.DEFAULT_PAGESIZE)
+                data = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+            # if the supplied page number is beyond the scope
+            # show last page
+                data = paginator.page(paginator.num_pages)
+
+
     return render_to_response('home/stats_rev.html',
-            {'stats_rev':top_20_customers(request.user,"revenue")
+            {'stats_rev':data,
+             'dur':duration
         },
         context_instance=RequestContext(request))
 @login_required
 def stats_pur(request):
+    temp = top_20_customers(request.user,"purchases")
+    page = int(request.GET.get('page', '1'))
+    duration = str(request.GET.get('dur','l1m'))
+    if duration == 'l1m':
+        try:
+            paginator = Paginator(temp['cust_one_month'], settings.DEFAULT_PAGESIZE)
+            data = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+            data = paginator.page(paginator.num_pages)
+    if duration=='l3m':
+        try:
+            paginator = Paginator(temp['cust_three_month'], settings.DEFAULT_PAGESIZE)
+            data = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+            data = paginator.page(paginator.num_pages)
+    if duration=='l12m':
+        try:
+            paginator = Paginator(temp['cust_one_year'], settings.DEFAULT_PAGESIZE)
+            data = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+        # if the supplied page number is beyond the scope
+        # show last page
+            data = paginator.page(paginator.num_pages)
+
+
     return render_to_response('home/stats_pur.html',
-            {
-             'stats_pur':top_20_customers(request.user,"purchases")
+            {'stats_pur':data,
+             'dur':duration
         },
         context_instance=RequestContext(request))
 @login_required

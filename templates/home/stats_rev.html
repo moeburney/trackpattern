@@ -1,4 +1,11 @@
-{% extends "home/base.html" %}
+
+{% extends "core/base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript" charset="utf-8">
+        $('#tabCustomers').addClass('selected');
+    </script>
+{% endblock %}
 
 {% block content %}
     <form action='/home/search/' method='POST'>{% csrf_token %}
@@ -6,85 +13,79 @@
         <input style='vertical-align: middle; visibility: hidden; display: none;' type=submit value="Search"></input>
     </form>
 
-    <!-- <h2 class='pad20'>Dashboard</h2> -->
-    <p class='pad20'></p>
+    <h2 class='pad20'>Top 20% Customers by revenue</h2>
+    <table width=100% class='datatable'>
 
-    <table width=100%>
-        <tr>
-            <td width=30% style="vertical-align: top;" class='sidetable'>
+        <tr class='datarow pager'>
 
+            <td colspan=4>
+				<span style='float:right'>
+			Limit by &nbsp;
+			<select name="dur" id="dur" style='width:150px; height:30px;'>
+                <option value="l1m" {% ifequal dur 'l1m' %}selected="selected"{% endifequal %}
+                ">Last Month</option>
+                 <option value="l3m" {% ifequal dur 'l3m' %}selected="selected"{% endifequal %}
+                ">Last 3 Months</option>
+                <option value="l12m" {% ifequal dur 'l12m' %}selected="selected"{% endifequal %}
+                ">Last 12 Months</option>
+            </select>
+		    &nbsp;&nbsp;
 
+                {% if stats_rev.has_previous %}
+                    <a href="?dur={{dur}}&page={{ stats_rev.previous_page_number }}">previous</a>&nbsp;
+                {% endif %}
+                Page {{ stats_rev.number }} of {{ stats_rev.paginator.num_pages }}.&nbsp;
+                {% if stats_rev.has_next %}
+                    <a href="?dur={{dur}}&page={{ stats_rev.next_page_number }}">next</a>
+                {% endif %}
+			</span>
             </td>
-
-            <td width=5%>
-            </td>
-
-            <td width=60% style="vertical-align: top;" class="sidetable">
-
-
-                <table width=100% class="datatable" style="border solid 1px;">
-                    <thead>
-                    <th style="background-color: #fff">
-                        <img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-                        <span style="line-height:2em; font-size:16px;"><div>Top 20% Customers
-                        </div></span>
-
-
-                    </th>
-                    </thead>
-
-                    <tr class="datarow">
-                        <td class="datarow-prime" id="chartrow">
-                            <div id="chartdiv">By Revenue
-                            <br>
-                            <p> Last One Month</p><br>
-                            {% for item in stats_rev.cust_one_month %}
-                                <b>{{ item.full_name }} : {{ item.total_turnover_generated }}</b><br>
-                            {% endfor %}
-                            <p> Last Three Month</p><br>
-                            {% for item in stats_rev.cust_three_month %}
-                                <b>{{ item.full_name }} : {{ item.total_turnover_generated }}</b><br>
-                            {% endfor %}
-                            <p> Last Year</p><br>
-                            {% for item in stats_rev.cust_one_year %}
-                                <b>{{ item.full_name }} : {{ item.total_turnover_generated }}</b><br>
-                            {% endfor %}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </td>
-
-            <td width=5%>
-            </td>
-
-            <!--
-<td width=30% style="vertical-align: top;" class="sidetable">
-
-
-<table width=100% class="datatable">
-<thead>
-<th style="background-color: #fff">
-<img style="vertical-align: middle;" width="32px" height="32px" src='/static/img/info.png'>
-<span style="line-height:2em; font-size:16px;">Recent Activity</span>
-</th>
-</thead>
-
-	{% for activity in activities %}
-	<tr class="datarow"> <td><span class='datarow-item-value' style="white-space: wrap;"> {{activity.activity_desc}}  </span></td></tr>
-	{% endfor %}
-
-</table>
-
-
-</td>
--->
-
         </tr>
+
+        {% for item in stats_rev.object_list %}
+            <tr class='datarow'>
+                <td class='icon-cell'><img src='/static/img/person.png'></td>
+                <td class='datarow-prime'>
+                    <a class='datarow-title' href='/core/customer/view/{{item.pk}}/'>{{ item.full_name }}</a>
+                    {% if item.company_name != "" %}
+                        <br>
+                        <span style="font-style: italic; font-size: 12px;">{{ item.company_name }}</span>
+                    {% endif %}
+                    <br>
+                    <a class='datarow-action-link' href='/core/customer/edit/{{item.pk}}/'><img
+                            src='/static/img/edit.jpg'> Edit</a><span>&nbsp;&nbsp;</span>
+                    <a class='datarow-action-link' href='/core/customer/delete/{{item.pk}}/'
+                       onclick='return getConfirmed("{{item.full_name}}");'><img src='/static/img/delete.png'>
+                        Delete</a>
+                </td>
+                <td class='datarow-lables'><span class='datarow-item-lable'>Group</span><br><span
+                        class='datarow-item-lable'>Turnover</span></td>
+                <td class='datarow-items'><span class='datarow-item-value'>{{ item.group.name }}</span><br><span
+                        class='datarow-item-value'>{{ item.total_turnover_generated }}</span></td>
+            </tr>
+        {% endfor %}
+
     </table>
 
+    <script>
 
+        $(document).ready(function () {
+            // register a listener with JQ to intimate when sort order changed
+            $("#dur").change(function (a) {
+                // findout selected sort order
+                // and navigate to ... with details
+                window.location.href = '/home/stats_rev/?dur=' + $(this).val();
+            });
+
+            $("#remove_all_customers").click(function () {
+                // alert the user. because it is irreversible action
+                result = confirm("Are sure want to remove all customers and related sales data?");
+                if (result) {
+                    window.location.href = '/core/customer/delete/0/';
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}
