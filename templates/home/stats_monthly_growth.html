@@ -35,7 +35,7 @@
         {% for key,value in stats_monthly_growth.object_list %}
             <tr class='datarow'>
                 <td class='datarow-prime'>
-                    <p>{{ key }}</p> : <p>{{ value.0 }}</p>
+                    <p>{{ key }} : {{ value.0 }}</p>
                     {% if not item.1 %}
                         <br>
                         <span style="font-style: italic; font-size: 12px;">Actual Sales count [growth less than 1]</span>
