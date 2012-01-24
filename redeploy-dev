@@ -2,6 +2,8 @@
 
 git checkout dev
 git pull
-cp -Rfu /srv/tracklist/* /srv/vrt/tracklist-dev/*
+cp -Rfu /srv/tracklist/* /srv/vrt/tracklist-dev/
+chown -R http:users /srv/vrt/tracklist*
+
 /etc/rc.d/uwsgi-dev restart
 ##/etc/rc.d/nginx restart
