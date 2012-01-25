@@ -53,7 +53,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/srv/tracklist/static/'
+MEDIA_ROOT = '/srv/vrt/tracklist-prod/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,7 +64,7 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-ADMIN_MEDIA_ROOT = '/srv/tracklist/static/admin/'
+ADMIN_MEDIA_ROOT = '/srv/vrt/tracklist-prod/static/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
@@ -101,9 +101,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/srv/tracklist/templates/',
-    '/srv/tracklist/csvimporter/templates/',
-    '/srv/tracklist/static/landing/',
+    '/srv/vrt/tracklist-prod/templates/',
+    '/srv/vrt/tracklist-prod/csvimporter/templates/',
+    '/srv/vrt/tracklist-prod/static/landing/',
     )
 
 INSTALLED_APPS = (

@@ -1,9 +1,9 @@
 __author__ = 'rohan'
 import sys
 import os
-path = '/srv/tracklist'
+path = '/srv/vrt/tracklist-prod'
 if path not in sys.path:
-    sys.path.append('/srv')
+    #sys.path.append('/srv')
     sys.path.append(path)
 
 
