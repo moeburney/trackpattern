@@ -67,7 +67,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 ADMIN_MEDIA_ROOT = '/srv/vrt/tracklist-dev/static/admin/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
+SECRET_KEY = '%^u9q+24yy+7@)86%t3)zre4j5uxb(cqk)2(b30b)x58!8x160'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
