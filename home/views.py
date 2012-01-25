@@ -303,7 +303,9 @@ def calculate_charts(user):
         logger.info("\n #### monthly %s %d\n" %(month_translate[monthh],yearr))
         logger.info(sales)
         total_growth_monthly_names.append(month_translate[monthh])
-        growth = float(sales.count()/total_customer_count)
+        growth = 0
+        if sales.count()>0:
+            growth = float(sales.count()/total_customer_count)
         if growth<1.0:
             total_growth_monthly_values.append(sales.count())
             total_map[month_translate[monthh]] = (sales.count(),False)
