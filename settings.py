@@ -3,10 +3,10 @@
 DEFAULT_FROM_EMAIL = 'Trackpattern <trackpattern-noreply@trackpattern.com>'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = 'trackpattern-noreply@trackpattern.com'
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 25
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'moe@trackpattern.com'
+EMAIL_HOST_PASSWORD = 'bl1tz5590'
+EMAIL_PORT = 587
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
