@@ -547,7 +547,7 @@ def signup(request):
             user.is_active = True
             user.save()
 
-            profile = UserProfile(paid_user=False, user=user)
+            profile = UserProfile(paid_user=True, user=user)
             profile.save()
 
             # send a mail with registration details
