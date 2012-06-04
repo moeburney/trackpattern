@@ -567,7 +567,7 @@ def signup(request):
 #                    user.id, user.first_name, user.last_name, user.email))
 
             login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
-            tlogin(request, login_user)
+            tlogin(request)
             return redirect('/home/')
 
     else:
