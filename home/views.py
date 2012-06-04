@@ -562,13 +562,13 @@ def signup(request):
                 to=[user.email])
             email.send()
             #reset = True
-            return redirect(
-                'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
-                    user.id, user.first_name, user.last_name, user.email))
+#            return redirect(
+#                'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
+#                    user.id, user.first_name, user.last_name, user.email))
 
-            #login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
-            #tlogin(request, login_user)
-            #return redirect('/home/')
+            login_user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+            tlogin(request, login_user)
+            return redirect('/home/')
 
     else:
         form = SignupForm()
