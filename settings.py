@@ -3,10 +3,10 @@
 DEFAULT_FROM_EMAIL = 'Trackpattern <trackpattern-noreply@trackpattern.com>'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = 'trackpattern-noreply@trackpattern.com'
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 25
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'moe@trackpattern.com'
+EMAIL_HOST_PASSWORD = 'bl1tz5590'
+EMAIL_PORT = 587
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -20,7 +20,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tracklistdb', # Or path to database file if using sqlite3.
+        'NAME': 'tracklistdb_dev', # Or path to database file if using sqlite3.
         'USER': 'tracklist', # Not used with sqlite3.
         'PASSWORD': 'tr4cklist', # Not used with sqlite3.
         'HOST': 'localhost', # Set to empty string for localhost. Not used with sqlite3.
@@ -53,7 +53,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/srv/vrt/tracklist-prod/static/'
+MEDIA_ROOT = '/srv/vrt/tracklist-dev/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,10 +64,10 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-ADMIN_MEDIA_ROOT = '/srv/vrt/tracklist-prod/static/admin/'
+ADMIN_MEDIA_ROOT = '/srv/vrt/tracklist-dev/static/admin/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '%^u9q+24yy+7@)86%t3)zer4j5uxb(cqk)2(b30b)x58!8x160'
+SECRET_KEY = '%^u9q+24yy+7@)86%t3)zre4j5uxb(cqk)2(b30b)x58!8x160'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -101,9 +101,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/srv/vrt/tracklist-prod/templates/',
-    '/srv/vrt/tracklist-prod/csvimporter/templates/',
-    '/srv/vrt/tracklist-prod/static/landing/',
+    '/srv/vrt/tracklist-dev/templates/',
+    '/srv/vrt/tracklist-dev/csvimporter/templates/',
+    '/srv/vrt/tracklist-dev/static/landing/',
     )
 
 INSTALLED_APPS = (
@@ -119,7 +119,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin'
     )
-SESSION_COOKIE_DOMAIN = 'trackpattern.com'
+SESSION_COOKIE_DOMAIN = 'trkdev.com'
 #LOGGING = {
 #    'version': 1,
 #    'disable_existing_loggers': True,
