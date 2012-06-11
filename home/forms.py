@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-
+from django.forms.widgets import RadioSelect
 
 class PersonalForm(forms.ModelForm):
     change_password = forms.CharField(label=_("Password"), required=False, widget=forms.PasswordInput, )
@@ -27,7 +27,9 @@ class SignupForm(forms.Form):
         label=_("Password (again)"))
     first_name = forms.CharField(max_length=30, label=_("First Name"), )
     last_name = forms.CharField(max_length=30, label=_("Last Name"), )
-
+    question_1 = forms.ChoiceField( widget=RadioSelect(), choices=[[True,'Yes'],[False,'No']],label="""Would you like to sign up to our mailing
+list to receive free information about analytics and data driven
+marketing?""")
     def clean_username(self):
         """
         Validate that the username is alphanumeric and is not already

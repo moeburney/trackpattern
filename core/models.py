@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Sum, Count
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 
 class UserProfile(models.Model):
     # This field is required.
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
 
     # Other fields here
     paid_user = models.BooleanField()
+    question_1 = models.BooleanField(BOOL_CHOICES)
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u,paid_user=True)[0])
 
 class Group():

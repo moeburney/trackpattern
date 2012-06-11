@@ -530,7 +530,7 @@ def forgot_password(request):
             {'reset': reset, },
         context_instance=RequestContext(request))
 
-
+import json
 def signup(request):
     from forms import SignupForm
 
@@ -548,6 +548,7 @@ def signup(request):
             user.save()
 
             profile = UserProfile(paid_user=True, user=user)
+            profile.question_1 = form.cleaned_data['question_1']
             profile.save()
 
             # send a mail with registration details
@@ -561,6 +562,8 @@ def signup(request):
                 from_email='moe@trackpattern.com',
                 to=[user.email])
             email.send()
+            emailtoadmin = EmailMessage('Trackpattern - New user has registered',body=json.dumps(form),from_email="moe@trackpattern.com",to="moe@trackpattern.com",bcc="kanaderohan@gmail.com")
+            emailtoadmin.send()
             #reset = True
 #            return redirect(
 #                'https://trackpattern.chargify.com/h/46549/subscriptions/new/?reference=%s&first_name=%s&last_name=%s&email=%s' % (
@@ -571,7 +574,7 @@ def signup(request):
             return redirect('/home/')
 
     else:
-        form = SignupForm()
+        form = SignupForm(initial={'question_1': True})
     return render_to_response('registration/signup.html',
             {'form': form, },
         context_instance=RequestContext(request))
