@@ -548,7 +548,6 @@ def signup(request):
             user.save()
 
             profile = UserProfile(paid_user=True, user=user)
-            profile.question_1 = form.cleaned_data['question_1']
             profile.save()
 
             # send a mail with registration details

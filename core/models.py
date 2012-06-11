@@ -11,7 +11,6 @@ class UserProfile(models.Model):
 
     # Other fields here
     paid_user = models.BooleanField()
-    question_1 = models.BooleanField(BOOL_CHOICES)
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u,paid_user=True)[0])
 
 class Group():
