@@ -531,6 +531,7 @@ def forgot_password(request):
         context_instance=RequestContext(request))
 
 import json
+from collections import  OrderedDict
 def signup(request):
     from forms import SignupForm
 
@@ -561,7 +562,8 @@ def signup(request):
                 from_email='moe@trackpattern.com',
                 to=[user.email])
             email.send()
-            emailtoadmin = EmailMessage('Trackpattern - New user has registered',body=json.dumps(form),from_email="moe@trackpattern.com",to="moe@trackpattern.com",bcc="kanaderohan@gmail.com")
+            _out = {'username':user.username,'email':user.email,'first_name':user.first_name,'last_name':user.last_name,'Would you like to sign up to our mailing list to receive free information about analytics and data driven marketing?' : form.cleaned_data['question_1'],'ts':str(datetime.datetime.now())}
+            emailtoadmin = EmailMessage('Trackpattern - New user has registered',body=json.dumps(_out),from_email="moe@trackpattern.com",to="moe@trackpattern.com",bcc="kanaderohan@gmail.com")
             emailtoadmin.send()
             #reset = True
 #            return redirect(
